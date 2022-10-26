@@ -1,18 +1,18 @@
-#Init
+# Init
 
 ```bash
 yarn create vite pwd-aat --template react-ts
 yarn add --dev --exact prettier
 ```
 
-#Install
+# Install
 
 ```bash
 yarn install
 yarn run dev
 ```
 
-#Prettier Ignore comments
+# Prettier Ignore comments
 
 ```
 javascript : // prettier-ignore
@@ -25,5 +25,7 @@ range:
     <!-- prettier-ignore-end -->
 yaml: # prettier-ignore
 ```
+
+## Prettier Ignore docs
 
 [prettier-ignore](https://prettier.io/docs/en/ignore.html)
