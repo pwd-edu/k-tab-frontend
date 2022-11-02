@@ -5,12 +5,6 @@ import aofm from "./assets/aofm.jpg"
 function App() {
     return (
         <div className="App">
-            <Stack align="center" mt={50}>
-                <Text size="xl" weight={500}>
-                    Welcome to Mantine!
-                </Text>
-                <Button>Click the button</Button>
-            </Stack>
             <div>
                 <Article
                     title="The art of mathematics"
