@@ -1,5 +1,6 @@
 import { Text, Button, Stack } from "@mantine/core"
-import { Article } from "./Article"
+import { Article, AddArticle } from "./Article"
+import { Search } from "./Navbar"
 import aofm from "./assets/aofm.jpg"
 
 function App() {
@@ -11,6 +12,12 @@ function App() {
                     thumbnail_img={aofm}
                     last_update={new Date(Date.now())}
                 />
+            </div>
+            <div>
+                <AddArticle />
+            </div>
+            <div>
+                <Search />
             </div>
         </div>
     )
