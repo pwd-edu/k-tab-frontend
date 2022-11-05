@@ -1,8 +1,8 @@
 import { ActionIcon, Card, createStyles, Group, Image, Stack, Text } from "@mantine/core"
-import { IconClock, IconEdit, IconChartPie } from "@tabler/icons"
+import { IconClock, IconEdit, IconChartPie, IconPlus } from "@tabler/icons"
 
 const useStyles = createStyles((theme, _params, getRef) => ({
-    article: {
+    article_card: {
         width: 286,
         height: 179,
     },
@@ -26,7 +26,7 @@ export const Article = ({ title, thumbnail_img, last_update }: ArticleProps) => 
         return formated
     }
     return (
-        <Card className={classes.article} shadow="sm" p="md" radius="sm" withBorder>
+        <Card className={classes.article_card} shadow="sm" p="md" radius="sm" withBorder>
             <Text weight={700} size="md">
                 {title}
             </Text>
@@ -45,6 +45,28 @@ export const Article = ({ title, thumbnail_img, last_update }: ArticleProps) => 
                             <IconEdit color={"#4F4F4F"} size={18} />
                         </ActionIcon>
                     </Group>
+                </Group>
+            </Stack>
+        </Card>
+    )
+}
+
+export const AddArticle = () => {
+    const { classes } = useStyles()
+    return (
+        <Card className={classes.article_card} shadow="sm" p="md" radius="sm" withBorder>
+            <Stack justify="center" style={{ height: "100%" }}>
+                <Group position="center">
+                    <ActionIcon size={58} variant="transparent">
+                        <IconPlus
+                            color={"#155EEF"}
+                            width={58}
+                            height={58}
+                            strokeLinecap="square"
+                            strokeLinejoin="inherit"
+                            viewBox="4 4 16 16"
+                        />
+                    </ActionIcon>
                 </Group>
             </Stack>
         </Card>
