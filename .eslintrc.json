@@ -6,6 +6,7 @@
         "plugin:react/recommended",
         "plugin:jsx-a11y/recommended",
         "plugin:@typescript-eslint/recommended",
+        "plugin:tailwindcss/recommended",
         "prettier"
     ],
     "rules": {
@@ -13,7 +14,7 @@
         "react/react-in-jsx-scope": 0
     },
     "parser": "@typescript-eslint/parser",
-    "plugins": ["react", "import", "jsx-a11y", "@typescript-eslint"],
+    "plugins": ["react", "import", "jsx-a11y", "@typescript-eslint", "tailwindcss"],
     "parserOptions": {
         "ecmaVersion": 2021,
         "sourceType": "module",
