@@ -33,7 +33,7 @@ export const Article = ({ title, thumbnail_img, last_update }: ArticleProps) => 
             </Text>
             <Stack spacing="xs">
                 <Image height={70} radius="sm" src={thumbnail_img} />
-                <Group spacing="xs">
+                <Group className="gap-1">
                     <IconClock color={"#4F4F4F"} size={14} />
                     <Text style={{ fontSize: "10px" }} weight={700} color={"#4F4F4F"}>
                         {`Updated ${formatDateTime(last_update)}`}
