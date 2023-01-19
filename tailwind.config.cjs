@@ -2,7 +2,18 @@
 module.exports = {
     content: ["./src/**/*.{js,jsx,ts,tsx}"],
     theme: {
-        extend: {},
+        extend: {
+            typography: {
+                DEFAULT: {
+                    css: {
+                        lineHeight: "inherit",
+                    },
+                },
+            },
+        },
     },
-    plugins: [],
+    plugins: [require("@tailwindcss/typography")],
+    corePlugins: {
+        preflight: false,
+    },
 }
