@@ -4,6 +4,15 @@ import { createStyles, Group, Input, Avatar, Tooltip, Stack, Text, Menu } from "
 import { IconSearch, IconNotification } from "@tabler/icons"
 import messi from "./assets/messi.jpg"
 import { FlexSpace } from "./shared"
+import {
+    backgroundColor,
+    boxShadow,
+    classnames,
+    height,
+    lineHeight,
+    padding,
+    typography,
+} from "tailwindcss-classnames"
 
 const useStyles = createStyles((_theme, _params, getRef) => ({
     alert_notification: {
@@ -17,12 +26,15 @@ const useStyles = createStyles((_theme, _params, getRef) => ({
 
 const buildStyles = (params?: any) => {
     const { classes, cx, theme } = useStyles(params)
-    const _styles = {
-        navbar: cx(["h-12", "px-3", "shadow-md"]),
-        tooltip: cx("text-xs", "bg-slate-500", "leading-none"),
-        notification_container: cx(["p-1"]),
+    const styles = {
+        navbar: classnames(height("h-12"), padding("px-3"), boxShadow("shadow-md")),
+        tooltip: classnames(
+            lineHeight("leading-none"),
+            typography("text-xs"),
+            backgroundColor("bg-slate-500")
+        ),
+        notification_container: classnames(padding("p-1")),
     }
-    const styles = { ..._styles }
     return { styles, classes, cx, theme }
 }
 
