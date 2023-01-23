@@ -12,6 +12,7 @@ import Blockquote from "@tiptap/extension-blockquote"
 import ListItem from "@tiptap/extension-list-item"
 import { Heading, Level } from "@tiptap/extension-heading"
 import TextExtension from "@tiptap/extension-text"
+import Gapcursor from "@tiptap/extension-gapcursor"
 import * as constants from "./constants"
 
 import { ActionIcon, Button, Group, Stack, Menu, Kbd } from "@mantine/core"
@@ -36,7 +37,7 @@ export const LessonEditor = () => {
         // prettier-ignore
         extensions: [
             Document, Paragraph, TextExtension, Bold, Heading,Italic, Underline,
-            History, BulletList, ListItem, OrderedList, Blockquote
+            History, BulletList, ListItem, OrderedList, Blockquote, Gapcursor
         ],
         content: constants.EDITOR_SAMPLE,
         editorProps: {
@@ -81,7 +82,6 @@ const MENU_ACTIONS = (editor: Editor) => [
         action: editor.chain().focus().sinkListItem("listItem").run,
         EditorActionIcon: IconIndentIncrease,
     },
-    { action: editor.chain().focus().toggleBlockquote().run, EditorActionIcon: IconBlockquote },
     { action: editor.chain().focus().toggleBlockquote().run, EditorActionIcon: IconBlockquote },
 ]
 
