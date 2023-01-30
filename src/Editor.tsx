@@ -10,13 +10,16 @@ import BulletList from "@tiptap/extension-bullet-list"
 import OrderedList from "@tiptap/extension-ordered-list"
 import Blockquote from "@tiptap/extension-blockquote"
 import ListItem from "@tiptap/extension-list-item"
+import { Color } from "@tiptap/extension-color"
+import TextStyle from "@tiptap/extension-text-style"
 import { Heading, Level } from "@tiptap/extension-heading"
 import TextExtension from "@tiptap/extension-text"
 import Gapcursor from "@tiptap/extension-gapcursor"
 import * as constants from "./constants"
 
-import { ActionIcon, Button, Group, Stack, Menu, Kbd } from "@mantine/core"
+import { ActionIcon, Button, Group, Stack, Menu, Kbd, ColorSwatch, CheckIcon } from "@mantine/core"
 import {
+    IconColorSwatch,
     IconArrowBackUp,
     IconArrowForwardUp,
     IconBlockquote,
@@ -28,8 +31,10 @@ import {
     IconItalic,
     IconList,
     IconListNumbers,
+    IconPhoto,
     IconUnderline,
 } from "@tabler/icons"
+import { useMemo, useState } from "react"
 
 export const LessonEditor = () => {
     // When useEdior is null ?
@@ -37,13 +42,16 @@ export const LessonEditor = () => {
         // prettier-ignore
         extensions: [
             Document, Paragraph, TextExtension, Bold, Heading,Italic, Underline,
-            History, BulletList, ListItem, OrderedList, Blockquote, Gapcursor
+            History, BulletList, ListItem, OrderedList, Blockquote, Gapcursor, Color, TextStyle
         ],
         content: constants.EDITOR_SAMPLE,
         editorProps: {
             attributes: {
                 class: "max-w-max prose prose-sm [&_*]:m-0 focus:outline-none",
             },
+        },
+        onTransaction: ({ editor, transaction }) => {
+            console.log(transaction)
         },
     })
 
@@ -96,6 +104,7 @@ const EditorMenu = ({ editor }: { editor: Editor }) => {
                     </ActionIcon>
                 )
             })}
+            <FontColorMenu editor={editor} />
         </Group>
     )
 }
@@ -140,5 +149,74 @@ export function HeadingMenu({ editor }: { editor: Editor }) {
                 })}
             </Menu.Dropdown>
         </Menu>
+    )
+}
+
+export function FontColorMenu({ editor }: { editor: Editor }) {
+    const handleColorPick = (color: string) => {
+        // update tiptap color extension with the new color
+        editor.commands.setColor(color)
+    }
+    return (
+        <Menu transition="pop-top-right" position="top-start" withinPortal>
+            <Menu.Target>
+                <Button
+                    className="p-0 m-0 h-7"
+                    color="gray"
+                    variant="subtle"
+                    rightIcon={<IconChevronDown size={18} stroke={1.5} />}
+                    pr={12}
+                >
+                    <IconColorSwatch size="18" />
+                </Button>
+            </Menu.Target>
+            <Menu.Dropdown className="">
+                {/* Build a color  */}
+                <ColorPicker onChange={handleColorPick} />
+            </Menu.Dropdown>
+        </Menu>
+    )
+}
+
+export function ColorPicker({ onChange }: { onChange: (color: string) => void }) {
+    const [checked, setChecked] = useState(0)
+    const swatches = [
+        "#111827",
+        "#370617",
+        "#6a040f",
+        "#9d0208",
+        "#d00000",
+        "#dc2f02",
+        "#e85d04",
+        "#f48c06",
+        //"#faa307",
+        //"#ffba08",
+    ]
+    const handleColorUpdate = (color: string) => {
+        const index = swatches.indexOf(color)
+        setChecked(index)
+        onChange(color)
+    }
+
+    return (
+        <Stack>
+            <Group className="gap-2 ">
+                {swatches.map((swatch, i) => {
+                    return (
+                        <ColorSwatch
+                            radius="sm"
+                            key={i}
+                            color={swatch}
+                            onClick={() => {
+                                handleColorUpdate(swatch)
+                            }}
+                            sx={{ color: "#fff", cursor: "pointer" }}
+                        >
+                            {checked == i && <CheckIcon width={10} />}
+                        </ColorSwatch>
+                    )
+                })}
+            </Group>
+        </Stack>
     )
 }
