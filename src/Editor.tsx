@@ -7,6 +7,7 @@ import History from "@tiptap/extension-history"
 import Document from "@tiptap/extension-document"
 import Paragraph from "@tiptap/extension-paragraph"
 import BulletList from "@tiptap/extension-bullet-list"
+import Image from "@tiptap/extension-image"
 import OrderedList from "@tiptap/extension-ordered-list"
 import Blockquote from "@tiptap/extension-blockquote"
 import ListItem from "@tiptap/extension-list-item"
@@ -34,15 +35,22 @@ import {
     IconPhoto,
     IconUnderline,
 } from "@tabler/icons"
-import { useMemo, useState } from "react"
+import { useEffect, useState } from "react"
+import { ModalContainer } from "./ModalContainer"
+import { useEditorStore } from "./stores"
+import { InsertImagePlaceHolder } from "./ImagePlaceHolder"
 
 export const LessonEditor = () => {
-    // When useEdior is null ?
+    const [opened, setModalOpened] = useEditorStore((state) => [
+        state.modal_opened,
+        state.setModalOpened,
+    ])
     const editor = useEditor({
         // prettier-ignore
         extensions: [
             Document, Paragraph, TextExtension, Bold, Heading,Italic, Underline,
-            History, BulletList, ListItem, OrderedList, Blockquote, Gapcursor, Color, TextStyle
+            History, BulletList, ListItem, OrderedList, Blockquote, Gapcursor, Color, TextStyle,
+            Image
         ],
         content: constants.EDITOR_SAMPLE,
         editorProps: {
@@ -50,18 +58,27 @@ export const LessonEditor = () => {
                 class: "max-w-max prose prose-sm [&_*]:m-0 focus:outline-none",
             },
         },
+        /*
         onTransaction: ({ editor, transaction }) => {
+            console.log(editor)
             console.log(transaction)
         },
+        */
     })
 
     if (!editor) {
+        // to avoid error when editor is not ready, actually to shut up typescript
         return null
     }
 
     return (
         <EditorContainer>
             <EditorMenu editor={editor} />
+            <ModalContainer
+                opened={opened}
+                onClose={() => setModalOpened(false)}
+                content={<InsertImagePlaceHolder />}
+            />
             <EditorContent
                 className="border-y border-slate-200 rounded-sm flex-1 overflow-auto"
                 editor={editor}
@@ -74,26 +91,46 @@ const EditorContainer = ({ children }: { children: React.ReactNode }) => {
     return <Stack className="gap-0 px-6 max-h-screen"> {children} </Stack>
 }
 
-const MENU_ACTIONS = (editor: Editor) => [
-    { action: editor.chain().focus().toggleBold().run, EditorActionIcon: IconBold },
-    { action: editor.chain().focus().toggleItalic().run, EditorActionIcon: IconItalic },
-    { action: editor.chain().focus().toggleUnderline().run, EditorActionIcon: IconUnderline },
-    { action: editor.chain().focus().undo().run, EditorActionIcon: IconArrowBackUp },
-    { action: editor.chain().focus().redo().run, EditorActionIcon: IconArrowForwardUp },
-    { action: editor.chain().focus().toggleBulletList().run, EditorActionIcon: IconList },
-    { action: editor.chain().focus().toggleOrderedList().run, EditorActionIcon: IconListNumbers },
-    {
-        action: editor.chain().focus().liftListItem("listItem").run,
-        EditorActionIcon: IconIndentDecrease,
-    },
-    {
-        action: editor.chain().focus().sinkListItem("listItem").run,
-        EditorActionIcon: IconIndentIncrease,
-    },
-    { action: editor.chain().focus().toggleBlockquote().run, EditorActionIcon: IconBlockquote },
-]
-
 const EditorMenu = ({ editor }: { editor: Editor }) => {
+    const [images] = useEditorStore((state) => [state.images])
+    const [setModalOpened] = useEditorStore((state) => [state.setModalOpened])
+
+    useEffect(() => {
+        const new_image = images.at(-1)
+        if (new_image) {
+            const url = URL.createObjectURL(new_image)
+            editor.chain().focus().setImage({ src: url }).run()
+            setModalOpened(false)
+        }
+    }, [images])
+
+    const addImage = () => {
+        setModalOpened(true)
+    }
+
+    const MENU_ACTIONS = (editor: Editor) => [
+        { action: editor.chain().focus().toggleBold().run, EditorActionIcon: IconBold },
+        { action: editor.chain().focus().toggleItalic().run, EditorActionIcon: IconItalic },
+        { action: editor.chain().focus().toggleUnderline().run, EditorActionIcon: IconUnderline },
+        { action: editor.chain().focus().undo().run, EditorActionIcon: IconArrowBackUp },
+        { action: editor.chain().focus().redo().run, EditorActionIcon: IconArrowForwardUp },
+        { action: editor.chain().focus().toggleBulletList().run, EditorActionIcon: IconList },
+        {
+            action: editor.chain().focus().toggleOrderedList().run,
+            EditorActionIcon: IconListNumbers,
+        },
+        {
+            action: editor.chain().focus().liftListItem("listItem").run,
+            EditorActionIcon: IconIndentDecrease,
+        },
+        {
+            action: editor.chain().focus().sinkListItem("listItem").run,
+            EditorActionIcon: IconIndentIncrease,
+        },
+        { action: editor.chain().focus().toggleBlockquote().run, EditorActionIcon: IconBlockquote },
+        { action: () => addImage(), EditorActionIcon: IconPhoto },
+    ]
+
     return (
         <Group className="gap-0 shadow-sm flex-[0_0_auto]">
             <HeadingMenu editor={editor} />

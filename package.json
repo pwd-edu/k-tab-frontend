@@ -28,6 +28,7 @@
         "@tiptap/core": "^2.0.0-beta.202",
         "@tiptap/extension-bold": "^2.0.0-beta.202",
         "@tiptap/extension-color": "^2.0.0-beta.209",
+        "@tiptap/extension-image": "^2.0.0-beta.218",
         "@tiptap/extension-text-style": "^2.0.0-beta.209",
         "@tiptap/extension-underline": "^2.0.0-beta.209",
         "@tiptap/react": "^2.0.0-beta.202",
@@ -37,7 +38,8 @@
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "react-router-dom": "^6.4.3",
-        "tailwindcss-classnames": "^3.0.7"
+        "tailwindcss-classnames": "^3.0.7",
+        "zustand": "^4.3.3"
     },
     "devDependencies": {
         "@babel/core": "^7.20.12",
