@@ -1,35 +1,20 @@
 import { Group, Text, useMantineTheme } from "@mantine/core"
 import { IconUpload, IconPhoto, IconX } from "@tabler/icons"
 import { Dropzone, DropzoneProps, FileWithPath, IMAGE_MIME_TYPE } from "@mantine/dropzone"
-import axios from "axios"
-import { useEditorStore } from "./stores"
 
-export function InsertImagePlaceHolder(props: Partial<DropzoneProps>) {
-    const [images, setImages] = useEditorStore((state) => [state.images, state.setImages])
+interface ImagePlaceHolderProps extends Partial<DropzoneProps> {
+    onUpload: (files: FileWithPath[]) => void
+}
+
+export function InsertImagePlaceHolder({ onUpload, ...props }: ImagePlaceHolderProps) {
     const theme = useMantineTheme()
 
     const handleUpload = (files: FileWithPath[]) => {
         //const formData = new FormData()
         //files.forEach((file) => formData.append("file", file))
         //axios.post("http://localhost:8000/upload/s3", formData)
-        setImages([...images, files[0]])
-    }
-
-    const handleUploadS3 = async (files: FileWithPath[]) => {
-        const file_name = files[0].name
-        const response = await axios.get(`http://localhost:8000/presigned?file_name=${file_name}`)
-        const presigned_url = response.data
-
-        console.log("presigned_url", presigned_url)
-
-        const form = new FormData()
-        Object.keys(presigned_url.fields).forEach((key) =>
-            form.append(key, presigned_url.fields[key])
-        )
-        form.append("file", files[0])
-
-        const upload_response = await axios.post(presigned_url.url, form)
-        console.log(upload_response)
+        console.log(files)
+        onUpload(files)
     }
 
     return (

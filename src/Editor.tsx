@@ -35,16 +35,19 @@ import {
     IconPhoto,
     IconUnderline,
 } from "@tabler/icons"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { ModalContainer } from "./ModalContainer"
 import { useEditorStore } from "./stores"
-import { InsertImagePlaceHolder } from "./ImagePlaceHolder"
+import { ImageInserter } from "./ImageInserter"
+import { FileWithPath } from "@mantine/dropzone"
 
 export const LessonEditor = () => {
     const [opened, setModalOpened] = useEditorStore((state) => [
         state.modal_opened,
         state.setModalOpened,
     ])
+    const [modal_content] = useEditorStore((state) => [state.modal_content])
+
     const editor = useEditor({
         // prettier-ignore
         extensions: [
@@ -58,12 +61,6 @@ export const LessonEditor = () => {
                 class: "max-w-max prose prose-sm [&_*]:m-0 focus:outline-none",
             },
         },
-        /*
-        onTransaction: ({ editor, transaction }) => {
-            console.log(editor)
-            console.log(transaction)
-        },
-        */
     })
 
     if (!editor) {
@@ -72,18 +69,20 @@ export const LessonEditor = () => {
     }
 
     return (
-        <EditorContainer>
-            <EditorMenu editor={editor} />
+        <Stack>
             <ModalContainer
                 opened={opened}
                 onClose={() => setModalOpened(false)}
-                content={<InsertImagePlaceHolder />}
+                content={modal_content}
             />
-            <EditorContent
-                className="border-y border-slate-200 rounded-sm flex-1 overflow-auto"
-                editor={editor}
-            />
-        </EditorContainer>
+            <EditorContainer>
+                <EditorMenu editor={editor} />
+                <EditorContent
+                    className="flex-1 overflow-auto border-b border-x rounded-sm border-neutral-300"
+                    editor={editor}
+                />
+            </EditorContainer>
+        </Stack>
     )
 }
 
@@ -92,52 +91,60 @@ const EditorContainer = ({ children }: { children: React.ReactNode }) => {
 }
 
 const EditorMenu = ({ editor }: { editor: Editor }) => {
-    const [images] = useEditorStore((state) => [state.images])
     const [setModalOpened] = useEditorStore((state) => [state.setModalOpened])
-
-    useEffect(() => {
-        const new_image = images.at(-1)
-        if (new_image) {
-            const url = URL.createObjectURL(new_image)
-            editor.chain().focus().setImage({ src: url }).run()
-            setModalOpened(false)
-        }
-    }, [images])
-
+    const [setModalContent] = useEditorStore((state) => [state.setModalContent])
     const addImage = () => {
+        setModalContent(<ImageInserter onImageInserted={insertToEditor} />)
         setModalOpened(true)
     }
 
+    const insertToEditor = (images: FileWithPath[]) => {
+        const image = images.at(-1)
+        if (image) {
+            const url = URL.createObjectURL(image)
+            editor.chain().focus().setImage({ src: url }).run()
+        }
+    }
+
     const MENU_ACTIONS = (editor: Editor) => [
-        { action: editor.chain().focus().toggleBold().run, EditorActionIcon: IconBold },
-        { action: editor.chain().focus().toggleItalic().run, EditorActionIcon: IconItalic },
-        { action: editor.chain().focus().toggleUnderline().run, EditorActionIcon: IconUnderline },
-        { action: editor.chain().focus().undo().run, EditorActionIcon: IconArrowBackUp },
-        { action: editor.chain().focus().redo().run, EditorActionIcon: IconArrowForwardUp },
-        { action: editor.chain().focus().toggleBulletList().run, EditorActionIcon: IconList },
+        { action: () => editor.chain().focus().toggleBold().run(), EditorActionIcon: IconBold },
+        { action: () => editor.chain().focus().toggleItalic().run(), EditorActionIcon: IconItalic },
         {
-            action: editor.chain().focus().toggleOrderedList().run,
+            action: () => editor.chain().focus().toggleUnderline().run(),
+            EditorActionIcon: IconUnderline,
+        },
+        { action: () => editor.chain().focus().undo().run(), EditorActionIcon: IconArrowBackUp },
+        { action: () => editor.chain().focus().redo().run(), EditorActionIcon: IconArrowForwardUp },
+        {
+            action: () => editor.chain().focus().toggleBulletList().run(),
+            EditorActionIcon: IconList,
+        },
+        {
+            action: () => editor.chain().focus().toggleOrderedList().run(),
             EditorActionIcon: IconListNumbers,
         },
         {
-            action: editor.chain().focus().liftListItem("listItem").run,
+            action: () => editor.chain().focus().liftListItem("listItem").run(),
             EditorActionIcon: IconIndentDecrease,
         },
         {
-            action: editor.chain().focus().sinkListItem("listItem").run,
+            action: () => editor.chain().focus().sinkListItem("listItem").run(),
             EditorActionIcon: IconIndentIncrease,
         },
-        { action: editor.chain().focus().toggleBlockquote().run, EditorActionIcon: IconBlockquote },
+        {
+            action: () => editor.chain().focus().toggleBlockquote().run(),
+            EditorActionIcon: IconBlockquote,
+        },
         { action: () => addImage(), EditorActionIcon: IconPhoto },
     ]
 
     return (
-        <Group className="gap-0 shadow-sm flex-[0_0_auto]">
+        <Group className="gap-0 border border-b-2 border-neutral-300 flex-[0_0_auto]">
             <HeadingMenu editor={editor} />
             {MENU_ACTIONS(editor).map(({ action, EditorActionIcon }, i) => {
                 return (
                     <ActionIcon onClick={action} key={i}>
-                        <EditorActionIcon size="18" />
+                        <EditorActionIcon className="text-slate-800" size="18" />
                     </ActionIcon>
                 )
             })}
@@ -164,10 +171,12 @@ export function HeadingMenu({ editor }: { editor: Editor }) {
                     className="p-0 m-0 h-7"
                     color="gray"
                     variant="subtle"
-                    rightIcon={<IconChevronDown size={18} stroke={1.5} />}
+                    rightIcon={
+                        <IconChevronDown className="text-slate-800" size={18} stroke={1.5} />
+                    }
                     pr={12}
                 >
-                    <IconHeading size="18" />
+                    <IconHeading className="text-slate-800" size="18" />
                 </Button>
             </Menu.Target>
             <Menu.Dropdown className="prose prose-sm p-2 shadow-lg">
@@ -201,10 +210,12 @@ export function FontColorMenu({ editor }: { editor: Editor }) {
                     className="p-0 m-0 h-7"
                     color="gray"
                     variant="subtle"
-                    rightIcon={<IconChevronDown size={18} stroke={1.5} />}
+                    rightIcon={
+                        <IconChevronDown className="text-slate-800" size={18} stroke={1.5} />
+                    }
                     pr={12}
                 >
-                    <IconColorSwatch size="18" />
+                    <IconColorSwatch className="text-slate-800" size="18" />
                 </Button>
             </Menu.Target>
             <Menu.Dropdown className="">
