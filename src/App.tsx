@@ -3,6 +3,7 @@ import { Navbar } from "./Navbar"
 import { LessonEditor } from "./Editor"
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import CreateStudent from "./CreateStudent"
+import Create from "./Creat"
 
 function App() {
     return (
@@ -11,6 +12,7 @@ function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="/editor" element={<LessonEditor />} />
                 <Route path="/student" element={<CreateStudent />} />
+                <Route path="/user" element={<Create />} />
             </Routes>
         </BrowserRouter>
     )
