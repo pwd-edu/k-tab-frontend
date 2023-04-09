@@ -2,16 +2,13 @@ import { useState } from "react";
 import {useNavigate} from "react-router-dom"
 
 const PORT = 8080
-const CreateStudent = () => {
-    const [studentFirstName, setFirstName] = useState('');
-    const [studentSecondName, setSecondName] = useState('');
-    const [studentEmail, setEmail] = useState('');
+const CreateAuthor = () => {
+    const [authorFirstName, setFirstName] = useState('');
+    const [authorSecondName, setSecondName] = useState('');
+    const [authorEmail, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [profilePhoto, setProfilePhoto] = useState('');
     const [contact, setContact] = useState('');
-    const [educationLevel, setEducationLevel] = useState('Collage');
-    const [disability, setDisability] = useState('');
-    const [disabilityType, setDisabilityType] = useState('visual');
     const [isPending, setIsPending] = useState(false);
     const backHistory = useNavigate();
 
@@ -20,57 +17,55 @@ const CreateStudent = () => {
 
     const handleSubmit = (e: { preventDefault: () => void; }) => {
         e.preventDefault(); //prevents refresh
-        const student = { studentName: studentFirstName + " " + studentSecondName,
-            studentEmail: studentEmail,
+        const author = { authorName: authorFirstName + " " + authorSecondName,
+            authorEmail: authorEmail,
             password: password,
             profilePhoto: profilePhoto, 
             contact: contact,
-            educationLevel: educationLevel
-            // , disability: disability, disabilityType: disabilityType 
         };
 
         setIsPending(true);
 
         
 
-        fetch(`http://localhost:${PORT}/student`,
+        fetch(`http://localhost:${PORT}/author`,
         {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(student)
+            body: JSON.stringify(author)
         }).then(() =>{
-            console.log(JSON.stringify(student))
-            console.log("added new student")
+            console.log(JSON.stringify(author))
+            console.log("added new author")
         })
         setIsPending(false);
         backHistory("/");
 
-        console.log(student);
+        console.log(author);
     }
 
 
 
     return (
         <div className="create-user">
-            <h2>Student Sign Up!</h2>
+            <h2>author Sign Up!</h2>
             <form onSubmit={handleSubmit}>
                 <label htmlFor="">First Name</label>
                 <input type="text"
                     required
-                    value={studentFirstName}
+                    value={authorFirstName}
                     onChange={(e) => setFirstName(e.target.value)}
                 />
                 <label htmlFor="">Second Name</label>
                 <input type="text"
                     required 
-                    value={studentSecondName}
+                    value={authorSecondName}
                     onChange={(e) => setSecondName(e.target.value)}/>
                 <label htmlFor="">Email</label>
                 <input type="email"
                     required
-                    value={studentEmail}
+                    value={authorEmail}
                     onChange={(e) => setEmail(e.target.value)}
                 />
 
@@ -92,35 +87,7 @@ const CreateStudent = () => {
                 value={contact}
                 onChange={(e) => setContact(e.target.value)}/>
 
-                <label htmlFor="">Educational Level</label>
-                <select name="" id=""
-                    value={educationLevel}
-                    onChange={(e) => setEducationLevel(e.target.value)}
-                >
-                    <option value="visual">High School</option>
-                    <option value="sighted">Collage</option>
-                </select>
-            
-                <label htmlFor="">Do you have any <span>disability</span>?</label>
-                <div>
-                    <label htmlFor="yes">YES</label>
-                    <input type="radio" name="dis" id="" value="yes" />
-                </div>
-                <div>
-                    <label htmlFor="no">NO</label>
-                    <input type="radio" name="dis" id="" value={disability} />
-                </div>
-
-                <label htmlFor="">Disability</label>
-                <select name="" id=""
-                    value={disabilityType}
-                    onChange={(e) => setDisabilityType(e.target.value)}
-                >
-                    <option value="visual">Visually Impaired</option>
-                    <option value="sighted">Partially Sighted</option>
-                    <option value="dyslexic">Dyslexia</option>
-                </select>
-
+    
                 {!isPending && <button>Sign UP!</button>}
                 {isPending && <button disabled>Adding info..</button>}
 
@@ -129,4 +96,4 @@ const CreateStudent = () => {
     );
 }
 
-export default CreateStudent;
+export default CreateAuthor;
