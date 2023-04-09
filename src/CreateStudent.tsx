@@ -1,7 +1,7 @@
 import { useState } from "react";
 import {useNavigate} from "react-router-dom"
+import {PORT} from "./constants"
 
-const PORT = 8080
 const CreateStudent = () => {
     const [studentFirstName, setFirstName] = useState('');
     const [studentSecondName, setSecondName] = useState('');

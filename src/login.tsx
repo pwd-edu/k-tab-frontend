@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios"
-import PORT from "./CreateStudent"
+import {PORT} from "./constants"
+import React from "react";
 
 const Create = () => {
     const [email, setEmail] = useState('');
@@ -9,20 +10,34 @@ const Create = () => {
 
   const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
-    const user = {email, password};
+    // const user = {email, password};
 
   
 
-    // let data = {
-    //     studentName: studentName,
-    //     studentEmail: studentEmail
-    //     // disability: disability,
-    //     // disabilityType: disabilityType
-    // };
+    function createJson(type: string){
+      let data = new FormData(); 
+      data.append(`${type}+email`, email)
+      data.append(`${type}+password`, password)
+
+      return data;
+
+    }
+
+    // const type = "student";
+
+    const [post, setPost] = React.useState(null);
+
+    React.useEffect(() => {
+      axios.get(`http://localhost:${PORT}/student/get/${email}`).then((response) => {
+        setPost(response.data);
+      });
+    }, []);
+
+    const type = "student";
 
     try {
-            const response = await axios.post(`http://localhost:${PORT}/${type}`,
-               JSON.stringify(data)
+            const response = await axios.post(`http://localhost:${PORT}/${type}/get/${email}`,
+               JSON.stringify(createJson(type))
               , 
               {
                 headers: {
