@@ -3,7 +3,8 @@ import {useNavigate} from "react-router-dom"
 
 const PORT = 8080
 const CreateStudent = () => {
-    const [studentName, setName] = useState('');
+    const [studentFirstName, setFirstName] = useState('');
+    const [studentSecondName, setSecondName] = useState('');
     const [studentEmail, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [profilePhoto, setProfilePhoto] = useState('');
@@ -14,10 +15,12 @@ const CreateStudent = () => {
     const [isPending, setIsPending] = useState(false);
     const backHistory = useNavigate();
 
+    
+
 
     const handleSubmit = (e: { preventDefault: () => void; }) => {
         e.preventDefault(); //prevents refresh
-        const student = { studentName: studentName,
+        const student = { studentName: studentFirstName + " " + studentSecondName,
             studentEmail: studentEmail,
             password: password,
             profilePhoto: profilePhoto, 
@@ -49,7 +52,6 @@ const CreateStudent = () => {
 
 
 
-
     return (
         <div className="create-student">
             <h2>Student Sign Up!</h2>
@@ -57,12 +59,14 @@ const CreateStudent = () => {
                 <label htmlFor="">First Name:</label>
                 <input type="text"
                     required
-                    value={studentName}
-                    onChange={(e) => setName(e.target.value)}
+                    value={studentFirstName}
+                    onChange={(e) => setFirstName(e.target.value)}
                 />
                 <label htmlFor="">Second Name:</label>
                 <input type="text"
-                    required />
+                    required 
+                    value={studentSecondName}
+                    onChange={(e) => setSecondName(e.target.value)}/>
                 <label htmlFor="">Email:</label>
                 <input type="email"
                     required
