@@ -1,19 +1,18 @@
 import { useState } from "react";
-import axios from "axios"
+import {useNavigate} from "react-router-dom"
 
 const PORT = 8080
 const CreateStudent = () => {
     const [studentName, setName] = useState('');
     const [studentEmail, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    
-
     const [profilePhoto, setProfilePhoto] = useState('');
     const [contact, setContact] = useState('');
     const [educationLevel, setEducationLevel] = useState('');
     const [disability, setDisability] = useState('');
     const [disabilityType, setDisabilityType] = useState('visual');
     const [isPending, setIsPending] = useState(false);
+    const backHistory = useNavigate();
 
 
     const handleSubmit = (e: { preventDefault: () => void; }) => {
@@ -43,6 +42,7 @@ const CreateStudent = () => {
             console.log("added new student")
         })
         setIsPending(false);
+        backHistory("/");
 
         console.log(student);
     }
