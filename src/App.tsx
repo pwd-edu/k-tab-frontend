@@ -4,7 +4,7 @@ import { LessonEditor } from "./Editor"
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import CreateStudent from "./CreateStudent"
 import CreateAuthor from "./CreateAuthor"
-import Create from "./Creat"
+import Create from "./login"
 
 function App() {
     return (
