@@ -3,7 +3,7 @@ import axios from "axios"
 import {PORT} from "./constants"
 import React from "react";
 
-const Create = () => {
+const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -53,8 +53,8 @@ const Create = () => {
   }
 
   return (
-    <div className="create-student">
-            <h2>Student Sign Up!</h2>
+    <div className="create-user">
+            <h2>Login to your Account</h2>
             <form onSubmit={handleSubmit}>
 
                 <label htmlFor="">Email:</label>
@@ -66,6 +66,7 @@ const Create = () => {
 
                 <label htmlFor="">Password</label>
                 <input type="password" 
+                required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}/>
 
@@ -75,4 +76,4 @@ const Create = () => {
   );
 }
  
-export default Create;
+export default Login;

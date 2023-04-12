@@ -4,7 +4,8 @@ import { LessonEditor } from "./Editor"
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import CreateStudent from "./CreateStudent"
 import CreateAuthor from "./CreateAuthor"
-import Create from "./login"
+import Login from "./login"
+import { Library } from "./StudentLibrary"
 
 function App() {
     return (
@@ -14,7 +15,8 @@ function App() {
                 <Route path="/editor" element={<LessonEditor />} />
                 <Route path="/student" element={<CreateStudent />} />
                 <Route path="/author" element={<CreateAuthor/>} />
-                <Route path="/user" element={<Create />} />
+                <Route path="/user" element={<Login />} />
+                <Route path="/library" element={<Library />} />
             </Routes>
         </BrowserRouter>
     )

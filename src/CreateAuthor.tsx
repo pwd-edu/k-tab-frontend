@@ -1,7 +1,8 @@
 import { useState } from "react";
 import {useNavigate} from "react-router-dom"
+import {PORT} from "./constants"
 
-const PORT = 8080
+
 const CreateAuthor = () => {
     const [authorFirstName, setFirstName] = useState('');
     const [authorSecondName, setSecondName] = useState('');
