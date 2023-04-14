@@ -6,6 +6,7 @@ import CreateStudent from "./CreateStudent"
 import CreateAuthor from "./CreateAuthor"
 import Login from "./login"
 import { Library } from "./StudentLibrary"
+import LessonsNavDrawer from "./LessonsNavDrawer"
 
 function App() {
     return (
@@ -17,6 +18,7 @@ function App() {
                 <Route path="/author" element={<CreateAuthor/>} />
                 <Route path="/user" element={<Login />} />
                 <Route path="/library" element={<Library />} />
+                <Route path="/navdraw" element={<LessonsNavDrawer/>} />
             </Routes>
         </BrowserRouter>
     )

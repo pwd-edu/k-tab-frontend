@@ -7,6 +7,12 @@
 @tailwind utilities;
 
 
+/*fonts*/
+body,
+html {
+  font-family: Roboto, Helvetica, sans-serif, "Quicksand";
+}
+
 /* user form */
 .create-user {
     max-width: 400px;
@@ -45,5 +51,13 @@
     padding: 8px;
     border-radius: 8px;
     cursor: pointer;
+}
+
+.nav-drawer {
+    max-width: 400px;
+    margin: 0 auto;
+    text-align: center;
+    font-family: "Quicksand";
+    color: #545563;
 }
 
