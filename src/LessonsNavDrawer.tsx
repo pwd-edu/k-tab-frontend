@@ -14,6 +14,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import { blue } from '@material-ui/core/colors';
 
 const drawerWidth = 200;
 
@@ -92,7 +93,7 @@ export default function PersistentDrawerLeft() {
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <AppBar
+      <AppBar 
         position="fixed"
         className={clsx(classes.appBar, {
           [classes.appBarShift]: open,
@@ -113,7 +114,7 @@ export default function PersistentDrawerLeft() {
           </Typography>
         </Toolbar>
       </AppBar>
-      <Drawer
+      <Drawer 
         className={classes.drawer}
         variant="persistent"
         anchor="left"
@@ -122,7 +123,7 @@ export default function PersistentDrawerLeft() {
           paper: classes.drawerPaper,
         }}
       >
-        <div className={classes.drawerHeader} style={{ fontFamily: "Quicksand"}}>
+        <div className={classes.drawerHeader} >
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
           </IconButton>
@@ -131,7 +132,7 @@ export default function PersistentDrawerLeft() {
         <List>
 
           {['Lesson 1','Lesson 2', 'Lesson 3'].map((text, index) => (
-              <ListItem button key={text} >
+              <ListItem button key={text}  style={{color: "#4F4F4F"}}>
                 <Divider />
                 <ListItemText primary={text}/>
                 <Divider />
