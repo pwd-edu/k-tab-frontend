@@ -135,8 +135,9 @@ export default function PersistentDrawerLeft() {
                 <Divider />
                 <ListItemText primary={text}/>
                 <Divider />
-              </ListItem>            
-          ))}
+              </ListItem>               
+          ))
+          }
         </List>
       </Drawer>
     </div>

@@ -40,6 +40,7 @@ import { ModalContainer } from "./ModalContainer"
 import { useEditorStore } from "./stores"
 import { ImageInserter } from "./ImageInserter"
 import { FileWithPath } from "@mantine/dropzone"
+import PersistentDrawerLeft from "./LessonsNavDrawer"
 
 export const LessonEditor = () => {
     const [opened, setModalOpened] = useEditorStore((state) => [
