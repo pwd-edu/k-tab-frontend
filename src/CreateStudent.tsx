@@ -1,8 +1,17 @@
-import { useState } from "react";
-import {useNavigate} from "react-router-dom"
-import {PORT} from "./constants"
+import { SetStateAction, useState } from "react";
+import { useNavigate } from "react-router-dom"
+import { Multiselect } from 'multiselect-react-dropdown';
+import { disabilityOptions } from './Disabilities';
+import { PORT } from "./constants"
 
 const CreateStudent = () => {
+
+    // const disabilityOptions = [
+    //     "Blind",
+    //     "Dyslexia",
+    //     "Partially Sighted",
+    // ];
+
     const [studentFirstName, setFirstName] = useState('');
     const [studentSecondName, setSecondName] = useState('');
     const [studentEmail, setEmail] = useState('');
@@ -11,39 +20,53 @@ const CreateStudent = () => {
     const [contact, setContact] = useState('');
     const [educationLevel, setEducationLevel] = useState('Collage');
     const [disability, setDisability] = useState('');
-    const [disabilityType, setDisabilityType] = useState('visual');
+    const [disabilityType, setDisabilityType] = useState(disabilityOptions)
     const [isPending, setIsPending] = useState(false);
     const backHistory = useNavigate();
 
+    // const [options] = useState(disabilityOptions)
+
+    const [selectedOptions , setSelectedOptions] = useState(['']);
+    const [removedOptions, setRemovedOptions] = useState(['']);
     
+    const onSelectOptions = (selectedList: string[], selectedItem: string) => {
+        setSelectedOptions([...selectedOptions, selectedItem]);
+    };
+    const onRemoveOptions = (selectedList: string[], removedItem: string) => {
+        setRemovedOptions([...removedOptions, removedItem]);
+        return null
+    };
+
+
 
 
     const handleSubmit = (e: { preventDefault: () => void; }) => {
         e.preventDefault(); //prevents refresh
-        const student = { studentName: studentFirstName + " " + studentSecondName,
+        const student = {
+            studentName: studentFirstName + " " + studentSecondName,
             studentEmail: studentEmail,
             password: password,
-            profilePhoto: profilePhoto, 
+            profilePhoto: profilePhoto,
             contact: contact,
-            educationLevel: educationLevel
-            // , disability: disability, disabilityType: disabilityType 
+            educationLevel: educationLevel,
+            disabilityType: selectedOptions
         };
 
         setIsPending(true);
 
-        
+
 
         fetch(`http://localhost:${PORT}/student`,
-        {
-            method: 'POST',
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(student)
-        }).then(() =>{
-            console.log(JSON.stringify(student))
-            console.log("added new student")
-        })
+            {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(student)
+            }).then(() => {
+                console.log(JSON.stringify(student))
+                console.log("added new student")
+            })
         setIsPending(false);
         backHistory("/");
 
@@ -64,9 +87,9 @@ const CreateStudent = () => {
                 />
                 <label htmlFor="">Second Name</label>
                 <input type="text"
-                    required 
+                    required
                     value={studentSecondName}
-                    onChange={(e) => setSecondName(e.target.value)}/>
+                    onChange={(e) => setSecondName(e.target.value)} />
                 <label htmlFor="">Email</label>
                 <input type="email"
                     required
@@ -75,22 +98,22 @@ const CreateStudent = () => {
                 />
 
                 <label htmlFor="">Password</label>
-                <input type="password" 
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}/>
+                <input type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)} />
 
                 <label htmlFor="">Profile Picture URL</label>
                 <input type="text"
-                value={profilePhoto}
-                onChange={(e) => setProfilePhoto(e.target.value)} 
+                    value={profilePhoto}
+                    onChange={(e) => setProfilePhoto(e.target.value)}
                 />
 
                 <label htmlFor="">Phone Number</label>
                 <input type="tel"
-                placeholder="20-100-645-0599"
-                pattern="[0-9]{2}[0-9]{3}[0-9]{3}[0-9]{4}"
-                value={contact}
-                onChange={(e) => setContact(e.target.value)}/>
+                    placeholder="20-100-645-0599"
+                    pattern="[0-9]{2}[0-9]{3}[0-9]{3}[0-9]{4}"
+                    value={contact}
+                    onChange={(e) => setContact(e.target.value)} />
 
                 <label htmlFor="">Educational Level</label>
                 <select name="" id=""
@@ -100,7 +123,7 @@ const CreateStudent = () => {
                     <option value="visual">High School</option>
                     <option value="sighted">Collage</option>
                 </select>
-            
+
                 <label htmlFor="">Do you have any <span>disability</span>?</label>
                 <div>
                     <label htmlFor="yes">YES</label>
@@ -113,13 +136,24 @@ const CreateStudent = () => {
 
                 <label htmlFor="">Disability</label>
                 <select name="" id=""
-                    value={disabilityType}
-                    onChange={(e) => setDisabilityType(e.target.value)}
+                // value={disabilityType}
+                // onChange={(e) => setDisabilityType(e.target.value)}
                 >
                     <option value="visual">Visually Impaired</option>
                     <option value="sighted">Partially Sighted</option>
                     <option value="dyslexic">Dyslexia</option>
                 </select>
+                <div>
+                    <Multiselect options={disabilityOptions}
+                        onSelect={onSelectOptions}
+                        onRemove={onRemoveOptions}
+                        displayValue="label"
+                        closeIcon="cancel"
+                        placeholder="Select Options"
+                        selectedValues={selectedOptions}
+                         />
+                </div>
+
 
                 {!isPending && <button>Sign UP!</button>}
                 {isPending && <button disabled>Adding info..</button>}

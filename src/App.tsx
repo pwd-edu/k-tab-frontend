@@ -8,6 +8,7 @@ import Login from "./login"
 import { Library } from "./StudentLibrary"
 import LessonsNavDrawer from "./LessonsNavDrawer"
 import BookInfo from "./BookInfo"
+import DropdownMultiselect from "./MultiselectDropdown"
 
 function App() {
     return (
@@ -21,6 +22,7 @@ function App() {
                 <Route path="/library" element={<Library />} />
                 <Route path="/navdraw" element={<LessonsNavDrawer/>} />
                 <Route path="/bookinfo" element={<BookInfo/>} />
+                <Route path="/dropdown" element={<DropdownMultiselect/>} />
             </Routes>
         </BrowserRouter>
     )
