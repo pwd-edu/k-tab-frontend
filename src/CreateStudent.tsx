@@ -1,16 +1,17 @@
 import { SetStateAction, useState } from "react";
 import { useNavigate } from "react-router-dom"
 import { Multiselect } from 'multiselect-react-dropdown';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
 import { disabilityOptions } from './Disabilities';
 import { PORT } from "./constants"
 
 const CreateStudent = () => {
 
-    // const disabilityOptions = [
-    //     "Blind",
-    //     "Dyslexia",
-    //     "Partially Sighted",
-    // ];
+
 
     const [studentFirstName, setFirstName] = useState('');
     const [studentSecondName, setSecondName] = useState('');
@@ -19,22 +20,39 @@ const CreateStudent = () => {
     const [profilePhoto, setProfilePhoto] = useState('');
     const [contact, setContact] = useState('');
     const [educationLevel, setEducationLevel] = useState('Collage');
-    const [disability, setDisability] = useState('');
     const [disabilityType, setDisabilityType] = useState(disabilityOptions)
     const [isPending, setIsPending] = useState(false);
+    const [hasDisability, setHasDisability] = useState<boolean | null>(null);
     const backHistory = useNavigate();
 
-    // const [options] = useState(disabilityOptions)
+    var str2bool = (value: string) => {
+        
+        if (value.toLowerCase() === "yes") return true;
+        if (value.toLowerCase() === "no") return false;
+        else return false;
 
-    const [selectedOptions , setSelectedOptions] = useState(['']);
-    const [removedOptions, setRemovedOptions] = useState(['']);
-    
+    }
+
+    const handleDisabilityRadiobtn = (event: React.ChangeEvent<HTMLInputElement>) => {
+        var boolValue = str2bool((event.target as HTMLInputElement).value);
+        console.log(boolValue);
+        setHasDisability(boolValue);
+    }
+
+    // const [options] = useState(disabilityOptions)
+    // type Option = {
+    //     code: string;
+    //     name: string;
+    // }
+
+    const [selectedOptions, setSelectedOptions] = useState([] as any);
+    const [removedOptions, setRemovedOptions] = useState([] as any);
+
     const onSelectOptions = (selectedList: string[], selectedItem: string) => {
         setSelectedOptions([...selectedOptions, selectedItem]);
     };
     const onRemoveOptions = (selectedList: string[], removedItem: string) => {
         setRemovedOptions([...removedOptions, removedItem]);
-        return null
     };
 
 
@@ -49,7 +67,7 @@ const CreateStudent = () => {
             profilePhoto: profilePhoto,
             contact: contact,
             educationLevel: educationLevel,
-            disabilityType: selectedOptions
+            disabilityList: selectedOptions
         };
 
         setIsPending(true);
@@ -100,6 +118,7 @@ const CreateStudent = () => {
                 <label htmlFor="">Password</label>
                 <input type="password"
                     value={password}
+                    required
                     onChange={(e) => setPassword(e.target.value)} />
 
                 <label htmlFor="">Profile Picture URL</label>
@@ -127,34 +146,40 @@ const CreateStudent = () => {
                 <label htmlFor="">Do you have any <span>disability</span>?</label>
                 <div>
                     <label htmlFor="yes">YES</label>
-                    <input type="radio" name="dis" id="" value="yes" />
+                    <input type="radio" name="dis" id=""
+                    onChange= {handleDisabilityRadiobtn}
+                    />
                 </div>
                 <div>
                     <label htmlFor="no">NO</label>
-                    <input type="radio" name="dis" id="" value={disability} />
+                    <input type="radio" name="dis" id="" />
                 </div>
 
-                <label htmlFor="">Disability</label>
-                <select name="" id=""
-                // value={disabilityType}
-                // onChange={(e) => setDisabilityType(e.target.value)}
-                >
-                    <option value="visual">Visually Impaired</option>
-                    <option value="sighted">Partially Sighted</option>
-                    <option value="dyslexic">Dyslexia</option>
-                </select>
-                <div>
+                {/* <div>
+                    <FormControl>
+                        <FormLabel id="demo-radio-buttons-group-label">Gender</FormLabel>
+                        <RadioGroup
+                            aria-labelledby="demo-radio-buttons-group-label"
+                            defaultValue="female"
+                            name="radio-buttons-group"
+                        >
+                            <FormControlLabel value="female" control={<Radio />} label="Female" />
+                            <FormControlLabel value="male" control={<Radio />} label="Male" />
+                        </RadioGroup>
+                    </FormControl>
+                </div> */}
+                {hasDisability && <div>
                     <Multiselect options={disabilityOptions}
                         onSelect={onSelectOptions}
                         onRemove={onRemoveOptions}
-                        displayValue="label"
+                        displayValue="name"
                         closeIcon="cancel"
                         placeholder="Select Options"
                         selectedValues={selectedOptions}
-                         />
-                </div>
+                    />
+                </div>}
 
-
+                <br />
                 {!isPending && <button>Sign UP!</button>}
                 {isPending && <button disabled>Adding info..</button>}
 

@@ -1,5 +1,5 @@
 export const disabilityOptions = [
-  { id: "BLND", label: "Blind" },
-  { id: "DYSLX", label: "Dyslexia" },
-  { id: "PRTSIG", label: "Partially Sighted" },
+  { code: "BLND", name: "Blind" },
+  { code: "DYSLX", name: "Dyslexia" },
+  { code: "PRTSIG", name: "Partially Sighted" },
 ];
