@@ -1,7 +1,5 @@
 import { useState, useRef } from 'react';
 import { FileButton, Button, Group, Text, ActionIcon } from '@mantine/core';
-import { IconArrowBarRight } from '@tabler/icons-react';
-import getBase64 from "./services/ConvertFileToBase"
 
 function UploadPictureButtons() {
   const [file, setFile] = useState<File | null>(null);

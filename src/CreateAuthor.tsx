@@ -1,7 +1,7 @@
 import { useState,  useRef  } from "react";
+import { FileButton, Button, Group, Text, ActionIcon } from '@mantine/core';
 import {useNavigate} from "react-router-dom"
 import {PORT} from "./constants"
-import UploadPictureButtons from "./ProfilePicUpload";
 
 
 const CreateAuthor = () => {
@@ -23,10 +23,11 @@ const CreateAuthor = () => {
 
         // setProfilePhotoBase64(getBase64(profilePhotoFile));
 
-        const author = { authorName: authorFirstName + " " + authorSecondName,
+        const author = { 
+            authorName: authorFirstName + " " + authorSecondName,
             authorEmail: authorEmail,
             password: password,
-            profilePhoto: profilePhotoBase64, 
+            profilePhotoAsBinaryString: profilePhotoBase64, 
             contact: contact,
         };
 
@@ -34,7 +35,7 @@ const CreateAuthor = () => {
 
         
 
-        fetch(`http://localhost:${PORT}/author`,
+        fetch(`http://localhost:${PORT}/author/signup/`,
         {
             method: 'POST',
             headers: {
@@ -51,26 +52,35 @@ const CreateAuthor = () => {
         console.log(author);
     }
 
-    // const handleUploadPicture = (photo: File  | null) => {
-    //     setProfilePhotoFile(photo);
-    //     console.log(profilePhotoFile);
-    //     setProfilePhotoBase64(getBase64(profilePhotoFile));
-    //     console.log(profilePhotoBase64);
-
-    // }
 
     const clearFile = () => {
         setProfilePhotoFile(null);
         resetRef.current?.();
       };
     
-    const handleUploadPicture = (e: { preventDefault: () => void; }) => {
-            e.preventDefault(); //prevents refresh
-            console.log(profilePhotoFile);
-            // setProfilePhotoBase64(getBase64(profilePhotoFile));
-            console.log(profilePhotoBase64);
+      const handleUploadPicture = (e: { preventDefault: () => void; }) => {
 
-        }
+        let document = "";
+        let reader = new FileReader();
+        const blobFile = profilePhotoFile as Blob;
+        reader.readAsDataURL(blobFile);
+        reader.onload = function () {
+            document = reader.result as string;
+            const base64String = document.replace('data:', '').replace(/^.+,/, '') as string;
+            setProfilePhotoBase64(base64String);
+            console.log("onload doc "+ document)
+            console.log("onload base64String "+ base64String)
+            console.log("onload base64State "+ profilePhotoBase64)
+            setProfilePhotoBase64(base64String);
+        };
+        reader.onerror = function (error) {
+            console.log('Error: ', error);
+            return "error";
+        };
+        console.log("doc outside onload "+ document);
+        console.log("base64 in fn upload "+profilePhotoBase64);
+    }
+
 
 
 
@@ -100,9 +110,6 @@ const CreateAuthor = () => {
                 <input type="password" 
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}/>
-                
-                <UploadPictureButtons/>
-                
 
                 <label htmlFor="">Phone Number</label>
                 <input type="tel"
@@ -110,9 +117,30 @@ const CreateAuthor = () => {
                 pattern="[0-9]{2}[0-9]{3}[0-9]{3}[0-9]{4}"
                 value={contact}
                 onChange={(e) => setContact(e.target.value)}/>
+                
+                <>
+                <Group position="center" >
+                    <FileButton resetRef={resetRef} onChange={setProfilePhotoFile} 
+                    accept="image/png,image/jpeg">
+                    {(props) => <Button {...props}>Upload image</Button >}
+                    </FileButton>
+                    <Button disabled={!profilePhotoFile} color="red" onClick={clearFile} size="xs">
+                    Reset
+                    </Button>
+                    <Button disabled={!profilePhotoFile} color="green" onClick={handleUploadPicture} size="xs">
+                    Verify
+                    </Button>
+                </Group>
 
+                {profilePhotoFile && (
+                    <Text size="sm" align="center" mt="sm">
+                    Picked file: {profilePhotoFile.name}
+                    </Text>
+                )}
+                </>
+                <br />
     
-                {!isPending && <button>Sign UP!</button>}
+                {!isPending && <button><b>Sign UP!</b></button>}
                 {isPending && <button disabled>Adding info..</button>}
 
             </form>
