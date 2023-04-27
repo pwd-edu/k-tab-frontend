@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState,  useRef  } from "react";
 import {useNavigate} from "react-router-dom"
 import {PORT} from "./constants"
-import { FileInput, FileInputProps} from '@mantine/core';
+import { FileInput, FileButton, Button, Group} from '@mantine/core';
 import { IconUpload } from '@tabler/icons-react';
-import getBase64 from "./services/ConvertFileToBase"
+// import getBase64 from "./services/ConvertFileToBase"
 
 
 const CreateAuthor = () => {
@@ -16,13 +16,14 @@ const CreateAuthor = () => {
     const [contact, setContact] = useState('');
     const [isPending, setIsPending] = useState(false);
     const backHistory = useNavigate();
+    const resetRef = useRef<() => void>(null);
 
 
 
     const handleSubmit = (e: { preventDefault: () => void; }) => {
         e.preventDefault(); //prevents refresh
 
-        setProfilePhotoBase64(getBase64(profilePhotoFile));
+        // setProfilePhotoBase64(getBase64(profilePhotoFile));
 
         const author = { authorName: authorFirstName + " " + authorSecondName,
             authorEmail: authorEmail,
@@ -60,6 +61,18 @@ const CreateAuthor = () => {
 
     // }
 
+    const clearFile = () => {
+        setProfilePhotoFile(null);
+        resetRef.current?.();
+      };
+    
+    const handleUploadPicture = (e: { preventDefault: () => void; }) => {
+            e.preventDefault(); //prevents refresh
+            console.log(profilePhotoFile);
+            // setProfilePhotoBase64(getBase64(profilePhotoFile));
+            console.log(profilePhotoBase64);
+
+        }
 
 
 
@@ -89,16 +102,18 @@ const CreateAuthor = () => {
                 <input type="password" 
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}/>
-
-                <label htmlFor="">Profile Picture</label>
-                <FileInput label="Your Profile Picture" 
-                placeholder="Your Profile Picture" 
-                icon={<IconUpload  />} 
-                accept="image/png,image/jpeg"
-                value={profilePhotoFile}
-                onChange={setProfilePhotoFile}
-                />
-                {profilePhotoFile && <button> ico</button>}
+                
+                <Group position="center" >
+                    <FileButton resetRef={resetRef} onChange={setProfilePhotoFile} accept="image/png,image/jpeg">
+                    {(props) => <Button {...props}>Upload image</Button >}
+                    </FileButton>
+                    <Button disabled={!profilePhotoFile} color="red" onClick={clearFile} size="xs">
+                    Reset
+                    </Button>
+                    <Button disabled={!profilePhotoFile} color="green" onClick={handleUploadPicture} size="xs">
+                    Verify
+                    </Button>
+                </Group>
                 
 
                 <label htmlFor="">Phone Number</label>

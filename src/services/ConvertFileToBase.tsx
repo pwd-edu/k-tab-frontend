@@ -27,17 +27,40 @@
 // export default convertFileToBase64;
 
 
-function getBase64(file: any) {
-    var reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = function () {
-      console.log(reader.result);
-    };
-    const result = reader.result as string;
-    reader.onerror = function (error) {
-      console.log('Error: ', error);
-    };
-    return result;
+// function getBase64(file: any) {
+//     var reader = new FileReader();
+//     reader.readAsDataURL(file);
+//     reader.onload = function () {
+//       // console.log(reader.result);
+//       const result = reader.result as string ;
+//       return result;
+//     };
+//     // const result = reader.result as string;
+//     // reader.onerror = function (error) {
+//     //   console.log('Error: ', error);
+//     // };
+     
+// }
+// export default getBase64;
+
+
+function getBase64(file: any ) {
+  let document = "";
+  let reader = new FileReader();
+  reader.readAsDataURL(file);
+  reader.onload = function () {
+      document = reader.result as string;
+      console.log("onload "+ document)
+      
+  };
+  // reader.onerror = function (error) {
+  //     console.log('Error: ', error);
+  //     return "error";
+  // };
+
+  // console.log("in Conver file "+document)
+  // return document;
 }
+
 export default getBase64;
  
