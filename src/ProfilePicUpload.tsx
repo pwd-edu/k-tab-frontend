@@ -3,7 +3,7 @@ import { FileButton, Button, Group, Text, ActionIcon } from '@mantine/core';
 import { IconArrowBarRight } from '@tabler/icons-react';
 import getBase64 from "./services/ConvertFileToBase"
 
-function UploadButtons() {
+function UploadPictureButtons() {
   const [file, setFile] = useState<File | null>(null);
   const [fileBase64, setFileBase64] = useState('');
   const resetRef = useRef<() => void>(null);
@@ -38,8 +38,9 @@ function UploadButtons() {
         reader.readAsDataURL(blobFile);
         reader.onload = function () {
             document = reader.result as string;
-            console.log("onload "+ document)
-            setFileBase64(document);
+            const base64String = document.replace('data:', '').replace(/^.+,/, '') as string;
+            console.log("onload "+ base64String)
+            setFileBase64(base64String);
             console.log("onload base64State "+ fileBase64)
         };
         reader.onerror = function (error) {
@@ -58,7 +59,6 @@ function UploadButtons() {
         accept="image/png,image/jpeg">
           {(props) => <Button {...props}>Upload image</Button >}
         </FileButton>
-        {/* <ActionIcon variant="transparent"><IconArrowBarRight size="1rem" />Reset</ActionIcon> */}
         <Button disabled={!file} color="red" onClick={clearFile} size="xs">
           Reset
         </Button>
@@ -75,4 +75,4 @@ function UploadButtons() {
     </>
   );
 }
-export default UploadButtons;
+export default UploadPictureButtons;

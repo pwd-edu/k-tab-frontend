@@ -1,9 +1,7 @@
 import { useState,  useRef  } from "react";
 import {useNavigate} from "react-router-dom"
 import {PORT} from "./constants"
-import { FileInput, FileButton, Button, Group} from '@mantine/core';
-import { IconUpload } from '@tabler/icons-react';
-// import getBase64 from "./services/ConvertFileToBase"
+import UploadPictureButtons from "./ProfilePicUpload";
 
 
 const CreateAuthor = () => {
@@ -103,17 +101,7 @@ const CreateAuthor = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}/>
                 
-                <Group position="center" >
-                    <FileButton resetRef={resetRef} onChange={setProfilePhotoFile} accept="image/png,image/jpeg">
-                    {(props) => <Button {...props}>Upload image</Button >}
-                    </FileButton>
-                    <Button disabled={!profilePhotoFile} color="red" onClick={clearFile} size="xs">
-                    Reset
-                    </Button>
-                    <Button disabled={!profilePhotoFile} color="green" onClick={handleUploadPicture} size="xs">
-                    Verify
-                    </Button>
-                </Group>
+                <UploadPictureButtons/>
                 
 
                 <label htmlFor="">Phone Number</label>
