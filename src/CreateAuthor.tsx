@@ -1,5 +1,7 @@
 import { useState,  useRef  } from "react";
-import { FileButton, Button, Group, Text, ActionIcon } from '@mantine/core';
+import { FileButton, Button, Group, Text} from '@mantine/core';
+import PhoneInput from 'react-phone-input-2'
+import 'react-phone-input-2/lib/style.css'
 import {useNavigate} from "react-router-dom"
 import {PORT} from "./constants"
 
@@ -20,8 +22,6 @@ const CreateAuthor = () => {
 
     const handleSubmit = (e: { preventDefault: () => void; }) => {
         e.preventDefault(); //prevents refresh
-
-        // setProfilePhotoBase64(getBase64(profilePhotoFile));
 
         const author = { 
             authorName: authorFirstName + " " + authorSecondName,
@@ -68,17 +68,13 @@ const CreateAuthor = () => {
             document = reader.result as string;
             const base64String = document.replace('data:', '').replace(/^.+,/, '') as string;
             setProfilePhotoBase64(base64String);
-            console.log("onload doc "+ document)
             console.log("onload base64String "+ base64String)
-            console.log("onload base64State "+ profilePhotoBase64)
             setProfilePhotoBase64(base64String);
         };
         reader.onerror = function (error) {
             console.log('Error: ', error);
             return "error";
-        };
-        console.log("doc outside onload "+ document);
-        console.log("base64 in fn upload "+profilePhotoBase64);
+        }
     }
 
 
@@ -86,7 +82,7 @@ const CreateAuthor = () => {
 
     return (
         <div className="create-user">
-            <h2>author Sign Up!</h2>
+            <h2><b>Author Sign Up!</b></h2>
             <form onSubmit={handleSubmit}>
                 <label htmlFor="">First Name</label>
                 <input type="text"
@@ -112,11 +108,19 @@ const CreateAuthor = () => {
                 onChange={(e) => setPassword(e.target.value)}/>
 
                 <label htmlFor="">Phone Number</label>
-                <input type="tel"
+                <PhoneInput
+                    enableAreaCodes={true}
+                    country={'eg'}
+                    value={contact}
+                    onChange={contact => setContact(contact)}
+                />
+            
+                <br></br>
+                {/* <input type="tel"
                 placeholder="20-100-645-0599"
                 pattern="[0-9]{2}[0-9]{3}[0-9]{3}[0-9]{4}"
                 value={contact}
-                onChange={(e) => setContact(e.target.value)}/>
+                onChange={(e) => setContact(e.target.value)}/> */}
                 
                 <>
                 <Group position="center" >
