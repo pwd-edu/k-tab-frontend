@@ -8,7 +8,7 @@ import Login from "./login"
 import { Library } from "./StudentLibrary"
 import LessonsNavDrawer from "./LessonsNavDrawer"
 import BookInfo from "./BookInfo"
-import ControlledRadioButtonsGroup from "./radiobtn"
+import UploadButtons from "./ProfilePicUpload"
 
 function App() {
     return (
@@ -22,7 +22,7 @@ function App() {
                 <Route path="/library" element={<Library />} />
                 <Route path="/navdraw" element={<LessonsNavDrawer/>} />
                 <Route path="/bookinfo" element={<BookInfo/>} />
-                <Route path="/radio" element={<ControlledRadioButtonsGroup/>} />
+                <Route path="/upload" element={<UploadButtons/>} />
             </Routes>
         </BrowserRouter>
     )

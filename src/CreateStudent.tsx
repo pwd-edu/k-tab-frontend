@@ -1,11 +1,6 @@
 import { SetStateAction, useState } from "react";
 import { useNavigate } from "react-router-dom"
 import { Multiselect } from 'multiselect-react-dropdown';
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormControl from '@mui/material/FormControl';
-import FormLabel from '@mui/material/FormLabel';
 import { disabilityOptions } from './Disabilities';
 import { PORT } from "./constants"
 

@@ -1,6 +1,9 @@
 import { useState } from "react";
 import {useNavigate} from "react-router-dom"
 import {PORT} from "./constants"
+import { FileInput, FileInputProps} from '@mantine/core';
+import { IconUpload } from '@tabler/icons-react';
+import getBase64 from "./services/ConvertFileToBase"
 
 
 const CreateAuthor = () => {
@@ -8,20 +11,23 @@ const CreateAuthor = () => {
     const [authorSecondName, setSecondName] = useState('');
     const [authorEmail, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [profilePhoto, setProfilePhoto] = useState('');
+    const [profilePhotoFile, setProfilePhotoFile] = useState<File | null>(); //useState<File | null>(null); 
+    const [profilePhotoBase64, setProfilePhotoBase64] = useState('');
     const [contact, setContact] = useState('');
     const [isPending, setIsPending] = useState(false);
     const backHistory = useNavigate();
 
-    
 
 
     const handleSubmit = (e: { preventDefault: () => void; }) => {
         e.preventDefault(); //prevents refresh
+
+        setProfilePhotoBase64(getBase64(profilePhotoFile));
+
         const author = { authorName: authorFirstName + " " + authorSecondName,
             authorEmail: authorEmail,
             password: password,
-            profilePhoto: profilePhoto, 
+            profilePhoto: profilePhotoBase64, 
             contact: contact,
         };
 
@@ -45,6 +51,15 @@ const CreateAuthor = () => {
 
         console.log(author);
     }
+
+    // const handleUploadPicture = (photo: File  | null) => {
+    //     setProfilePhotoFile(photo);
+    //     console.log(profilePhotoFile);
+    //     setProfilePhotoBase64(getBase64(profilePhotoFile));
+    //     console.log(profilePhotoBase64);
+
+    // }
+
 
 
 
@@ -75,11 +90,16 @@ const CreateAuthor = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}/>
 
-                <label htmlFor="">Profile Picture URL</label>
-                <input type="text"
-                value={profilePhoto}
-                onChange={(e) => setProfilePhoto(e.target.value)} 
+                <label htmlFor="">Profile Picture</label>
+                <FileInput label="Your Profile Picture" 
+                placeholder="Your Profile Picture" 
+                icon={<IconUpload  />} 
+                accept="image/png,image/jpeg"
+                value={profilePhotoFile}
+                onChange={setProfilePhotoFile}
                 />
+                {profilePhotoFile && <button> ico</button>}
+                
 
                 <label htmlFor="">Phone Number</label>
                 <input type="tel"
