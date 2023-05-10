@@ -16,17 +16,6 @@ function UploadPictureButtons() {
     pictureBase64: fileBase64
   }
 
-  // const fileChangedHandler = (file: any) => {
-    
-  //   const reader = new FileReader();
-
-  //   reader.onloadend = () => {
-  //     const result = reader.result as string
-  //     setFileBase64(result);
-  //   };
-
-  //   reader.readAsDataURL(file);
-  // };
 
   const handleUploadPicture = (e: { preventDefault: () => void; }) => {
 

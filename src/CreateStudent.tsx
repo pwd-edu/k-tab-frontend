@@ -1,6 +1,8 @@
-import { SetStateAction, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom"
 import { Multiselect } from 'multiselect-react-dropdown';
+import PhoneInput from 'react-phone-input-2'
+import 'react-phone-input-2/lib/style.css'
 import { disabilityOptions } from './Disabilities';
 import { PORT } from "./constants"
 
@@ -34,11 +36,6 @@ const CreateStudent = () => {
         setHasDisability(boolValue);
     }
 
-    // const [options] = useState(disabilityOptions)
-    // type Option = {
-    //     code: string;
-    //     name: string;
-    // }
 
     const [selectedOptions, setSelectedOptions] = useState([] as any);
     const [removedOptions, setRemovedOptions] = useState([] as any);
@@ -90,7 +87,7 @@ const CreateStudent = () => {
 
     return (
         <div className="create-user">
-            <h2>Student Sign Up!</h2>
+            <h2><b>Student Sign Up!</b></h2>
             <form onSubmit={handleSubmit}>
                 <label htmlFor="">First Name</label>
                 <input type="text"
@@ -123,11 +120,14 @@ const CreateStudent = () => {
                 />
 
                 <label htmlFor="">Phone Number</label>
-                <input type="tel"
-                    placeholder="20-100-645-0599"
-                    pattern="[0-9]{2}[0-9]{3}[0-9]{3}[0-9]{4}"
+                <PhoneInput
+                    enableAreaCodes={true}
+                    country={'eg'}
                     value={contact}
-                    onChange={(e) => setContact(e.target.value)} />
+                    onChange={contact => setContact(contact)}
+                />
+            
+                <br></br>
 
                 <label htmlFor="">Educational Level</label>
                 <select name="" id=""
@@ -175,7 +175,7 @@ const CreateStudent = () => {
                 </div>}
 
                 <br />
-                {!isPending && <button>Sign UP!</button>}
+                {!isPending && <button><b>Sign UP!</b></button>}
                 {isPending && <button disabled>Adding info..</button>}
 
             </form>

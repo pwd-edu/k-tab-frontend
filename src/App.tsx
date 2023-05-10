@@ -7,7 +7,7 @@ import CreateAuthor from "./CreateAuthor"
 import Login from "./login"
 import { Library } from "./StudentLibrary"
 import LessonsNavDrawer from "./LessonsNavDrawer"
-import BookInfo from "./BookInfo"
+import {BookInfoForm} from "./BookInfo"
 import UploadButtons from "./ProfilePicUpload"
 
 function App() {
@@ -21,7 +21,7 @@ function App() {
                 <Route path="/user" element={<Login />} />
                 <Route path="/library" element={<Library />} />
                 <Route path="/navdraw" element={<LessonsNavDrawer/>} />
-                <Route path="/bookinfo" element={<BookInfo/>} />
+                <Route path="/bookinfo" element={<BookInfoForm/>} />
                 <Route path="/upload" element={<UploadButtons/>} />
             </Routes>
         </BrowserRouter>

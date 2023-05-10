@@ -1,9 +1,9 @@
-import { useState,  useRef  } from "react";
-import { FileButton, Button, Group, Text} from '@mantine/core';
+import { useState, useRef } from "react";
+import { FileButton, Button, Group, Text } from '@mantine/core';
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
-import {useNavigate} from "react-router-dom"
-import {PORT} from "./constants"
+import { useNavigate } from "react-router-dom"
+import { PORT } from "./constants"
 
 
 const CreateAuthor = () => {
@@ -23,29 +23,29 @@ const CreateAuthor = () => {
     const handleSubmit = (e: { preventDefault: () => void; }) => {
         e.preventDefault(); //prevents refresh
 
-        const author = { 
+        const author = {
             authorName: authorFirstName + " " + authorSecondName,
             authorEmail: authorEmail,
             password: password,
-            profilePhotoAsBinaryString: profilePhotoBase64, 
+            profilePhotoAsBinaryString: profilePhotoBase64,
             contact: contact,
         };
 
         setIsPending(true);
 
-        
+
 
         fetch(`http://localhost:${PORT}/author/signup/`,
-        {
-            method: 'POST',
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(author)
-        }).then(() =>{
-            console.log(JSON.stringify(author))
-            console.log("added new author")
-        })
+            {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(author)
+            }).then(() => {
+                console.log(JSON.stringify(author))
+                console.log("added new author")
+            })
         setIsPending(false);
         backHistory("/");
 
@@ -56,9 +56,9 @@ const CreateAuthor = () => {
     const clearFile = () => {
         setProfilePhotoFile(null);
         resetRef.current?.();
-      };
-    
-      const handleUploadPicture = (e: { preventDefault: () => void; }) => {
+    };
+
+    const handleUploadPicture = (e: { preventDefault: () => void; }) => {
 
         let document = "";
         let reader = new FileReader();
@@ -68,7 +68,7 @@ const CreateAuthor = () => {
             document = reader.result as string;
             const base64String = document.replace('data:', '').replace(/^.+,/, '') as string;
             setProfilePhotoBase64(base64String);
-            console.log("onload base64String "+ base64String)
+            console.log("onload base64String " + base64String)
             setProfilePhotoBase64(base64String);
         };
         reader.onerror = function (error) {
@@ -92,9 +92,9 @@ const CreateAuthor = () => {
                 />
                 <label htmlFor="">Second Name</label>
                 <input type="text"
-                    required 
+                    required
                     value={authorSecondName}
-                    onChange={(e) => setSecondName(e.target.value)}/>
+                    onChange={(e) => setSecondName(e.target.value)} />
                 <label htmlFor="">Email</label>
                 <input type="email"
                     required
@@ -103,9 +103,9 @@ const CreateAuthor = () => {
                 />
 
                 <label htmlFor="">Password</label>
-                <input type="password" 
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}/>
+                <input type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)} />
 
                 <label htmlFor="">Phone Number</label>
                 <PhoneInput
@@ -114,36 +114,31 @@ const CreateAuthor = () => {
                     value={contact}
                     onChange={contact => setContact(contact)}
                 />
-            
-                <br></br>
-                {/* <input type="tel"
-                placeholder="20-100-645-0599"
-                pattern="[0-9]{2}[0-9]{3}[0-9]{3}[0-9]{4}"
-                value={contact}
-                onChange={(e) => setContact(e.target.value)}/> */}
-                
-                <>
-                <Group position="center" >
-                    <FileButton resetRef={resetRef} onChange={setProfilePhotoFile} 
-                    accept="image/png,image/jpeg">
-                    {(props) => <Button {...props}>Upload image</Button >}
-                    </FileButton>
-                    <Button disabled={!profilePhotoFile} color="red" onClick={clearFile} size="xs">
-                    Reset
-                    </Button>
-                    <Button disabled={!profilePhotoFile} color="green" onClick={handleUploadPicture} size="xs">
-                    Verify
-                    </Button>
-                </Group>
 
-                {profilePhotoFile && (
-                    <Text size="sm" align="center" mt="sm">
-                    Picked file: {profilePhotoFile.name}
-                    </Text>
-                )}
+                <br></br>
+
+                <>
+                    <Group position="center" >
+                        <FileButton resetRef={resetRef} onChange={setProfilePhotoFile}
+                            accept="image/png,image/jpeg">
+                            {(props) => <Button {...props}>Upload image</Button >}
+                        </FileButton>
+                        <Button disabled={!profilePhotoFile} color="red" onClick={clearFile} size="xs">
+                            Reset
+                        </Button>
+                        <Button disabled={!profilePhotoFile} color="green" onClick={handleUploadPicture} size="xs">
+                            Verify
+                        </Button>
+                    </Group>
+
+                    {profilePhotoFile && (
+                        <Text size="sm" align="center" mt="sm">
+                            Picked file: {profilePhotoFile.name}
+                        </Text>
+                    )}
                 </>
                 <br />
-    
+
                 {!isPending && <button><b>Sign UP!</b></button>}
                 {isPending && <button disabled>Adding info..</button>}
 
