@@ -75,12 +75,11 @@ export function BookInfoForm(props: PaperProps) {
 
   });
 
-  const handleUploadImage = async (files: FileWithPath[]) => {
+  const handleUploadImage = async () => {
 
-    setCoverPhotoFile(files)
     let document = "";
     let reader = new FileReader();
-    const blobFile = coverPhotoFile as Blob;
+    const blobFile = coverPhotoFile as unknown as Blob;
     reader.readAsDataURL(blobFile);
     reader.onload = function () {
       document = reader.result as string;
@@ -94,6 +93,14 @@ export function BookInfoForm(props: PaperProps) {
       console.log('Error: ', error);
       return "error";
     }
+  }
+
+  const setImageAndUpload = async (files:FileWithPath[]) => {
+    setCoverPhotoFile(files);
+    console.log(coverPhotoFile);
+    handleUploadImage()
+
+    
   }
 
   const handleSubmit = (e: { preventDefault: () => void; }) => {
@@ -123,7 +130,7 @@ export function BookInfoForm(props: PaperProps) {
 
       
         <div style={{ margin: 'auto' }}>
-          <InsertImagePlaceHolder onUpload={handleUploadImage}  radius={"lg"}/>
+          <InsertImagePlaceHolder onUpload={setImageAndUpload}  radius={"lg"}/>
         </div>
       
 
