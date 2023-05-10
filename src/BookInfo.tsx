@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { PORT } from "./constants"
 import axios from "axios"
 import React from "react";
 import { useToggle, upperFirst } from '@mantine/hooks';
 import { useForm } from '@mantine/form';
 import {
-  Card, Image, TextInput, PasswordInput, Text, Paper, Group, PaperProps,
+  Card, Image, TextInput, FileButton, Text, Paper, Group, PaperProps,
   Button, Divider, Checkbox, Anchor, Stack, Textarea, Title, useMantineTheme
 } from '@mantine/core';
 import { InsertImagePlaceHolder } from "./ImagePlaceHolder"
@@ -53,7 +53,8 @@ type BookProps = {
 export function BookInfoForm(props: PaperProps) {
 
   const [type, toggle] = useToggle(['view', 'edit']);
-  const [coverPhotoFile, setCoverPhotoFile] = useState<FileWithPath[]>();
+  const [coverPhotoFile, setCoverPhotoFile] = useState<File | null>();
+  const resetRef = useRef<() => void>(null);
 
   const baseURL = `http://localhost:${PORT}/book`;
 
@@ -79,7 +80,7 @@ export function BookInfoForm(props: PaperProps) {
 
     let document = "";
     let reader = new FileReader();
-    const blobFile = coverPhotoFile as unknown as Blob;
+    const blobFile = coverPhotoFile as Blob;
     reader.readAsDataURL(blobFile);
     reader.onload = function () {
       document = reader.result as string;
@@ -95,13 +96,17 @@ export function BookInfoForm(props: PaperProps) {
     }
   }
 
-  const setImageAndUpload = async (files:FileWithPath[]) => {
-    setCoverPhotoFile(files);
-    console.log(coverPhotoFile);
-    handleUploadImage()
+  // const setImageAndUpload = async (files:FileWithPath[]) => {
+  //   setCoverPhotoFile(files);
+  //   console.log(coverPhotoFile);
+  //   handleUploadImage()
 
-    
-  }
+
+  // }
+  const clearFile = () => {
+    setCoverPhotoFile(null);
+    resetRef.current?.();
+  };
 
   const handleSubmit = (e: { preventDefault: () => void; }) => {
     e.preventDefault(); //prevents refresh
@@ -124,15 +129,26 @@ export function BookInfoForm(props: PaperProps) {
 
   return (
     <Paper radius="md" p="xl" withBorder {...props}>
-      <Text size="lg" weight={500}>
+      (<Text size="lg" weight={500}>
         Welcome to Your Library, {type} your {form.values.title} book
       </Text>
 
-      
-        <div style={{ margin: 'auto' }}>
-          <InsertImagePlaceHolder onUpload={setImageAndUpload}  radius={"lg"}/>
-        </div>
-      
+
+      <div style={{ margin: 'auto' }}>
+        <Group position="center" >
+          <FileButton resetRef={resetRef} onChange={setCoverPhotoFile}
+            accept="image/png,image/jpeg">
+            {(props) => <Button {...props}>Upload image</Button >}
+          </FileButton>
+          <Button disabled={!coverPhotoFile} color="red" onClick={clearFile} size="xs">
+            Reset
+          </Button>
+          <Button disabled={!coverPhotoFile} color="green" onClick={handleUploadImage} size="xs">
+            Verify
+          </Button>
+        </Group>
+      </div>
+
 
       <Divider my="lg" />
 
@@ -170,16 +186,6 @@ export function BookInfoForm(props: PaperProps) {
             radius="md"
           />
 
-          {/* <BubbleInput data = ['input1', 'input2'] /> */}
-
-
-          {/* {type === 'edit' && (
-            <Checkbox
-              label="I accept terms and conditions"
-              checked={form.values.terms}
-              onChange={(event) => form.setFieldValue('terms', event.currentTarget.checked)}
-            />
-          )} */}
         </Stack>
 
         <Group position="apart" mt="xl">
@@ -190,6 +196,7 @@ export function BookInfoForm(props: PaperProps) {
             onClick={() => toggle()}
             size="xs"
           >
+
             {type === 'edit'
               ? 'view the book info'
               : "edit the book info"}
