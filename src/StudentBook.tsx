@@ -4,8 +4,8 @@ import { FlexSpace } from "./shared"
 
 const useStyles = createStyles((theme, _params, getRef) => ({
     Book_card: {
-        width: 240,
-        height: 138,
+        width: 1000,
+        height: 800,
     },
 }))
 

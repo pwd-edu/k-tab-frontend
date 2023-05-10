@@ -1,20 +1,13 @@
 import { useState, useRef } from "react";
 import { PORT } from "./constants"
-import axios from "axios"
-import React from "react";
 import { useToggle, upperFirst } from '@mantine/hooks';
 import { useForm } from '@mantine/form';
 import {
-  Card, Image, TextInput, FileButton, Text, Paper, Group, PaperProps,
-  Button, Divider, Checkbox, Anchor, Stack, Textarea, Title, useMantineTheme
+  TextInput, FileButton, Text, Paper, Group, PaperProps,
+  Button, Divider, Anchor, Stack, Textarea
 } from '@mantine/core';
-import { InsertImagePlaceHolder } from "./ImagePlaceHolder"
-import { FileWithPath } from "@mantine/dropzone"
-import aofm from "./assets/aofm.jpg"
+import { Book } from "./StudentBook";
 
-
-
-// const [bookInfo, setBookInfo] = useState("");
 
 
 
@@ -29,30 +22,9 @@ type BookProps = {
   publish_date: Date
 }
 
-// const baseURL = `http://localhost:${PORT}/book`;
-
-// React.useEffect(() => {
-//   axios.post(baseURL).then((response) => {
-//     setBookInfo(response.data);
-//   });
-// }, []);
-
-// function createBookInfo() {
-//   axios
-//     .post(baseURL, {
-//       // title: title
-//     })
-//     .then((response) => {
-//       setBookInfo(response.data);
-//     });
-// }
-
-// if (!title) return null;
-
-
 export function BookInfoForm(props: PaperProps) {
 
-  const [type, toggle] = useToggle(['view', 'edit']);
+  const [type, toggle] = useToggle(['edit', 'view']);
   const [coverPhotoFile, setCoverPhotoFile] = useState<File | null>();
   const resetRef = useRef<() => void>(null);
 
@@ -96,13 +68,7 @@ export function BookInfoForm(props: PaperProps) {
     }
   }
 
-  // const setImageAndUpload = async (files:FileWithPath[]) => {
-  //   setCoverPhotoFile(files);
-  //   console.log(coverPhotoFile);
-  //   handleUploadImage()
-
-
-  // }
+  
   const clearFile = () => {
     setCoverPhotoFile(null);
     resetRef.current?.();
@@ -129,41 +95,42 @@ export function BookInfoForm(props: PaperProps) {
 
   return (
     <Paper radius="md" p="xl" withBorder {...props}>
-      (<Text size="lg" weight={500}>
+      <Text size="lg" weight={500}>
         Welcome to Your Library, {type} your {form.values.title} book
       </Text>
 
 
-      <div style={{ margin: 'auto' }}>
-        <Group position="center" >
-          <FileButton resetRef={resetRef} onChange={setCoverPhotoFile}
-            accept="image/png,image/jpeg">
-            {(props) => <Button {...props}>Upload image</Button >}
-          </FileButton>
-          <Button disabled={!coverPhotoFile} color="red" onClick={clearFile} size="xs">
-            Reset
-          </Button>
-          <Button disabled={!coverPhotoFile} color="green" onClick={handleUploadImage} size="xs">
-            Verify
-          </Button>
-        </Group>
-      </div>
-
-
-      <Divider my="lg" />
-
-      <form onSubmit={handleSubmit}>
+      {type == "edit" && <form onSubmit={handleSubmit}>
         <Stack>
-          {type === 'edit' && (
-            <TextInput
-              required
-              label="Book Title"
-              placeholder="Title"
-              value={form.values.title}
-              onChange={(event) => form.setFieldValue('title', event.currentTarget.value)}
-              radius="md"
-            />
-          )}
+
+          <br></br>
+          <div style={{ margin: 'auto' }}>
+            <Group position="center" >
+              <FileButton resetRef={resetRef} onChange={setCoverPhotoFile}
+                accept="image/png,image/jpeg">
+                {(props) => <Button {...props}>Upload image</Button >}
+              </FileButton>
+              <Button disabled={!coverPhotoFile} color="red" onClick={clearFile} size="xs">
+                Reset
+              </Button>
+              <Button disabled={!coverPhotoFile} color="green" onClick={handleUploadImage} size="xs">
+                Verify
+              </Button>
+            </Group>
+          </div>
+
+
+          <Divider my="lg" />
+
+          <TextInput
+            required
+            label="Book Title"
+            placeholder="Title"
+            value={form.values.title}
+            onChange={(event) => form.setFieldValue('title', event.currentTarget.value)}
+            radius="md"
+          />
+
 
           <Textarea
             required
@@ -188,24 +155,30 @@ export function BookInfoForm(props: PaperProps) {
 
         </Stack>
 
-        <Group position="apart" mt="xl">
-          <Anchor
-            component="button"
-            type="button"
-            color="dimmed"
-            onClick={() => toggle()}
-            size="xs"
-          >
+      </form>}
 
-            {type === 'edit'
-              ? 'view the book info'
-              : "edit the book info"}
-          </Anchor>
-          <Button type="submit" radius="xl">
-            {upperFirst(type)}
-          </Button>
-        </Group>
-      </form>
+      {
+        type == "view" && <Book title={""} thumbnail_img={""} last_update={new Date()} />
+      }
+
+      <Group position="apart" mt="xl">
+        <Anchor
+          component="button"
+          type="button"
+          color="dimmed"
+          onClick={() => toggle()}
+          size="xs"
+        >
+
+          {type === 'edit'
+            ? 'view the book info'
+            : "edit the book info"}
+        </Anchor>
+        <Button type="submit" radius="xl">
+          {upperFirst(type)}
+        </Button>
+      </Group>
+
     </Paper>
   )
 }
