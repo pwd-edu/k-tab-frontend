@@ -7,6 +7,7 @@ import {
   Button, Divider, Anchor, Stack, Textarea
 } from '@mantine/core';
 import { Book } from "./StudentBook";
+// import StudentBookInfo from "./StudentBookInfo";
 
 
 
@@ -157,9 +158,9 @@ export function BookInfoForm(props: PaperProps) {
 
       </form>}
 
-      {
-        type == "view" && <Book title={""} thumbnail_img={""} last_update={new Date()} />
-      }
+      {/* {
+        type == "view" && <StudentBookInfo title={""} cover_img={""} abstract={""} average_rating={9} price={50.4} edit_date={new Date()} publish_date={new Date()} tags={["AI","Py"]}  />
+      } */}
 
       <Group position="apart" mt="xl">
         <Anchor

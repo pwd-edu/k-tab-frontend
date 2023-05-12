@@ -1,67 +1,119 @@
-import { Card, Image, Text, Badge, Button, Group } from '@mantine/core';
-import { useState} from "react";
-import {PORT} from "./constants"
-import axios from "axios"
-import React from "react";
+// import { Card, Image, Text, Badge, Button, Group, 
+//   ActionIcon,createStyles, } from '@mantine/core';
+//   import { IconHeart } from '@tabler/icons-react';
+// import { useState} from "react";
+// import {PORT} from "./constants"
+// import axios from "axios"
+// import React from "react";
 
-const [title, setTitle] = useState('');
-const [cover_img, setCoverImg] = useState('');
-const [abstract, setAbstract] = useState('');
-const [average_rating, setAverageRating] = useState(null);
-const [price, setPrice] = useState('');
-const [edit_date, setEditDate] = useState('');
-const [publish_date, setPublishDate] = useState('');
+// // const [title, setTitle] = useState('');
+// // const [cover_img, setCoverImg] = useState('');
+// // const [abstract, setAbstract] = useState('');
+// // const [average_rating, setAverageRating] = useState(5);
+// // const [price, setPrice] = useState('');
+// // const [edit_date, setEditDate] = useState('');
+// // const [publish_date, setPublishDate] = useState('');
 
 
-type BookProps = {
-  title: string
-  cover_img: string
-  abstract: string
-  average_rating : DoubleRange
-  price: DoubleRange
+// const useStyles = createStyles((theme) => ({
+//   card: {
+//     backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
+//   },
+
+//   section: {
+//     borderBottom: `${1} solid ${
+//       theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[3]
+//     }`,
+//     paddingLeft: theme.spacing.md,
+//     paddingRight: theme.spacing.md,
+//     paddingBottom: theme.spacing.md,
+//   },
+
+//   like: {
+//     color: theme.colors.red[6],
+//   },
+
+//   label: {
+//     textTransform: 'uppercase',
+//     fontSize: theme.fontSizes.xs,
+//     fontWeight: 700,
+//   },
+// }));
+
+
+// interface BookProps {
+//   title: string
+//   cover_img: string
+//   abstract: string
+//   average_rating : number
+//   price: number
   
-  edit_date: Date
-  publish_date : Date
-}
+//   edit_date: Date
+//   publish_date : Date
+//   tags : string[]
+// }
 
-const baseURL = `http://localhost:${PORT}`;
+// const baseURL = `http://localhost:${PORT}`;
 
-React.useEffect(() => {
-  axios.get(baseURL).then((response) => {
-    setTitle(response.data);
-  });
-}, []);
+// // React.useEffect(() => {
+// //   axios.get(baseURL).then((response) => {
+// //     setTitle(response.data);
+// //   });
+// // }, []);
 
-// if (!title) return null;
+// // if (!title) return null;
 
 
-function Demo({ title, cover_img, abstract, average_rating, price, edit_date, publish_date}: BookProps) {
-  return (
-    <Card shadow="sm" radius="md" withBorder>
-      <Card.Section component="a" href="https://mantine.dev/">
-        <Image
-          src={cover_img}
-          height={160}
-          alt=""
-        />
-      </Card.Section>
+// function StudentBookInfo({ title, cover_img, abstract, average_rating, price, edit_date, publish_date, tags}: BookProps) {
+//   const { classes, theme } = useStyles();
 
-      <Group position="apart" mt="md" mb="xs">
-        <Text weight={500}>{title}</Text>
-        <Badge color="pink" variant="light">
-          On Sale
-        </Badge>
-      </Group>
+//   // const features = tags.map((tags) => (
+//   //   <Badge
+//   //     color={theme.colorScheme === 'dark' ? 'dark' : 'gray'}
+//   //     key={badge.label}
+//   //     leftSection={badge.emoji}
+//   //   >
+//   //     {badge.label}
+//   //   </Badge>
+//   // ));
 
-      <Text size="sm" color="dimmed">
-        {abstract}
-      </Text>
+//   return (
+//     <Card withBorder radius="md" p="md" className={classes.card}>
+//       <Card.Section>
+//         <Image src={cover_img} alt={title} height={180} />
+//       </Card.Section>
 
-      <Button variant="light" color="blue" fullWidth mt="md" radius="md">
-        Book classic tour now
-      </Button>
-    </Card>
-  );
-}
+//       <Card.Section className={classes.section} mt="md">
+//         <Group position="apart">
+//           <Text fz="lg" fw={500}>
+//             {title}
+//           </Text>
+//           <Badge size="sm">{average_rating}</Badge>
+//         </Group>
+//         <Text fz="sm" mt="xs">
+//           {abstract}
+//         </Text>
+//       </Card.Section>
 
-export default Demo
+//       <Card.Section className={classes.section}>
+//         <Text mt="md" className={classes.label} c="dimmed">
+//           Perfect for you, if you enjoy
+//         </Text>
+//         <Group spacing={7} mt={5}>
+//           {tags}
+//         </Group>
+//       </Card.Section>
+
+//       <Group mt="xs">
+//         <Button radius="md" style={{ flex: 1 }}>
+//           Show details
+//         </Button>
+//         <ActionIcon variant="default" radius="md" size={36}>
+//           <IconHeart size="1.1rem" className={classes.like} stroke={1.5} />
+//         </ActionIcon>
+//       </Group>
+//     </Card>
+//   );
+// }
+
+// export default StudentBookInfo
