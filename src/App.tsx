@@ -6,8 +6,8 @@ import CreateAuthor from "./CreateAuthor"
 import Login from "./login"
 import { Library } from "./StudentLibrary"
 import LessonsNavDrawer from "./LessonsNavDrawer"
-import {BookInfoForm} from "./BookInfo"
-import UploadButtons from "./ProfilePicUpload"
+import { BookInfoForm } from "./BookInfo"
+import StudentBookInfo from "./StudentBookInfo"
 
 function App() {
     return (
@@ -16,12 +16,12 @@ function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="/editor" element={<LessonEditor />} />
                 <Route path="/student" element={<CreateStudent />} />
-                <Route path="/author" element={<CreateAuthor/>} />
+                <Route path="/author" element={<CreateAuthor />} />
                 <Route path="/user" element={<Login />} />
                 <Route path="/library" element={<Library />} />
-                <Route path="/navdraw" element={<LessonsNavDrawer/>} />
-                <Route path="/bookinfo" element={<BookInfoForm/>} />
-                <Route path="/upload" element={<UploadButtons/>} />
+                <Route path="/navdraw" element={<LessonsNavDrawer />} />
+                <Route path="/bookinfo" element={<BookInfoForm />} />
+                <Route path="/bookcard" element={<StudentBookInfo title={"Mariam Notes"} cover_img={""} abstract={"this the best book you caan have"} average_rating={10} price={500} edit_date={new Date()} publish_date={new Date()} tags={["AI", "Python"]} />} />
             </Routes>
         </BrowserRouter>
     )
