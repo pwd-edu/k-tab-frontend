@@ -1,8 +1,10 @@
-import { Card, Image, Text, Badge, Button, Group, 
-  ActionIcon,createStyles, } from '@mantine/core';
-  import { IconHeart } from '@tabler/icons-react';
-import { useState} from "react";
-import {PORT} from "./constants"
+import {
+  Card, Image, Text, Badge, Button, Group,
+  ActionIcon, createStyles,
+} from '@mantine/core';
+import { IconHeart } from '@tabler/icons-react';
+import { useState, useEffect } from "react";
+import { PORT } from "./constants"
 import axios from "axios"
 import React from "react";
 
@@ -21,9 +23,8 @@ const useStyles = createStyles((theme) => ({
   },
 
   section: {
-    borderBottom: `${1} solid ${
-      theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[3]
-    }`,
+    borderBottom: `${1} solid ${theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[3]
+      }`,
     paddingLeft: theme.spacing.md,
     paddingRight: theme.spacing.md,
     paddingBottom: theme.spacing.md,
@@ -45,33 +46,65 @@ interface BookProps {
   title: string
   cover_img: string
   abstract: string
-  average_rating : number
+  average_rating: number
   price: number
-  
+
   edit_date: Date
-  publish_date : Date
-  tags : string[]
+  publish_date: Date
+  tags: string[]
 }
 
-const baseURL = `http://localhost:${PORT}`;
-
-// React.useEffect(() => {
-//   axios.get(baseURL).then((response) => {
-//     setTitle(response.data);
-//   });
-// }, []);
-
-// if (!title) return null;
 
 
-function StudentBookInfo({ title, cover_img, abstract, average_rating, price, edit_date, publish_date, tags}: BookProps) {
+
+function StudentBookInfo({ title, cover_img, abstract, average_rating, price, edit_date, publish_date, tags }: BookProps) {
   const { classes, theme } = useStyles();
+
+
+  const [book, setBook] = useState<BookProps | null>();
+
+  const API_URL = `http://localhost:${PORT}/book?bookId=c5b8c713-5b8b-4e17-a07a-7731a7c263c2`;
+
+  const getBook = async () => {
+    try {
+      const fetchData = await axios.get(API_URL, {
+        // headers: {
+        //   authorization: 'Bearer JWT Token',
+        // },
+      })
+      const bookData:BookProps = {
+        // authorId: fetchData.data.authorId,
+        average_rating: fetchData.data.avgRate,
+        abstract:fetchData.data.bookAbstract,
+        cover_img:fetchData.data.bookCoverPath,
+        // bookId: fetchData.data.bookId,
+        // chaptersTitles:fetchData.data.chaptersTitles,
+        edit_date:fetchData.data.lastEditDate,
+        price:fetchData.data.price,
+        publish_date:fetchData.data.publishDate,
+        tags:fetchData.data.tags,
+        title:fetchData.data.title
+      }
+      console.log(bookData)
+      console.log(fetchData.data);
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+{/*  */}
+  useEffect(() => {
+    window.addEventListener('load', getBook)
+    return () => {
+      window.removeEventListener('load', getBook)
+    }
+  }, [book])
 
   const features = tags.map((tag) => (
     <Badge
       color={theme.colorScheme === 'dark' ? 'dark' : 'gray'}
       key={tag}
-      // leftSection={badge.emoji}
+    // leftSection={badge.emoji}
     >
       {tag}
     </Badge>
