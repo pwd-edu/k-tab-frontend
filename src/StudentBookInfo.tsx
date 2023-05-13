@@ -72,12 +72,15 @@ function StudentBookInfo({ title, cover_img, abstract, average_rating, price, ed
         //   authorization: 'Bearer JWT Token',
         // },
       })
+
+      const authorId = fetchData.data.authorId;
+      const bookId = fetchData.data.bookId;
+      const chaptersTitles = fetchData.data.chaptersTitles;
+
       const bookData:BookProps = {
-        // authorId: fetchData.data.authorId,
         average_rating: fetchData.data.avgRate,
         abstract:fetchData.data.bookAbstract,
         cover_img:fetchData.data.bookCoverPath,
-        // bookId: fetchData.data.bookId,
         // chaptersTitles:fetchData.data.chaptersTitles,
         edit_date:fetchData.data.lastEditDate,
         price:fetchData.data.price,
@@ -85,8 +88,11 @@ function StudentBookInfo({ title, cover_img, abstract, average_rating, price, ed
         tags:fetchData.data.tags,
         title:fetchData.data.title
       }
+      setBook(bookData);
+      console.log("book:" + book);
       console.log(bookData)
       console.log(fetchData.data);
+
     } catch (error) {
       console.log(error)
     }
@@ -99,6 +105,7 @@ function StudentBookInfo({ title, cover_img, abstract, average_rating, price, ed
       window.removeEventListener('load', getBook)
     }
   }, [book])
+  console.log("book:" + book);
 
   const features = tags.map((tag) => (
     <Badge
