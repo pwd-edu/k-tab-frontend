@@ -61,9 +61,11 @@ function StudentBookInfo({ title, cover_img, abstract, average_rating, price, ed
   const { classes, theme } = useStyles();
 
 
-  const [book, setBook] = useState<BookProps | null>();
+  const [book, setBook] = useState<BookProps>(Object);
 
-  const API_URL = `http://localhost:${PORT}/book?bookId=c5b8c713-5b8b-4e17-a07a-7731a7c263c2`;
+  const bookID = "33a05067-bd6c-42d1-8a4c-99aa90027ec2";
+
+  const API_URL = `http://localhost:${PORT}/book?bookId=${bookID}`;
 
   const getBook = async () => {
     try {
@@ -92,6 +94,7 @@ function StudentBookInfo({ title, cover_img, abstract, average_rating, price, ed
       console.log("book:" + book);
       console.log(bookData)
       console.log(fetchData.data);
+      console.log("BookData title: "+bookData.title);
 
     } catch (error) {
       console.log(error)
@@ -106,7 +109,8 @@ function StudentBookInfo({ title, cover_img, abstract, average_rating, price, ed
     }
   }, [book])
   console.log("book:" + book);
-
+  
+  const bookTags = book.tags
   const features = tags.map((tag) => (
     <Badge
       color={theme.colorScheme === 'dark' ? 'dark' : 'gray'}
@@ -120,18 +124,18 @@ function StudentBookInfo({ title, cover_img, abstract, average_rating, price, ed
   return (
     <Card withBorder radius="md" p="md" className={classes.card}>
       <Card.Section>
-        <Image src={cover_img} alt={title} height={180} />
+        <Image src={book.cover_img} alt={book.title} height={180} />
       </Card.Section>
 
       <Card.Section className={classes.section} mt="md">
         <Group position="apart">
           <Text fz="lg" fw={500}>
-            {title}
+            {book.title}
           </Text>
-          <Badge size="sm">{average_rating}</Badge>
+          <Badge size="sm">{book.average_rating}</Badge>
         </Group>
         <Text fz="sm" mt="xs">
-          {abstract}
+          {book.abstract}
         </Text>
       </Card.Section>
 
