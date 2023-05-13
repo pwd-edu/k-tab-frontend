@@ -6,7 +6,6 @@ import {
   TextInput, FileButton, Text, Paper, Group, PaperProps,
   Button, Divider, Anchor, Stack, Textarea
 } from '@mantine/core';
-import { Book } from "./StudentBook";
 // import StudentBookInfo from "./StudentBookInfo";
 
 

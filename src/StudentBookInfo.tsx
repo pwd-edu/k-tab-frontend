@@ -6,15 +6,7 @@ import { IconHeart } from '@tabler/icons-react';
 import { useState, useEffect } from "react";
 import { PORT } from "./constants"
 import axios from "axios"
-import React from "react";
 
-// const [title, setTitle] = useState('');
-// const [cover_img, setCoverImg] = useState('');
-// const [abstract, setAbstract] = useState('');
-// const [average_rating, setAverageRating] = useState(5);
-// const [price, setPrice] = useState('');
-// const [edit_date, setEditDate] = useState('');
-// const [publish_date, setPublishDate] = useState('');
 
 
 const useStyles = createStyles((theme) => ({
@@ -57,7 +49,7 @@ interface BookProps {
 
 
 
-function StudentBookInfo({ title, cover_img, abstract, average_rating, price, edit_date, publish_date, tags }: BookProps) {
+function StudentBookInfo({ tags }: BookProps) {
   const { classes, theme } = useStyles();
 
 
@@ -79,29 +71,28 @@ function StudentBookInfo({ title, cover_img, abstract, average_rating, price, ed
       const bookId = fetchData.data.bookId;
       const chaptersTitles = fetchData.data.chaptersTitles;
 
-      const bookData:BookProps = {
+      const bookData: BookProps = {
         average_rating: fetchData.data.avgRate,
-        abstract:fetchData.data.bookAbstract,
-        cover_img:fetchData.data.bookCoverPath,
-        // chaptersTitles:fetchData.data.chaptersTitles,
-        edit_date:fetchData.data.lastEditDate,
-        price:fetchData.data.price,
-        publish_date:fetchData.data.publishDate,
-        tags:fetchData.data.tags,
-        title:fetchData.data.title
+        abstract: fetchData.data.bookAbstract,
+        cover_img: fetchData.data.bookCoverPath,
+        edit_date: fetchData.data.lastEditDate,
+        price: fetchData.data.price,
+        publish_date: fetchData.data.publishDate,
+        tags: fetchData.data.tags,
+        title: fetchData.data.title
       }
       setBook(bookData);
       console.log("book:" + book);
       console.log(bookData)
       console.log(fetchData.data);
-      console.log("BookData title: "+bookData.title);
+      console.log("BookData title: " + bookData.title);
 
     } catch (error) {
       console.log(error)
     }
   }
 
-{/*  */}
+
   useEffect(() => {
     window.addEventListener('load', getBook)
     return () => {
@@ -109,7 +100,7 @@ function StudentBookInfo({ title, cover_img, abstract, average_rating, price, ed
     }
   }, [book])
   console.log("book:" + book);
-  
+
   const bookTags = book.tags
   const features = tags.map((tag) => (
     <Badge
@@ -150,7 +141,7 @@ function StudentBookInfo({ title, cover_img, abstract, average_rating, price, ed
 
       <Group mt="xs">
         <Button radius="md" style={{ flex: 1 }}>
-          Get this Book !
+          Get this Book for {book.price} $
         </Button>
         <ActionIcon variant="default" radius="md" size={36}>
           <IconHeart size="1.1rem" className={classes.like} stroke={1.5} />
