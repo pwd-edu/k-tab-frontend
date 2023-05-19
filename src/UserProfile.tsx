@@ -1,13 +1,13 @@
 import { Avatar, Text, Button, Paper } from '@mantine/core';
 
 interface UserInfoActionProps {
-  avatar: string;
+  profilephoto_url: string;
   name: string;
   email: string;
-  job: string;
+  bio: string;
 }
 
-export function UserInfoAction({ avatar, name, email, job }: UserInfoActionProps) {
+export function UserInfoAction({ profilephoto_url, name, email, bio }: UserInfoActionProps) {
   return (
     <Paper
       radius="md"
@@ -17,16 +17,16 @@ export function UserInfoAction({ avatar, name, email, job }: UserInfoActionProps
         backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.white,
       })}
     >
-      <Avatar src={avatar} size={120} radius={120} mx="auto" />
+      <Avatar src={profilephoto_url} size={120} radius={120} mx="auto" />
       <Text ta="center" fz="lg" weight={500} mt="md">
         {name}
       </Text>
       <Text ta="center" c="dimmed" fz="sm">
-        {email} • {job}
+        {email} • {bio}
       </Text>
 
       <Button variant="default" fullWidth mt="md">
-        Send message
+        Follow
       </Button>
     </Paper>
   );
