@@ -6,21 +6,10 @@ import {
   TextInput, FileButton, Text, Paper, Group, PaperProps,
   Button, Divider, Anchor, Stack, Textarea
 } from '@mantine/core';
-// import StudentBookInfo from "./StudentBookInfo";
+import StudentBookInfo from "./StudentBookInfo";
 
 
 
-
-type BookProps = {
-  title: string
-  cover_img: string
-  abstract: string
-  average_rating: DoubleRange
-  price: DoubleRange
-
-  edit_date: Date
-  publish_date: Date
-}
 
 export function BookInfoForm(props: PaperProps) {
 
@@ -37,7 +26,8 @@ export function BookInfoForm(props: PaperProps) {
       title: '',
       price: '',
       abstract: '',
-      coverImage: ''
+      coverImage: '',
+      rating: ''
     },
 
     validate: {
@@ -68,7 +58,7 @@ export function BookInfoForm(props: PaperProps) {
     }
   }
 
-  
+
   const clearFile = () => {
     setCoverPhotoFile(null);
     resetRef.current?.();
@@ -157,9 +147,12 @@ export function BookInfoForm(props: PaperProps) {
 
       </form>}
 
-      {/* {
-        type == "view" && <StudentBookInfo title={""} cover_img={""} abstract={""} average_rating={9} price={50.4} edit_date={new Date()} publish_date={new Date()} tags={["AI","Py"]}  />
-      } */}
+      {
+        type == "view" && <StudentBookInfo title={form.values.title} cover_img={form.values.coverImage}
+          abstract={form.values.abstract} average_rating={parseInt(form.values.rating)}
+          price={parseInt(form.values.price)} edit_date={new Date()} publish_date={new Date()}
+          tags={["AI", "Py"]} />
+      }
 
       <Group position="apart" mt="xl">
         <Anchor
@@ -174,9 +167,9 @@ export function BookInfoForm(props: PaperProps) {
             ? 'view the book info'
             : "edit the book info"}
         </Anchor>
-        <Button type="submit" radius="xl">
+        {type === 'edit' && <Button type="submit" radius="xl">
           {upperFirst(type)}
-        </Button>
+        </Button>}
       </Group>
 
     </Paper>
