@@ -1,3 +1,5 @@
+export const PORT = 8080
+
 export const EDITOR_SAMPLE = `
     <h1>Typography should be easy</h1>
     <p></p>

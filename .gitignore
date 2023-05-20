@@ -154,3 +154,8 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
+
+#Trial JSON files
+src/trial.json
+ 
+
