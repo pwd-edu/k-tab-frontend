@@ -55,16 +55,16 @@ function StudentBookInfo({ tags }: BookProps) {
 
   const [book, setBook] = useState<BookProps>(Object);
 
-  const bookID = "33a05067-bd6c-42d1-8a4c-99aa90027ec2";
+  const bookID = "6c1386b3-96bb-45d0-bb4b-c35a280b44ce";
 
   const API_URL = `http://localhost:${PORT}/book?bookId=${bookID}`;
 
   const getBook = async () => {
     try {
       const fetchData = await axios.get(API_URL, {
-        // headers: {
-        //   authorization: 'Bearer JWT Token',
-        // },
+        headers: {
+          authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtYXJpYW1AZ21haWwuY29tIiwidXNlcklkIjoiNmMxMzg2YjMtOTZiYi00NWQwLWJiNGItYzM1YTI4MGI0NGNlIiwidXNlclR5cGUiOiJBRE1JTiIsImlhdCI6MTY4NDc2MzM1MiwiZXhwIjoxNjg1OTE2MDAwfQ.O0AvLmwmqbTweVbNzL2sRvbgBC0sUT9kZtX8z8bX7kw',
+        },
       })
 
       const authorId = fetchData.data.authorId;
@@ -102,7 +102,7 @@ function StudentBookInfo({ tags }: BookProps) {
   console.log("book:" + book);
 
   const bookTags = book.tags
-  const features = tags.map((tag) => (
+  const features = bookTags.map((tag) => (
     <Badge
       color={theme.colorScheme === 'dark' ? 'dark' : 'gray'}
       key={tag}

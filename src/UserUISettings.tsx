@@ -26,28 +26,28 @@ const useStyles = createStyles((theme) => ({
     },
 }));
 
-interface SwitchesCardProps {
-    title: string;
-    description: string;
+export interface SwitchesCardProps {
     data: {
+        name: string;
         type: string;
-        title: string;
-        description: string;
+        value: any;
     }[];
 }
 
 const useStylesSlider = createStyles((theme) => ({
     thumb: {
-      border: `${rem(1)} solid ${
-        theme.colorScheme === 'dark' ? theme.colors.dark[2] : theme.colors.gray[3]
-      }`,
-      width: rem(28),
-      height: rem(22),
-      color: theme.colors.gray[5],
-      backgroundColor: theme.white,
-      borderRadius: theme.radius.sm,
+        border: `${rem(1)} solid ${theme.colorScheme === 'dark' ? theme.colors.dark[2] : theme.colors.gray[3]
+            }`,
+        width: rem(28),
+        height: rem(22),
+        color: theme.colors.gray[5],
+        backgroundColor: theme.white,
+        borderRadius: theme.radius.sm,
     },
-  }));
+}));
+
+
+
 
 export function UIsettings({ data }: SwitchesCardProps) {
     const { classes } = useStyles();
@@ -56,50 +56,48 @@ export function UIsettings({ data }: SwitchesCardProps) {
 
 
     const items = data.map(item => {
-        if (item.type === "boolean") {
-
-
+        if (item.type === "Boolean") {
             return (<Group position="apart" className={classes.item} noWrap spacing="xl">
                 <div>
-                    <Text>{item.title}</Text>
+                    <Text>{item.name}</Text>
                     <Text size="xs" color="dimmed">
-                        {item.description}
+                        {item.value}
                     </Text>
                 </div>
                 <Switch onLabel="ON" offLabel="OFF" className={classes.switch} size="lg" />
             </Group>)
         }
-        if (item.type === "string") {
+        if (item.type === "String") {
             return <Group position="apart" className={classes.item} noWrap spacing="xl">
                 <div>
-                    <Text>{item.title}</Text>
+                    <Text>{item.name}</Text>
                     <Text size="xs" color="dimmed">
-                        {item.description}
+                        {item.value}
                     </Text>
                 </div>
-                <TextInput value={item.title} size="lg" />
+                <TextInput value={item.name} size="lg" />
             </Group>
 
         }
-        if (item.type === "integer") {
+        if (item.type === "Integer") {
             return <Group position="apart" className={classes.item} noWrap spacing="xl">
                 <div>
-                    <Text>{item.title}</Text>
+                    <Text>{item.name}</Text>
                     <Text size="xs" color="dimmed">
-                        {item.description}
+                        {item.value}
                     </Text>
                 </div>
                 <div>
-                <Slider
-                    thumbChildren={<IconAccessible size="1rem" stroke={1.5} />}
-                    color="blue"
-                    label={null}
-                    defaultValue={40}
-                    styles={stylesSlider}
-                />
+                    <Slider
+                        thumbChildren={<IconAccessible size="1rem" stroke={1.5} />}
+                        color="blue"
+                        label={null}
+                        defaultValue={40}
+                        styles={stylesSlider}
+                    />
                 </div>
 
-               
+
             </Group>
 
         }
