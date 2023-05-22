@@ -28,11 +28,13 @@ const useStyles = createStyles((theme) => ({
 
 export interface SwitchesCardProps {
     data: {
-        name: string;
-        type: string;
-        value: any;
+    name: string;
+    type: string;
+    value: any;
     }[];
 }
+
+
 
 const useStylesSlider = createStyles((theme) => ({
     thumb: {
@@ -60,32 +62,37 @@ export function UIsettings({ data }: SwitchesCardProps) {
             return (<Group position="apart" className={classes.item} noWrap spacing="xl">
                 <div>
                     <Text>{item.name}</Text>
-                    <Text size="xs" color="dimmed">
-                        {item.value}
-                    </Text>
                 </div>
-                <Switch onLabel="ON" offLabel="OFF" className={classes.switch} size="lg" />
+                <Switch onLabel="ON" offLabel="OFF"  value={item.value} className={classes.switch} size="lg" />
             </Group>)
         }
         if (item.type === "String") {
+            if(item.name === "fontStyle"){
+                return <Group position="apart" className={classes.item} noWrap spacing="xl">
+                <div>
+                    <Text>{item.name}</Text>
+    
+                </div>
+                <TextInput value={item.value} size="lg" />
+            </Group>
+
+            }
+            else{
             return <Group position="apart" className={classes.item} noWrap spacing="xl">
                 <div>
                     <Text>{item.name}</Text>
-                    <Text size="xs" color="dimmed">
-                        {item.value}
-                    </Text>
+    
                 </div>
-                <TextInput value={item.name} size="lg" />
+                <TextInput value={item.value} size="lg" />
             </Group>
+            }
 
         }
         if (item.type === "Integer") {
             return <Group position="apart" className={classes.item} noWrap spacing="xl">
                 <div>
                     <Text>{item.name}</Text>
-                    <Text size="xs" color="dimmed">
-                        {item.value}
-                    </Text>
+
                 </div>
                 <div>
                     <Slider
@@ -94,6 +101,7 @@ export function UIsettings({ data }: SwitchesCardProps) {
                         label={null}
                         defaultValue={40}
                         styles={stylesSlider}
+                        value={item.value}
                     />
                 </div>
 
