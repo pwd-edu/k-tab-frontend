@@ -4,11 +4,11 @@ import { IconChevronDown } from '@tabler/icons-react';
 
 
 const data = [
-  { label: 'Sans-serif'},
-  { label: 'Times New Roman' },
-  { label: 'Georgia'},
-  { label: 'Comic Sans'},
-  { label: 'Arial'},
+   'Sans-serif',
+   'Times New Roman' ,
+   'Georgia',
+   'Comic Sans',
+   'Arial'
 ];
 
 const useStyles = createStyles((theme, { opened }: { opened: boolean }) => ({
@@ -46,16 +46,16 @@ const useStyles = createStyles((theme, { opened }: { opened: boolean }) => ({
   },
 }));
 
-export function FontPicker() {
+export function FontPicker({defaultValue}: any) {
   const [opened, setOpened] = useState(false);
   const { classes } = useStyles({ opened });
-  const [selected, setSelected] = useState(data[0]);
+  const [selected, setSelected] = useState(defaultValue);
   const items = data.map((item) => (
     <Menu.Item
       onClick={() => setSelected(item)}
-      key={item.label}
+      key={item}
     >
-      {item.label}
+      {item}
     </Menu.Item>
   ));
 
@@ -70,7 +70,7 @@ export function FontPicker() {
       <Menu.Target>
         <UnstyledButton className={classes.control}>
           <Group spacing="xs">
-            <span className={classes.label}>{selected.label}</span>
+            <span className={classes.label}>{selected}</span>
           </Group>
           <IconChevronDown size="1rem" className={classes.icon} stroke={1.5} />
         </UnstyledButton>
