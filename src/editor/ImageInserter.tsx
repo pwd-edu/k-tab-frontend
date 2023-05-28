@@ -1,7 +1,7 @@
 import { Button, Image, Stack, Text, Textarea } from "@mantine/core"
 import { useEffect, useState } from "react"
 import { InsertImagePlaceHolder } from "./ImagePlaceHolder"
-import { useEditorStore } from "./stores"
+import { useEditorStore } from "./editor-store"
 
 import { FileWithPath } from "@mantine/dropzone"
 
