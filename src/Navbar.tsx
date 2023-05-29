@@ -14,9 +14,8 @@ import {
     typography,
 } from "tailwindcss-classnames"
 
-const useStyles = createStyles((_theme, _params, getRef) => ({
+const useStyles = createStyles((_theme, _params) => ({
     alert_notification: {
-        ref: getRef("notifi"),
         [`& circle`]: {
             fill: "red",
             stroke: "red",

@@ -55,7 +55,7 @@ export const LessonEditor = () => {
         content: constants.EDITOR_PARSED_JSON,
         editorProps: {
             attributes: {
-                class: "max-w-max prose prose-sm [&_*]:m-0 focus:outline-none",
+                class: "max-w-max prose prose-sm [&_p]:m-0 prose-headings:m-0 focus:outline-none",
             },
         },
     })
