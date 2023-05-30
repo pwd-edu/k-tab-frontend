@@ -55,14 +55,14 @@ export const LessonEditor = () => {
         content: constants.EDITOR_PARSED_JSON,
         editorProps: {
             attributes: {
-                class: "max-w-max prose prose-sm [&_*]:m-0 focus:outline-none",
+                class: "flex-1 max-w-none justify-center py-6 px-6 prose prose-sm [&_p]:m-0 prose-headings:m-0 focus:outline-none",
             },
         },
     })
 
     useEffect(() => {
         editor?.on("transaction", () => {
-            console.log(JSON.stringify(editor?.getJSON()))
+            console.log(editor?.getJSON())
         })
     }, [editor])
 
@@ -81,7 +81,7 @@ export const LessonEditor = () => {
             <EditorContainer>
                 <EditorMenu editor={editor} />
                 <EditorContent
-                    className="flex-1 overflow-auto border-b border-x rounded-sm border-neutral-300"
+                    className="flex flex-row flex-1 overflow-auto border-b border-x rounded-sm border-neutral-300"
                     editor={editor}
                 />
             </EditorContainer>
