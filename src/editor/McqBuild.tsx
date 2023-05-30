@@ -1,22 +1,32 @@
-import { ActionIcon, Card, Group, Stack, TextInput } from "@mantine/core"
+import { ActionIcon, Box, Card, Group, Stack, TextInput } from "@mantine/core"
 import { NodeViewProps, NodeViewWrapper } from "@tiptap/react"
-import { IconCirclePlus, IconEdit, IconCircleCheck } from "@tabler/icons"
+import { IconCirclePlus, IconEdit, IconGripVertical } from "@tabler/icons"
 import { clsx } from "@mantine/core"
+import { nanoid } from "nanoid"
 
 import { ChangeEvent, useState } from "react"
 import { TextInputProps } from "@mantine/core"
-import { Checkbox, CheckboxProps } from "@mantine/core"
+import { Checkbox } from "@mantine/core"
+import { debounce } from "@material-ui/core"
 
-export interface McqBuildProps extends NodeViewProps {
-    question: string
-    options: string[]
-    answer: number
+interface McqOptionProps {
+    text: string
+    answer: boolean
+    onTextUpdated?: (text: string) => void
+    onAnswerUpdated?: (answer: boolean) => void
 }
 
-export const McqBuild = (props: McqBuildProps) => {
-    const [question, setQuestion] = useState<string>(props.question)
-    const [options, setOptions] = useState<string[]>(props.options || [])
-    const [answer, setAnswer] = useState<number>(props.answer)
+type _OptionsAttrs = Omit<McqOptionProps, "onUpdated" | "answer">
+interface OptionsAttrs extends _OptionsAttrs {
+    id: string
+    order: number
+}
+
+export const McqBuild = (props: NodeViewProps) => {
+    const [question, setQuestion] = useState<string>(props.node.attrs.question || "")
+    const [options, setOptions] = useState<OptionsAttrs[]>(props.node.attrs.options || [])
+    const [answer, setAnswer] = useState<string>(props.node.attrs.answer || "")
+
     const [disabled, setDisabled] = useState<boolean>(true)
 
     const handleEdit = (e: ChangeEvent<HTMLInputElement>) => {
@@ -32,9 +42,38 @@ export const McqBuild = (props: McqBuildProps) => {
         setDisabled(!disabled)
     }
 
+    const handleAddOption = () => {
+        const new_option: OptionsAttrs = {
+            id: nanoid(16),
+            text: "",
+            order: options[options.length - 1]?.order + 1 || 0,
+        }
+        const updated_options = [...options, new_option]
+        setOptions(updated_options)
+        props.updateAttributes({ options: updated_options })
+    }
+
+    const handleOptionTextUpdate = debounce((id: string, text: string) => {
+        const new_options = options.map((option) => {
+            if (option.id === id) {
+                return { ...option, text }
+            }
+            return option
+        })
+        setOptions(new_options)
+        props.updateAttributes({ options: new_options })
+    }, 500)
+
+    const handleOptionAnswerUpdate = debounce((id: string, answer: boolean) => {
+        if (answer === true) {
+            setAnswer(id)
+            props.updateAttributes({ answer: id })
+        }
+    }, 0)
+
     return (
         <NodeViewWrapper>
-            <Card className="p-2" withBorder={true}>
+            <Card className="p-2 my-2 w-full" withBorder={true} data-drag-handle>
                 <Group className="mb-2">
                     <McqText
                         className="grow font-semibold"
@@ -49,62 +88,61 @@ export const McqBuild = (props: McqBuildProps) => {
                         onChange={handleEdit}
                         onBlur={handleBlur}
                     />
-                    <ActionIcon color="blue">
+                    <ActionIcon color="blue" onClick={handleAddOption}>
                         <IconCirclePlus size="2rem" />
                     </ActionIcon>
                 </Group>
                 <Stack className="gap-2">
-                    {options.map((option, i) => (
-                        <McqOption key={i} option={option} answer={i === answer} />
-                    ))}
-                    <McqOption option={"hello this is an option"} answer={true} />
-                    <McqOption option={"hello this is an option"} answer={true} />
-                    <McqOption option={"hello this is an option"} answer={true} />
+                    {options
+                        .sort((a, b) => a.order - b.order)
+                        .map((option, i) => (
+                            <McqOption
+                                key={i}
+                                text={option.text}
+                                answer={option.id === answer}
+                                onTextUpdated={(text) => handleOptionTextUpdate(option.id, text)}
+                                onAnswerUpdated={(answer) =>
+                                    handleOptionAnswerUpdate(option.id, answer)
+                                }
+                            />
+                        ))}
                 </Stack>
             </Card>
         </NodeViewWrapper>
     )
 }
 
-interface McqOptionProps {
-    option: string
-    answer: boolean
-    onUpdated?: (option: string, answer: boolean) => void
-}
-
 export const McqOption = (props: McqOptionProps) => {
-    const [option, setOption] = useState<string>(props.option)
-    const [checked, setChecked] = useState<boolean>(props.answer)
+    const [text, setText] = useState<string>(props.text)
+
     const handleCheck = (e: ChangeEvent<HTMLInputElement>) => {
-        setChecked(e.target.checked)
-        props.onUpdated?.(option, e.target.checked)
+        props.onAnswerUpdated?.(e.target.checked)
     }
 
     const handleEdit = (e: ChangeEvent<HTMLInputElement>) => {
-        setOption(e.target.value)
-        props.onUpdated?.(e.target.value, checked)
+        setText(e.target.value)
+        props.onTextUpdated?.(e.target.value)
     }
 
     return (
         <Group>
             <McqText
                 placeholder="Write your option"
-                value={option}
+                value={text}
                 onChange={handleEdit}
                 rightSection={
                     <Checkbox
                         classNames={{
                             input: "rounded-full",
                         }}
-                        checked={checked}
+                        checked={props.answer}
                         onChange={handleCheck}
                     />
                 }
             />
-
-            <ActionIcon color="blue" className="invisible">
-                <IconCirclePlus size="2rem" />
-            </ActionIcon>
+            <Box className="flex items-center justify-center w-5 h-9 mx-1 box-border">
+                <IconGripVertical size="1.5rem" />
+            </Box>
         </Group>
     )
 }

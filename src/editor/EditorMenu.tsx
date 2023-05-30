@@ -13,27 +13,38 @@ import {
     IconListNumbers,
     IconPhoto,
     IconUnderline,
+    IconBoxMultiple,
 } from "@tabler/icons"
 import { useEditorStore } from "./editor-store"
 import { ImageInserter } from "./ImageInserter"
 import { FileWithPath } from "@mantine/dropzone"
 import { FontColorMenu } from "./FontColorMenu"
 import { HeadingMenu } from "./HeadingMenu"
+import { nanoid } from "nanoid"
 
 export const EditorMenu = ({ editor }: { editor: Editor }) => {
     const [setModalOpened] = useEditorStore((state) => [state.setModalOpened])
     const [setModalContent] = useEditorStore((state) => [state.setModalContent])
+
     const addImage = () => {
-        setModalContent(<ImageInserter onImageInserted={insertToEditor} />)
+        setModalContent(<ImageInserter onImageInserted={insertImgToEditor} />)
         setModalOpened(true)
     }
 
-    const insertToEditor = (images: FileWithPath[]) => {
+    const insertImgToEditor = (images: FileWithPath[]) => {
         const image = images.at(-1)
         if (image) {
             const url = URL.createObjectURL(image)
             editor.chain().focus().setImage({ src: url }).run()
         }
+    }
+
+    const addMcq = () => {
+        editor
+            .chain()
+            .focus()
+            .setMcq({ id: nanoid(16) })
+            .run()
     }
 
     const MENU_ACTIONS = (editor: Editor) => [
@@ -66,10 +77,14 @@ export const EditorMenu = ({ editor }: { editor: Editor }) => {
             EditorActionIcon: IconBlockquote,
         },
         { action: () => addImage(), EditorActionIcon: IconPhoto },
+        {
+            action: () => addMcq(),
+            EditorActionIcon: IconBoxMultiple,
+        },
     ]
 
     return (
-        <Group className="gap-0 border border-b-2 border-neutral-300 flex-[0_0_auto]">
+        <Group className="px-6 bg-slate-100 gap-0 border border-b-2 border-neutral-300 flex-[0_0_auto]">
             <HeadingMenu editor={editor} />
             {MENU_ACTIONS(editor).map(({ action, EditorActionIcon }, i) => {
                 return (

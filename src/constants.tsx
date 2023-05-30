@@ -5,7 +5,6 @@ export const EDITOR_SAMPLE = `
     <p></p>
     <p>So that's a header for you — with any luck if we've done our job correctly that will look pretty reasonable.</p>
     <p></p>
-    <node-view></node-view>
     <p><strong>Something a wise person once told me about typography is:</strong></p>
     <p></p>
 
@@ -32,7 +31,6 @@ export const EDITOR_OBJ = {
             ],
         },
         { type: "paragraph" },
-        { type: "mcq-interactive", attrs: { count: 0 } },
         {
             type: "paragraph",
             content: [
