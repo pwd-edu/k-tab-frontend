@@ -10,7 +10,7 @@
 //     // Encode the file using the FileReader API
 //     const reader = new FileReader();
 //     reader.onloadend = () => {
-//         // Use as string to handle typescript types 
+//         // Use as string to handle typescript types
 //         const result = reader.result as string ;
 //         // Use a regex to remove data url part
 //         const base64String = result.replace('data:', '').replace(/^.+,/, '') as string;
@@ -20,12 +20,11 @@
 //         return base64String;
 //     };
 //     // reader.readAsDataURL(file);
-    
+
 //      });
 // }
 
 // export default convertFileToBase64;
-
 
 // function getBase64(file: any) {
 //     var reader = new FileReader();
@@ -39,28 +38,25 @@
 //     // reader.onerror = function (error) {
 //     //   console.log('Error: ', error);
 //     // };
-     
+
 // }
 // export default getBase64;
 
+function getBase64(file: any) {
+    let document = ""
+    const reader = new FileReader()
+    reader.readAsDataURL(file)
+    reader.onload = function () {
+        document = reader.result as string
+        console.log("onload " + document)
+    }
+    // reader.onerror = function (error) {
+    //     console.log('Error: ', error);
+    //     return "error";
+    // };
 
-function getBase64(file: any ) {
-  let document = "";
-  let reader = new FileReader();
-  reader.readAsDataURL(file);
-  reader.onload = function () {
-      document = reader.result as string;
-      console.log("onload "+ document)
-      
-  };
-  // reader.onerror = function (error) {
-  //     console.log('Error: ', error);
-  //     return "error";
-  // };
-
-  // console.log("in Conver file "+document)
-  // return document;
+    // console.log("in Conver file "+document)
+    // return document;
 }
 
-export default getBase64;
- 
+export default getBase64
