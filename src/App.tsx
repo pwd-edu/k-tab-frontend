@@ -5,7 +5,6 @@ import CreateStudent from "./CreateStudent"
 import CreateAuthor from "./CreateAuthor"
 import Login from "./login"
 import { Library } from "./StudentLibrary"
-import LessonsNavDrawer from "./LessonsNavDrawer"
 import { BookInfoForm } from "./BookInfo"
 import StudentBookInfo from "./StudentBookInfo"
 import UIsettings from "./UserUISettings"
@@ -22,7 +21,6 @@ function App() {
                 <Route path="/author" element={<CreateAuthor />} />
                 <Route path="/user" element={<Login />} />
                 <Route path="/library" element={<Library />} />
-                <Route path="/navdraw" element={<LessonsNavDrawer />} />
                 <Route path="/bookinfo" element={<BookInfoForm />} />
                 <Route
                     path="/bookcard"

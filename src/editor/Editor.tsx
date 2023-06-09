@@ -81,7 +81,7 @@ export const LessonEditor = () => {
             <EditorContainer>
                 <EditorMenu editor={editor} />
                 <EditorContent
-                    className="flex flex-row flex-1 overflow-auto border-b border-x rounded-sm border-neutral-300"
+                    className="flex flex-1 flex-row overflow-auto rounded-sm border-x border-b border-neutral-300"
                     editor={editor}
                 />
             </EditorContainer>
@@ -90,5 +90,5 @@ export const LessonEditor = () => {
 }
 
 const EditorContainer = ({ children }: { children: React.ReactNode }) => {
-    return <Stack className="gap-0 px-6 max-h-screen"> {children} </Stack>
+    return <Stack className="max-h-screen gap-0 px-6"> {children} </Stack>
 }

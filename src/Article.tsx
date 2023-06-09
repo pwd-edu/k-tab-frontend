@@ -2,7 +2,7 @@ import { Center, ActionIcon, Card, createStyles, Group, Image, Stack, Text } fro
 import { IconClock, IconEdit, IconChartPie, IconPlus } from "@tabler/icons"
 import { FlexSpace } from "./shared"
 
-const useStyles = createStyles((theme, _params, getRef) => ({
+const useStyles = createStyles(() => ({
     article_card: {
         width: 240,
         height: 138,

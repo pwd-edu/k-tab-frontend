@@ -7,7 +7,7 @@ import { nanoid } from "nanoid"
 import { ChangeEvent, useState } from "react"
 import { TextInputProps } from "@mantine/core"
 import { Checkbox } from "@mantine/core"
-import { debounce } from "@material-ui/core"
+import { debounce } from "lodash"
 
 interface McqOptionProps {
     text: string
@@ -73,7 +73,7 @@ export const McqBuild = (props: NodeViewProps) => {
 
     return (
         <NodeViewWrapper>
-            <Card className="p-2 my-2 w-full" withBorder={true} data-drag-handle>
+            <Card className="my-2 w-full p-2" withBorder={true} data-drag-handle>
                 <Group className="mb-2">
                     <McqText
                         className="grow font-semibold"
@@ -140,7 +140,7 @@ export const McqOption = (props: McqOptionProps) => {
                     />
                 }
             />
-            <Box className="flex items-center justify-center w-5 h-9 mx-1 box-border">
+            <Box className="mx-1 box-border flex h-9 w-5 items-center justify-center">
                 <IconGripVertical size="1.5rem" />
             </Box>
         </Group>

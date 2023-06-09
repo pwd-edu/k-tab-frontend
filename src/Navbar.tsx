@@ -14,7 +14,7 @@ import {
     typography,
 } from "tailwindcss-classnames"
 
-const useStyles = createStyles((_theme, _params) => ({
+const useStyles = createStyles(() => ({
     alert_notification: {
         [`& circle`]: {
             fill: "red",
@@ -23,8 +23,8 @@ const useStyles = createStyles((_theme, _params) => ({
     },
 }))
 
-const buildStyles = (params?: any) => {
-    const { classes, cx, theme } = useStyles(params)
+const buildStyles = () => {
+    const { classes, cx, theme } = useStyles()
     const styles = {
         navbar: classnames(height("h-12"), padding("px-3"), boxShadow("shadow-md")),
         tooltip: classnames(
@@ -116,7 +116,6 @@ export const Navbar = () => {
 }
 
 const Search = () => {
-    const { classes } = buildStyles()
     return (
         <Input
             size="xs"

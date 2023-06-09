@@ -1,10 +1,9 @@
-import { Article, AddArticle } from "./Article"
-import { Navbar, NotificationItem, NotificationContainer } from "./Navbar"
-import { Group, createStyles, Stack, Menu } from "@mantine/core"
+import { Navbar } from "./Navbar"
+import { Group, createStyles } from "@mantine/core"
 import aofm from "./assets/aofm.jpg"
 import { Book } from "./StudentBook"
 
-const useStyles = createStyles((theme, _params, getRef) => ({
+const useStyles = createStyles((theme) => ({
     grid: {
         padding: theme.spacing.md,
     },
