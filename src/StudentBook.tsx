@@ -1,8 +1,8 @@
 import { Center, ActionIcon, Card, createStyles, Group, Image, Stack, Text } from "@mantine/core"
-import { IconClock, IconEdit, IconChartPie, IconPlus } from "@tabler/icons"
+import { IconClock, IconPlus } from "@tabler/icons"
 import { FlexSpace } from "./shared"
 
-const useStyles = createStyles((theme, _params, getRef) => ({
+const useStyles = createStyles(() => ({
     Book_card: {
         width: 1000,
         height: 800,
@@ -39,8 +39,7 @@ export const Book = ({ title, thumbnail_img, last_update }: BookProps) => {
                         {`Updated ${formatDateTime(last_update)}`}
                     </Text>
                     <FlexSpace />
-                    <Group spacing={0}>
-                    </Group>
+                    <Group spacing={0}></Group>
                 </Group>
             </Stack>
         </Card>

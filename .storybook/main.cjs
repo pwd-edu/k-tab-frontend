@@ -19,6 +19,7 @@ module.exports = {
                 },
             },
         },
+        "@storybook/addon-mdx-gfm",
     ],
     framework: "@storybook/react",
     core: {
@@ -26,5 +27,8 @@ module.exports = {
     },
     features: {
         storyStoreV7: true,
+    },
+    docs: {
+        autodocs: true,
     },
 }

@@ -19,7 +19,7 @@ export function HeadingMenu({ editor }: { editor: Editor }) {
         <Menu position="top-start" width={300} withinPortal>
             <Menu.Target>
                 <Button
-                    className="p-0 m-0 h-7"
+                    className="m-0 h-7 p-0"
                     color="gray"
                     variant="subtle"
                     rightIcon={

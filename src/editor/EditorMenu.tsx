@@ -1,6 +1,6 @@
 import { Editor } from "@tiptap/core"
 
-import { ActionIcon, Group } from "@mantine/core"
+import { ActionIcon, Button, Group, clsx } from "@mantine/core"
 import {
     IconArrowBackUp,
     IconArrowForwardUp,
@@ -14,6 +14,7 @@ import {
     IconPhoto,
     IconUnderline,
     IconBoxMultiple,
+    IconDeviceFloppy,
 } from "@tabler/icons"
 import { useEditorStore } from "./editor-store"
 import { ImageInserter } from "./ImageInserter"
@@ -84,16 +85,45 @@ export const EditorMenu = ({ editor }: { editor: Editor }) => {
     ]
 
     return (
-        <Group className="px-6 bg-slate-100 gap-0 border border-b-2 border-neutral-300 flex-[0_0_auto]">
-            <HeadingMenu editor={editor} />
-            {MENU_ACTIONS(editor).map(({ action, EditorActionIcon }, i) => {
-                return (
-                    <ActionIcon onClick={action} key={i}>
-                        <EditorActionIcon className="text-slate-800" size="18" />
-                    </ActionIcon>
-                )
-            })}
-            <FontColorMenu editor={editor} />
+        <Group
+            className={clsx([
+                "px-6",
+                "bg-slate-100",
+                "justify-between",
+                "border-t-2",
+                "border-neutral-300",
+                "flex-[0_0_auto]",
+            ])}
+        >
+            <Group className="gap-0">
+                <HeadingMenu editor={editor} />
+                {MENU_ACTIONS(editor).map(({ action, EditorActionIcon }, i) => {
+                    return (
+                        <ActionIcon onClick={action} key={i}>
+                            <EditorActionIcon className="text-slate-800" size="18" />
+                        </ActionIcon>
+                    )
+                })}
+                <FontColorMenu editor={editor} />
+            </Group>
+            <Group className="p-0 py-1">
+                <SaveButton />
+            </Group>
         </Group>
+    )
+}
+
+const SaveButton = () => {
+    return (
+        <Button
+            variant="outline"
+            classNames={{
+                root: "h-auto ",
+                label: "gap-2 py-1",
+            }}
+        >
+            Save
+            <IconDeviceFloppy className="" size="18" />
+        </Button>
     )
 }

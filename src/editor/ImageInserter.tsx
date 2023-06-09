@@ -15,7 +15,6 @@ interface ImagePreviewProps {
     image: FileWithPath
 }
 
-// Description of the image can be latex or text
 interface ImageDescriptionProps {
     type: "math" | "scene" | "chart"
     content: string
@@ -66,9 +65,9 @@ export function ImageInserter({ onImageInserted }: ImageInserterProps) {
         return response.data
     }
 
-    const uploadS3 = async (file: FileWithPath, presigned_url: any) => {
+    const uploadS3 = async (file: FileWithPath, presigned_url: Record<string, any>) => {
         const form = new FormData()
-        Object.keys(presigned_url.fields).forEach((key) =>
+        Object.keys(presigned_url.fields as []).forEach((key) =>
             form.append(key, presigned_url.fields[key])
         )
         form.append("file", file)
