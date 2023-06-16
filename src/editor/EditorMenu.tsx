@@ -88,11 +88,12 @@ export const EditorMenu = ({ editor }: { editor: Editor }) => {
         <Group
             className={clsx([
                 "px-6",
-                "bg-slate-100",
+                "flex-[0_0_auto]",
                 "justify-between",
                 "border-t-2",
+                "bg-gray-200",
                 "border-neutral-300",
-                "flex-[0_0_auto]",
+                "border-t-0",
             ])}
         >
             <Group className="gap-0">
