@@ -1,8 +1,10 @@
-import { createStyles, Card, Group, Switch, Text, rem, TextInput, Slider } from '@mantine/core';
-import { IconAccessible } from '@tabler/icons-react';
+import { useState } from 'react';
+import { createStyles, Card, Group, Switch, Text, rem, TextInput, Slider, UnstyledButton,Center,
+    useMantineColorScheme } from '@mantine/core';
+import { IconAccessible, IconMoon, IconSun } from '@tabler/icons-react';
+import { upperFirst } from '@mantine/hooks';
 import { FontPicker } from './FontPicker';
 import { QuantityInput } from './NumberInputComponent';
-import { useHover } from '@mantine/hooks';
 import { camelCaseToWord } from './CamelCaseToWord';
 
 const useStyles = createStyles((theme) => ({
@@ -28,7 +30,33 @@ const useStyles = createStyles((theme) => ({
     title: {
         lineHeight: 1,
     },
+
+    control: {
+        backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0],
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        borderRadius: 1000,
+        paddingLeft: theme.spacing.sm,
+        paddingRight: rem(4),
+        width: rem(136),
+        height: rem(36),
+      },
+    
+      iconWrapper: {
+        height: rem(28),
+        width: rem(28),
+        borderRadius: rem(28),
+        backgroundColor: theme.colorScheme === 'dark' ? theme.colors.yellow[4] : theme.colors.dark[4],
+        color: theme.colorScheme === 'dark' ? theme.black : theme.colors.blue[2],
+      },
+    
+      value: {
+        lineHeight: 1,
+      },
 }));
+
+
 
 export interface SwitchesCardProps {
     data: {
@@ -40,37 +68,32 @@ export interface SwitchesCardProps {
 
 
 
-// const useStylesSlider = createStyles((theme) => ({
-//     thumb: {
-//         border: `${rem(1)} solid ${theme.colorScheme === 'dark' ? theme.colors.dark[2] : theme.colors.gray[3]
-//             }`,
-//         width: rem(28),
-//         height: rem(22),
-//         color: theme.colors.gray[5],
-//         backgroundColor: theme.white,
-//         borderRadius: theme.radius.sm,
-//     },
-// }));
-
-
-
-
-
 
 export function UIsettings({ data }: SwitchesCardProps) {
-    const { hovered, ref } = useHover();
+    
     const { classes } = useStyles();
     const stylesSlider = { thumb: { borderWidth: 2, height: 26, width: 26, padding: 3 } };
+    // const [invertColor, setInvertColorValue] = useState<number | ''>(100);
+    // const { classesDarkModeSwitch } = useStylesDarkModeSwitch();
+    const { colorScheme, toggleColorScheme } = useMantineColorScheme();
+    const Icon = colorScheme === 'dark' ? IconSun : IconMoon;
+
+    
+
+    
 
 
 
     const items = data.map(item => {
         if (item.type === "Boolean") {
+            console.log(item.value)
             return (<Group position="apart" className={classes.item} noWrap spacing="xl">
                 <div>
                     <Text>{camelCaseToWord(item.name)}</Text>
                 </div>
-                <Switch onLabel="ON" offLabel="OFF" value={item.value} className={classes.switch} size="lg" />
+                <Switch onLabel="ON" offLabel="OFF" className={classes.switch} size="lg" 
+                checked={item.value === true}
+                />
             </Group>)
         }
         if (item.type === "String") {
@@ -80,7 +103,7 @@ export function UIsettings({ data }: SwitchesCardProps) {
                         <Text>{camelCaseToWord(item.name)}</Text>
 
                     </div>
-                    <FontPicker defaultValue={item.value} />
+                    <FontPicker defaultValue={item.value}  onChange={(e: any) => item.value = (e.valueOf)}/>
                 </Group>
 
             }
@@ -102,11 +125,33 @@ export function UIsettings({ data }: SwitchesCardProps) {
                         <Text>{camelCaseToWord(item.name)}</Text>
 
                     </div>
-                    <QuantityInput defaultValue={item.value} />
+                    <QuantityInput defaultValue={item.value} min={8} max={120} onChange={(e: any) => item.value = (e.valueOf)}/>
                 </Group>
 
             }
+            if (item.name === "darkMode"){
+                return (
+                    <Group position="center" my="xl">
+                      <UnstyledButton
+                        aria-label="Toggle theme"
+                        className={classes.control}
+                        onClick={() => toggleColorScheme()}
+                        title="Ctrl + J"
+                      >
+                        <Text size="sm" className={classes.value}>
+                          {upperFirst(colorScheme === 'light' ? 'dark' : 'light')} theme
+                        </Text>
+                
+                        <Center className={classes.iconWrapper}>
+                          <Icon size="1.05rem" stroke={1.5} />
+                        </Center>
+                      </UnstyledButton>
+                    </Group>
+                  );
+
+            }
             else {
+                console.log(item.value)
                 return <div>
                     <Group position="apart" className={classes.item} noWrap spacing="xl">
                         <div>
@@ -115,39 +160,21 @@ export function UIsettings({ data }: SwitchesCardProps) {
                         </div>
 
                     </Group>
-                    {/* <Slider
-                            defaultValue={40}
-                            min={10}
-                            max={90}
-                            ref={ref}
-                            label={null}
-                            styles={{
-                                thumb: {
-                                    transition: 'opacity 150ms ease',
-                                    opacity: hovered ? 1 : 0,
-                                },
-
-                                dragging: {
-                                    opacity: 1,
-                                },
-                            }}
-                        /> */}
                     <br></br>
-
                     <Slider
                         thumbChildren={<IconAccessible size="1rem" stroke={1.5} />}
                         color="blue"
                         label={null}
-                        defaultValue={40}
-                        min={10}
-                        max={90}
-                        ref={ref}
+                        defaultValue={item.value}
+                        min={0}
+                        max={100}
+                        onChange={(e) => item.value = (e.valueOf) }
                         styles={stylesSlider}
-                        value={item.value}
                       
                     />
                     <br></br>
                 </div>
+                
             }
 
         }

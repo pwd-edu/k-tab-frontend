@@ -13,8 +13,7 @@ const UserSettingsData = () => {
         try {
             const fetchData = await axios.get(URL, {
                 headers: {
-                    authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtYWhtb3VkQGdtYWlsLmNvbSIsInVzZXJJZCI6IjNmYzAzODI0LTZkOWMtNDllYS1iMThjLTE3NzkxMTkwM2FkNyIsInVzZXJUeXBlIjoiQURNSU4iLCJpYXQiOjE2ODQ4NzI2MjAsImV4cCI6MTY4NjAwMjQwMH0.PlUnB2q1WHEny9pPkxlaE1zKAuMAo9KABgPMLMzH1qg"
-                },
+                    authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtYWhtb3VkQGdtYWlsLmNvbSIsInVzZXJJZCI6IjUyNDExOTdjLTViMmQtNGJkZS1hNDRjLTE3YWM0NTU1Zjc3YSIsInVzZXJUeXBlIjoiQURNSU4iLCJpYXQiOjE2ODY5OTk1MTQsImV4cCI6MTY4ODE2MjQwMH0.gQPmaOQ_7chkhHR_fvpV-WJ5Qui33LeVSq_CiyVgDDQ"  },
             })
             console.log(fetchData.data.settings)
 
