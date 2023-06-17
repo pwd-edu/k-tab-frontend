@@ -1,0 +1,26 @@
+name: Sync Production Branch
+
+on:
+    push:
+        branches:
+            - production
+
+jobs:
+    sync:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              run: |
+                  mkdir iabooks-frontend
+                  cd iabooks-frontend
+                  git config --global init.defaultBranch master
+                  git init
+                  git config user.email ${{ vars.IBRAHIM_MAIL }}
+                  git config user.name "Mohamed-Ibrahim-01"
+                  git config credential.helper store
+                  git remote add origin https://Mohamed-Ibrahim-01:${{ secrets.IBRAHIM_FRONTEND_GITHUB_TOKEN }}@github.com/Mohamed-Ibrahim-01/iabooks-frontend.git
+                  git remote add upstream https://Mohamed-Ibrahim-01:${{ secrets.IBRAHIM_FRONTEND_GITHUB_TOKEN }}@github.com/pwd-edu/iabooks-frontend.git
+                  git fetch --all --prune
+                  git checkout -b production --track origin/production
+                  git pull upstream production
+                  git push origin production
