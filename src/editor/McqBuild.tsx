@@ -147,17 +147,23 @@ export const McqOption = (props: McqOptionProps) => {
     )
 }
 const McqText = (props: TextInputProps) => {
+    const { disabled, ...rest } = props
     return (
         <TextInput
             className="grow"
             classNames={{
-                input: clsx([
-                    "disabled:cursor-default",
-                    "disabled:text-black",
-                    "disabled:opacity-100",
-                ]),
+                input: clsx(
+                    disabled && [
+                        "cursor-default",
+                        "text-black",
+                        "opacity-100",
+                        "pointer-events-none",
+                        "bg-gray-50",
+                    ]
+                ),
             }}
-            {...props}
+            disabled={false}
+            {...rest}
         />
     )
 }
