@@ -21,6 +21,6 @@ jobs:
                   git remote add origin https://Mohamed-Ibrahim-01:${{ secrets.IBRAHIM_FRONTEND_GITHUB_TOKEN }}@github.com/Mohamed-Ibrahim-01/iabooks-frontend.git
                   git remote add upstream https://Mohamed-Ibrahim-01:${{ secrets.IBRAHIM_FRONTEND_GITHUB_TOKEN }}@github.com/pwd-edu/iabooks-frontend.git
                   git fetch --all --prune
-                  git checkout -b production --track origin/production
-                  git pull upstream production
-                  git push origin production
+                  git checkout -b master --track origin/master
+                  git merge upstream/production --no-edit --ff-only
+                  git push origin master
