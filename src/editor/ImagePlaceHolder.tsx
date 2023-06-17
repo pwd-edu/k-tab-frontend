@@ -10,10 +10,6 @@ export function InsertImagePlaceHolder({ onUpload, ...props }: ImagePlaceHolderP
     const theme = useMantineTheme()
 
     const handleUpload = (files: FileWithPath[]) => {
-        //const formData = new FormData()
-        //files.forEach((file) => formData.append("file", file))
-        //axios.post("http://localhost:8000/upload/s3", formData)
-        console.log(files)
         onUpload(files)
     }
 

@@ -6,21 +6,7 @@ import { useEditorStore } from "./editor-store"
 import { FileWithPath } from "@mantine/dropzone"
 
 import axios from "axios"
-
-interface ImageInserterProps {
-    onImageInserted: (files: FileWithPath[]) => void
-}
-
-interface ImagePreviewProps {
-    image: FileWithPath
-}
-
-interface ImageDescriptionProps {
-    type: "math" | "scene" | "chart"
-    content: string
-}
-
-type AiDescription = ImageDescriptionProps
+import { getAIDescription, getPresignedUrl } from "./fetch"
 
 function ImageDescription({ type, content }: ImageDescriptionProps) {
     return (
@@ -60,11 +46,6 @@ export function ImageInserter({ onImageInserted }: ImageInserterProps) {
         // show loading indicator
     }
 
-    const getPresignedUrl = async (file_name: string) => {
-        const response = await axios.get(`http://localhost:3820/presigned?file_name=${file_name}`)
-        return response.data
-    }
-
     const uploadS3 = async (file: FileWithPath, presigned_url: Record<string, any>) => {
         const form = new FormData()
         Object.keys(presigned_url.fields as []).forEach((key) =>
@@ -73,11 +54,6 @@ export function ImageInserter({ onImageInserted }: ImageInserterProps) {
         form.append("file", file)
         const upload_response = await axios.post(presigned_url.url, form)
         console.log(upload_response)
-    }
-
-    const getAIDescription = async (image_url: string): Promise<AiDescription> => {
-        const response = await axios.post(`http://localhost:3820/imagedesc`, { image_url })
-        return response.data
     }
 
     useEffect(() => {
