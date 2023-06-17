@@ -1,6 +1,7 @@
-import { useState } from 'react';
-import { createStyles, Card, Group, Switch, Text, rem, TextInput, Slider, UnstyledButton,Center,
-    useMantineColorScheme } from '@mantine/core';
+import {
+    createStyles, Card, Group, Switch, Text, rem, TextInput, Slider, UnstyledButton, Center,
+    useMantineColorScheme
+} from '@mantine/core';
 import { IconAccessible, IconMoon, IconSun } from '@tabler/icons-react';
 import { upperFirst } from '@mantine/hooks';
 import { FontPicker } from './FontPicker';
@@ -41,19 +42,19 @@ const useStyles = createStyles((theme) => ({
         paddingRight: rem(4),
         width: rem(136),
         height: rem(36),
-      },
-    
-      iconWrapper: {
+    },
+
+    iconWrapper: {
         height: rem(28),
         width: rem(28),
         borderRadius: rem(28),
         backgroundColor: theme.colorScheme === 'dark' ? theme.colors.yellow[4] : theme.colors.dark[4],
         color: theme.colorScheme === 'dark' ? theme.black : theme.colors.blue[2],
-      },
-    
-      value: {
+    },
+
+    value: {
         lineHeight: 1,
-      },
+    },
 }));
 
 
@@ -70,7 +71,7 @@ export interface SwitchesCardProps {
 
 
 export function UIsettings({ data }: SwitchesCardProps) {
-    
+
     const { classes } = useStyles();
     const stylesSlider = { thumb: { borderWidth: 2, height: 26, width: 26, padding: 3 } };
     // const [invertColor, setInvertColorValue] = useState<number | ''>(100);
@@ -78,23 +79,47 @@ export function UIsettings({ data }: SwitchesCardProps) {
     const { colorScheme, toggleColorScheme } = useMantineColorScheme();
     const Icon = colorScheme === 'dark' ? IconSun : IconMoon;
 
-    
 
-    
+
+
 
 
 
     const items = data.map(item => {
+
         if (item.type === "Boolean") {
             console.log(item.value)
-            return (<Group position="apart" className={classes.item} noWrap spacing="xl">
-                <div>
-                    <Text>{camelCaseToWord(item.name)}</Text>
-                </div>
-                <Switch onLabel="ON" offLabel="OFF" className={classes.switch} size="lg" 
-                checked={item.value === true}
-                />
-            </Group>)
+            if (item.name === "darkMode") {
+                return (
+                    <Group position="center" my="xl">
+                        <UnstyledButton
+                            aria-label="Toggle theme"
+                            className={classes.control}
+                            onClick={() => toggleColorScheme()}
+                            title="Ctrl + J"
+                        >
+                            <Text size="sm" className={classes.value}>
+                                {upperFirst(colorScheme === 'light' ? 'dark' : 'light')} theme
+                            </Text>
+
+                            <Center className={classes.iconWrapper}>
+                                <Icon size="1.05rem" stroke={1.5} />
+                            </Center>
+                        </UnstyledButton>
+                    </Group>
+                );
+
+            }
+            else {
+                return (<Group position="apart" className={classes.item} noWrap spacing="xl">
+                    <div>
+                        <Text>{camelCaseToWord(item.name)}</Text>
+                    </div>
+                    <Switch onLabel="ON" offLabel="OFF" className={classes.switch} size="lg"
+                        checked={item.value === true}
+                    />
+                </Group>)
+            }
         }
         if (item.type === "String") {
             if (item.name === "fontStyle") {
@@ -103,7 +128,7 @@ export function UIsettings({ data }: SwitchesCardProps) {
                         <Text>{camelCaseToWord(item.name)}</Text>
 
                     </div>
-                    <FontPicker defaultValue={item.value}  onChange={(e: any) => item.value = (e.valueOf)}/>
+                    <FontPicker defaultValue={item.value} onChange={(e: any) => item.value = (e.valueOf)} />
                 </Group>
 
             }
@@ -125,29 +150,8 @@ export function UIsettings({ data }: SwitchesCardProps) {
                         <Text>{camelCaseToWord(item.name)}</Text>
 
                     </div>
-                    <QuantityInput defaultValue={item.value} min={8} max={120} onChange={(e: any) => item.value = (e.valueOf)}/>
+                    <QuantityInput defaultValue={item.value} min={8} max={120} onChange={(e: any) => item.value = (e.valueOf)} />
                 </Group>
-
-            }
-            if (item.name === "darkMode"){
-                return (
-                    <Group position="center" my="xl">
-                      <UnstyledButton
-                        aria-label="Toggle theme"
-                        className={classes.control}
-                        onClick={() => toggleColorScheme()}
-                        title="Ctrl + J"
-                      >
-                        <Text size="sm" className={classes.value}>
-                          {upperFirst(colorScheme === 'light' ? 'dark' : 'light')} theme
-                        </Text>
-                
-                        <Center className={classes.iconWrapper}>
-                          <Icon size="1.05rem" stroke={1.5} />
-                        </Center>
-                      </UnstyledButton>
-                    </Group>
-                  );
 
             }
             else {
@@ -168,13 +172,13 @@ export function UIsettings({ data }: SwitchesCardProps) {
                         defaultValue={item.value}
                         min={0}
                         max={100}
-                        onChange={(e) => item.value = (e.valueOf) }
+                        onChange={(e) => item.value = (e.valueOf)}
                         styles={stylesSlider}
-                      
+
                     />
                     <br></br>
                 </div>
-                
+
             }
 
         }

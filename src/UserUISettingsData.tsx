@@ -34,6 +34,17 @@ const UserSettingsData = () => {
     }, [data])
     console.log("settings:" + data);
 
+    const updateSettings = () => {
+        // PUT request using axios with set headers
+        const article = { title: 'React PUT Request Example' };
+        const headers = { 
+            'Authorization': 'Bearer my-token',
+            'My-Custom-Header': 'foobar'
+        };
+        // axios.put(`http://localhost:${PORT}/settings/`, article, { headers })
+        //     .then(response => this.setState({ updatedAt: response.data.updatedAt }));
+    }
+
 
     return (
         <UIsettings data={data} />
