@@ -76,12 +76,9 @@ export function UIsettings({ data }: SwitchesCardProps) {
     const stylesSlider = { thumb: { borderWidth: 2, height: 26, width: 26, padding: 3 } };
     // const [invertColor, setInvertColorValue] = useState<number | ''>(100);
     // const { classesDarkModeSwitch } = useStylesDarkModeSwitch();
-    const { colorScheme, toggleColorScheme } = useMantineColorScheme();
-    const Icon = colorScheme === 'dark' ? IconSun : IconMoon;
 
-
-
-
+    // const { colorScheme, toggleColorScheme } = useMantineColorScheme();
+    // const Icon = colorScheme === 'dark' ? IconSun : IconMoon;
 
 
 
