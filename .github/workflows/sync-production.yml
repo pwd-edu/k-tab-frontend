@@ -15,6 +15,10 @@ jobs:
                   ref: production
                   repository: pwd-edu/iabooks-frontend
 
+            - name: Configure git
+              run: |
+                  git config --global user.name "Mohamed-Ibrahim-01"
+
             - name: Add forked repository remote
               run: git remote add fork https://github.com/Mohamed-Ibrahim-01/iabooks-frontend.git
 
