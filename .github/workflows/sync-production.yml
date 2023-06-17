@@ -10,7 +10,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout code
-              uses: actions/checkout@v2
+              uses: actions/checkout@v3
               with:
                   ref: production
                   repository: pwd-edu/iabooks-frontend
@@ -18,15 +18,10 @@ jobs:
             - name: Add forked repository remote
               run: git remote add fork https://github.com/Mohamed-Ibrahim-01/iabooks-frontend.git
 
-            - name: Fetch forked repository changes
-              run: git fetch fork
-
-            - name: Merge changes from forked repository
-              run: git merge fork/production
-
             - name: Push changes to forked repository
-              uses: ad-m/github-push-action@v0.5.0
+              uses: ad-m/github-push-action@master
               with:
                   branch: production
                   github_token: ${{ secrets.IBRAHIM_FRONTEND_GITHUB_TOKEN }}
                   repository: Mohamed-Ibrahim-01/iabooks-frontend
+                  force: true
