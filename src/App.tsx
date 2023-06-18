@@ -12,6 +12,7 @@ import UIsettings from "./UserUISettings"
 import UserInfoAction from "./UserProfile"
 import ProfileSettings from "./UserProfileSettings"
 import UserSettingsData from "./UserUISettingsData"
+import DarkMode from "./ChangeStyle"
 
 
 function App() {
@@ -71,6 +72,7 @@ function App() {
         />
         <Route path="/settingsdata" element={<UserSettingsData />} />
         <Route path="/profilesettings" element={<ProfileSettings />} />
+        <Route path="/darkmode" element={<DarkMode component={<LessonEditor />} />}/>
       </Routes>
     </BrowserRouter>
   )

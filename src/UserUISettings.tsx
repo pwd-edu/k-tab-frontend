@@ -68,8 +68,6 @@ export interface SwitchesCardProps {
 }
 
 
-
-
 export function UIsettings({ data }: SwitchesCardProps) {
 
     const { classes } = useStyles();
@@ -92,15 +90,17 @@ export function UIsettings({ data }: SwitchesCardProps) {
                         <UnstyledButton
                             aria-label="Toggle theme"
                             className={classes.control}
-                            onClick={() => toggleColorScheme()}
+                            // onClick={() => toggleColorScheme()} //added later after fixing colorSchema
                             title="Ctrl + J"
                         >
                             <Text size="sm" className={classes.value}>
-                                {upperFirst(colorScheme === 'light' ? 'dark' : 'light')} theme
+                            {/* added later after fixing colorSchema */}
+                                {/* {upperFirst(colorScheme === 'light' ? 'dark' : 'light')} theme */} 
                             </Text>
 
                             <Center className={classes.iconWrapper}>
-                                <Icon size="1.05rem" stroke={1.5} />
+                            {/* added later after fixing colorSchema */}
+                                {/* <Icon size="1.05rem" stroke={1.5} /> */}
                             </Center>
                         </UnstyledButton>
                     </Group>
@@ -125,7 +125,7 @@ export function UIsettings({ data }: SwitchesCardProps) {
                         <Text>{camelCaseToWord(item.name)}</Text>
 
                     </div>
-                    <FontPicker defaultValue={item.value} onChange={(e: any) => item.value = (e.valueOf)} />
+                    <FontPicker defaultValue={item.value} onChange={(e: any) => item.value = (e)} />
                 </Group>
 
             }
@@ -153,6 +153,7 @@ export function UIsettings({ data }: SwitchesCardProps) {
             }
             else {
                 console.log(item.value)
+                console.log(data)
                 return <div>
                     <Group position="apart" className={classes.item} noWrap spacing="xl">
                         <div>
@@ -169,7 +170,7 @@ export function UIsettings({ data }: SwitchesCardProps) {
                         defaultValue={item.value}
                         min={0}
                         max={100}
-                        onChange={(e) => item.value = (e.valueOf)}
+                        onChange={(e) => item.value = (e.toString)}
                         styles={stylesSlider}
 
                     />
