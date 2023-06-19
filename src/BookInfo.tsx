@@ -162,18 +162,14 @@ export function BookInfoForm(props: PaperProps) {
                 </form>
             )}
 
-            {type == "view" && (
-                <StudentBookInfo
-                    title={form.values.title}
-                    cover_img={form.values.coverImage}
-                    abstract={form.values.abstract}
-                    average_rating={parseInt(form.values.rating)}
-                    price={parseInt(form.values.price)}
-                    edit_date={new Date()}
-                    publish_date={new Date()}
-                    tags={["AI", "Py"]}
-                />
-            )}
+      </form>}
+
+      {
+        type == "view" && <StudentBookInfo title={form.values.title} cover_img={form.values.coverImage}
+          abstract={form.values.abstract} average_rating={parseInt(form.values.rating)}
+          price={parseInt(form.values.price)} edit_date={new Date()} publish_date={new Date()}
+          tags={["AI", "Py"]} />
+      }
 
             <Group position="apart" mt="xl">
                 <Anchor
