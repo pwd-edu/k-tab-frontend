@@ -18,6 +18,7 @@ jobs:
               with:
                   node-version: "20"
                   cache: "yarn"
+                  cache-dependency-path: yarn.lock
 
             - name: yarn setup
               run: npm install --global yarn
