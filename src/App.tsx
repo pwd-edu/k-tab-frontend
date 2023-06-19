@@ -10,6 +10,8 @@ import StudentBookInfo from "./StudentBookInfo"
 import UIsettings from "./UserUISettings"
 import UserInfoAction from "./UserProfile"
 import ProfileSettings from "./UserProfileSettings"
+import DarkMode from "./ChangeStyle"
+import UserSettingsData from "./UserUISettingsData"
 
 
 function App() {
@@ -22,7 +24,7 @@ function App() {
         <Route path="/author" element={<CreateAuthor />} />
         <Route path="/user" element={<Login />} />
         <Route path="/library" element={<Library />} />
-        <Route path="/navdraw" element={<LessonsNavDrawer />} />
+        {/* <Route path="/navdraw" element={<LessonsNavDrawer />} /> */}
         <Route path="/bookinfo" element={<BookInfoForm />} />
         <Route path="/bookcard" element={<StudentBookInfo title={"Mariam Notes"}
           cover_img={""} abstract={"this the best book you caan have"}
@@ -69,7 +71,7 @@ function App() {
         />
         <Route path="/settingsdata" element={<UserSettingsData />} />
         <Route path="/profilesettings" element={<ProfileSettings />} />
-        <Route path="/darkmode" element={<DarkMode component={<LessonEditor />} />}/>
+        <Route path="/darkmode" element={<DarkMode component={<BookInfoForm />} />}/>
       </Routes>
     </BrowserRouter>
   )

@@ -162,7 +162,6 @@ export function BookInfoForm(props: PaperProps) {
                 </form>
             )}
 
-      </form>}
 
       {
         type == "view" && <StudentBookInfo title={form.values.title} cover_img={form.values.coverImage}
