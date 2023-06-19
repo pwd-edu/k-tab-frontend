@@ -2,7 +2,8 @@ name: Lint Code Base
 
 on:
     push:
-        branches-ignore: [linter-workflow]
+        branches:
+            - linter-workflow
 
     pull_request:
         branches: [linter-workflow]
