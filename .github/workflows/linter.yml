@@ -18,11 +18,14 @@ jobs:
               with:
                   node-version: "20"
 
-            - name: yarn setupc
+            - name: yarn setup
               run: npm install --global yarn
 
-            - name: install
+            - name: install all dependencies
               run: yarn install
 
             - name: ESLint
               run: yarn run lint:fix
+
+            - name: Prettier Check
+              run: prettier --check .
