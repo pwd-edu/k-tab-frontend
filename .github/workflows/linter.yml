@@ -3,10 +3,10 @@ name: Lint Code Base
 on:
     push:
         branches:
-            - linter-workflow
+            - master
 
     pull_request:
-        branches: [linter-workflow]
+        branches: [master]
 
     workflow_dispatch:
 jobs:
