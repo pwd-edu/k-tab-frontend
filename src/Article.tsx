@@ -5,7 +5,7 @@ import { FlexSpace } from "./shared"
 const useStyles = createStyles(() => ({
     article_card: {
         width: 240,
-        height: 138,
+        height: 140,
     },
 }))
 
