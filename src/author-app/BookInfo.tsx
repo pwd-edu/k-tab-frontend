@@ -1,5 +1,5 @@
 import { useState, useRef } from "react"
-import { PORT } from "./constants"
+import { PORT } from "../constants"
 import { useToggle, upperFirst } from "@mantine/hooks"
 import { useForm } from "@mantine/form"
 import {
@@ -15,7 +15,7 @@ import {
     Stack,
     Textarea,
 } from "@mantine/core"
-import StudentBookInfo from "./StudentBookInfo"
+import StudentBookInfo from "../student-app/StudentBookInfo"
 
 export function BookInfoForm(props: PaperProps) {
     const [type, toggle] = useToggle(["edit", "view"])
@@ -163,12 +163,12 @@ export function BookInfoForm(props: PaperProps) {
             )}
 
 
-      {
-        type == "view" && <StudentBookInfo title={form.values.title} cover_img={form.values.coverImage}
-          abstract={form.values.abstract} average_rating={parseInt(form.values.rating)}
-          price={parseInt(form.values.price)} edit_date={new Date()} publish_date={new Date()}
-          tags={["AI", "Py"]} />
-      }
+            {
+                type == "view" && <StudentBookInfo title={form.values.title} cover_img={form.values.coverImage}
+                    abstract={form.values.abstract} average_rating={parseInt(form.values.rating)}
+                    price={parseInt(form.values.price)} edit_date={new Date()} publish_date={new Date()}
+                    tags={["AI", "Py"]} />
+            }
 
             <Group position="apart" mt="xl">
                 <Anchor

@@ -4,7 +4,7 @@ import {
 } from '@mantine/core';
 import { IconHeart } from '@tabler/icons-react';
 import { useState, useEffect } from "react";
-import { PORT } from "./constants"
+import { PORT } from "../constants"
 import axios from "axios"
 
 

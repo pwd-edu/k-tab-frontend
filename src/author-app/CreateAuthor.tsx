@@ -3,7 +3,7 @@ import { FileButton, Button, Group, Text } from "@mantine/core"
 import PhoneInput from "react-phone-input-2"
 import "react-phone-input-2/lib/style.css"
 import { useNavigate } from "react-router-dom"
-import { PORT } from "./constants"
+import { PORT } from "../constants"
 
 const CreateAuthor = () => {
     const [authorFirstName, setFirstName] = useState("")
