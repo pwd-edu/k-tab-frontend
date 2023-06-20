@@ -21,8 +21,10 @@
         }
     },
     "dependencies": {
+        "@anatine/zod-mock": "^3.12.1",
         "@emotion/react": "^11.10.6",
         "@emotion/styled": "^11.10.6",
+        "@faker-js/faker": "^8.0.2",
         "@gemeente-denhaag/formcontrollabel": "^0.2.3-alpha.307",
         "@mantine/core": "^6.0.10",
         "@mantine/dropzone": "^6.0.10",
@@ -30,6 +32,8 @@
         "@mantine/hooks": "^6.0.10",
         "@tabler/icons": "^1.109.0",
         "@tabler/icons-react": "^2.17.0",
+        "@tanstack/react-query": "^4.29.14",
+        "@tanstack/react-query-devtools": "^4.29.14",
         "@tiptap/core": "^2.0.0-beta.202",
         "@tiptap/extension-bold": "^2.0.0-beta.202",
         "@tiptap/extension-color": "^2.0.0-beta.209",
@@ -49,6 +53,7 @@
         "react-router-dom": "^6.4.3",
         "react-select": "^5.7.2",
         "tailwindcss-classnames": "^3.0.7",
+        "zod": "^3.21.4",
         "zustand": "^4.3.3"
     },
     "devDependencies": {
@@ -66,6 +71,7 @@
         "@storybook/react": "^7.0.20",
         "@storybook/testing-library": "^0.1.0",
         "@tailwindcss/typography": "^0.5.9",
+        "@tanstack/eslint-plugin-query": "^4.29.9",
         "@types/react": "^18.2.0",
         "@types/react-dom": "^18.0.7",
         "@typescript-eslint/eslint-plugin": "^5.41.0",

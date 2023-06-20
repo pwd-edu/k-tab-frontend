@@ -22,21 +22,32 @@ import { FileWithPath } from "@mantine/dropzone"
 import { FontColorMenu } from "./FontColorMenu"
 import { HeadingMenu } from "./HeadingMenu"
 import { nanoid } from "nanoid"
+import { ImageDescription } from "./types"
 
-export const EditorMenu = ({ editor }: { editor: Editor }) => {
+interface EditorMenuProps {
+    editor: Editor
+    onSaveClick: () => void
+}
+
+export const EditorMenu = ({ editor, onSaveClick }: EditorMenuProps) => {
     const [setModalOpened] = useEditorStore((state) => [state.setModalOpened])
     const [setModalContent] = useEditorStore((state) => [state.setModalContent])
 
     const addImage = () => {
-        setModalContent(<ImageInserter onImageInserted={insertImgToEditor} />)
+        setModalContent(
+            <ImageInserter
+                onImageInserted={insertImgIntoEditor}
+                onAddClick={() => setModalOpened(false)}
+            />
+        )
         setModalOpened(true)
     }
 
-    const insertImgToEditor = (images: FileWithPath[]) => {
+    const insertImgIntoEditor = (images: FileWithPath[], description: ImageDescription) => {
         const image = images.at(-1)
         if (image) {
             const url = URL.createObjectURL(image)
-            editor.chain().focus().setImage({ src: url }).run()
+            editor.chain().focus().setImage({ src: url, alt: description.content }).run()
         }
     }
 
@@ -108,16 +119,17 @@ export const EditorMenu = ({ editor }: { editor: Editor }) => {
                 <FontColorMenu editor={editor} />
             </Group>
             <Group className="p-0 py-1">
-                <SaveButton />
+                <SaveButton onClick={() => onSaveClick()} />
             </Group>
         </Group>
     )
 }
 
-const SaveButton = () => {
+const SaveButton = ({ onClick }: { onClick?: () => void }) => {
     return (
         <Button
             variant="outline"
+            onClick={onClick}
             classNames={{
                 root: "h-auto ",
                 label: "gap-2 py-1",

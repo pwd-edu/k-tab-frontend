@@ -1,18 +1,22 @@
 import { Button, Image, Stack, Text, Textarea } from "@mantine/core"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { InsertImagePlaceHolder } from "./ImagePlaceHolder"
 import { useEditorStore } from "./editor-store"
 
 import { FileWithPath } from "@mantine/dropzone"
 
 import axios from "axios"
-import { getAIDescription, getPresignedUrl } from "./fetch"
+import { AiClient, S3Client } from "./fetch"
+import { ImageDescription, ImageInserterProps, ImagePreviewProps } from "./types"
 
-function ImageDescription({ type, content }: ImageDescriptionProps) {
+const s3_client = S3Client()
+const ai_client = AiClient()
+
+function ImageDescriptionBody({ type, content }: ImageDescription) {
     return (
         <>
-            {type === "scene" && <Textarea defaultValue={content}></Textarea>}
-            {type === "math" && <Text>{content}</Text>}
+            {type !== "MATH" && <Textarea defaultValue={content}></Textarea>}
+            {type === "MATH" && <Text>{content}</Text>}
         </>
     )
 }
@@ -22,52 +26,58 @@ function ImagePreview({ image }: ImagePreviewProps) {
     return <Image src={url} alt={image.name} />
 }
 
-export function ImageInserter({ onImageInserted }: ImageInserterProps) {
+export function ImageInserter({
+    onImageInserted,
+    onDescriptionChange,
+    onAddClick,
+}: ImageInserterProps) {
+    const chapter_id = "118e86ed-47d9-45bc-aa50-91a02c6d9171" // TODO: get chapter id from props / state
     const [images, setImages] = useEditorStore((state) => [state.images, state.setImages])
     const [inserted, setInserted] = useState(false)
-    const [description, setDescription] = useState<AiDescription | null>(null)
+    const [description, setDescription] = useState<ImageDescription | null>(null)
 
+    // TODO: use query mutations & cache
     const handleImageInserted = async (files: FileWithPath[]) => {
         setInserted(true)
         setImages(files)
         const image = files[0]
 
         try {
-            const presigned_url = await getPresignedUrl(image.name)
-            await uploadS3(image, presigned_url)
+            const { imageUrl: image_url } = await s3_client.getImagePresignedUpload(chapter_id)
+            await uploadS3(image, image_url)
 
-            const image_url = `${presigned_url.url}${presigned_url.fields.key}`
-            const img_description = await getAIDescription(image_url)
+            const img_description = await ai_client.getImageDescription(image_url)
             setDescription(img_description)
+            if (onDescriptionChange) {
+                onDescriptionChange(img_description)
+            }
         } catch (e) {
             console.log(e)
         }
 
-        // show loading indicator
+        // TODO: show loading indicator
     }
 
-    const uploadS3 = async (file: FileWithPath, presigned_url: Record<string, any>) => {
+    const uploadS3 = async (file: FileWithPath, presigned_url: string) => {
         const form = new FormData()
-        Object.keys(presigned_url.fields as []).forEach((key) =>
-            form.append(key, presigned_url.fields[key])
-        )
         form.append("file", file)
-        const upload_response = await axios.post(presigned_url.url, form)
-        console.log(upload_response)
+        const upload_response = await axios.put(presigned_url, form)
     }
 
-    useEffect(() => {
-        console.log(description)
-    }, [description])
+    const handleAddImage = () => {
+        if (!description) return
+        onImageInserted(images, description)
+        onAddClick && onAddClick()
+    }
 
     return (
         <Stack>
             {inserted && <ImagePreview image={images.at(-1) || new File([], "")} />}
             {description && (
-                <ImageDescription type={description.type} content={description.content} />
+                <ImageDescriptionBody type={description.type} content={description.content} />
             )}
             {!inserted && <InsertImagePlaceHolder onUpload={handleImageInserted} />}
-            {inserted && <Button onClick={() => onImageInserted(images)}>Add</Button>}
+            {inserted && <Button onClick={handleAddImage}>Add</Button>}
         </Stack>
     )
 }

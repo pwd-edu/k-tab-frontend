@@ -18,9 +18,9 @@ jobs:
                   git config user.email ${{ vars.IBRAHIM_MAIL }}
                   git config user.name "Mohamed-Ibrahim-01"
                   git config credential.helper store
-                  git remote add origin https://Mohamed-Ibrahim-01:${{ secrets.IBRAHIM_FRONTEND_GITHUB_TOKEN }}@github.com/Mohamed-Ibrahim-01/iabooks-frontend.git
-                  git remote add upstream https://Mohamed-Ibrahim-01:${{ secrets.IBRAHIM_FRONTEND_GITHUB_TOKEN }}@github.com/pwd-edu/iabooks-frontend.git
+                  git remote add fork https://Mohamed-Ibrahim-01:${{ secrets.IBRAHIM_FRONTEND_GITHUB_TOKEN }}@github.com/Mohamed-Ibrahim-01/iabooks-frontend.git
+                  git remote add origin https://Mohamed-Ibrahim-01:${{ secrets.IBRAHIM_FRONTEND_GITHUB_TOKEN }}@github.com/pwd-edu/iabooks-frontend.git
                   git fetch --all --prune
-                  git checkout -b master --track origin/master
-                  git merge upstream/production --no-edit --ff-only
-                  git push origin master
+                  git checkout -b master --track fork/master
+                  git merge origin/production --no-edit --ff-only
+                  git push fork master
