@@ -1,5 +1,5 @@
 import axios from "axios"
-import React , { useState } from "react"
+import React, { useState } from "react"
 import { NavigateFunction, useNavigate } from 'react-router-dom';
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
@@ -10,7 +10,51 @@ import { PORT } from "../constants"
 
 type Props = {}
 
-const Login: React.FC <Props> = () => {
+const Login: React.FC<Props> = () => {
+
+    let navigate: NavigateFunction = useNavigate();
+
+    const [loading, setLoading] = useState(false)
+    const [message, setMessage] = useState("")
+
+    const initialValues: {
+        email: string;
+        password: string;
+    } = {
+        email: "",
+        password: "",
+    };
+
+    const validationSchema = Yup.object().shape({
+        email: Yup.string().required("This is required!"),
+        password: Yup.string().required("This is required!")
+    })
+
+    const handleLogin = (formValue: { email: string, password: string }) => {
+        const { email, password } = formValue;
+
+        setMessage("");
+        setLoading(true);
+
+        login(email, password).then(() => {
+            navigate("/home")
+            window.location.reload();
+        },
+            (error) => {
+                const resMessage =
+                    (error.response &&
+                        error.response.data &&
+                        error.response.data.message) ||
+                    error.message ||
+                    error.toString();
+
+                setLoading(false);
+                setMessage(resMessage);
+            }
+        );
+
+    }
+
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
 
@@ -58,32 +102,64 @@ const Login: React.FC <Props> = () => {
     return (
         <div className="create-user">
             <h2>Login to your Account</h2>
-            <form onSubmit={handleSubmit}>
-                <label htmlFor="">
-                    Email:
-                    <input
-                        type="email"
-                        required
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                    />
-                </label>
 
-                {/* <PasswordStrength /> */}
+            <Formik
+                initialValues={initialValues}
+                validationSchema={validationSchema}
+                onSubmit={handleLogin}
+            >
+                <form onSubmit={handleSubmit}>
+                    <div>
+                        <label htmlFor="">
+                            Email:
+                            <input
+                                type="email"
+                                required
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                            />
+                        </label>
+                        <ErrorMessage
+                            name="email"
+                            component="div"
+                            className="alert alert-danger"
+                        />
+                    </div>
 
-                <label htmlFor="">
-                    Password
-                    <input
-                        type="password"
-                        required
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
-                    
-                </label>
+                    {/* <PasswordStrength /> */}
+                    <div>
+                        <label htmlFor="">
+                            Password
+                            <input
+                                type="password"
+                                required
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                            />
 
-                {<button>Login!</button>}
-            </form>
+                        </label>
+                        <ErrorMessage
+                            name="password"
+                            component="div"
+                            className="alert alert-danger"
+                        />
+                    </div>
+
+                    {<button disabled={loading}>{loading && (
+                        <span ></span>
+                    )}
+                        <span>Login!</span></button>}
+
+                    {message && (
+                        <div>
+                            <div role="alert">
+                                {message}
+                            </div>
+                        </div>
+                    )}
+
+                </form>
+            </Formik>
         </div>
     )
 }
