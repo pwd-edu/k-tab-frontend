@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom"
 import { Multiselect } from "multiselect-react-dropdown"
 import PhoneInput from "react-phone-input-2"
 import "react-phone-input-2/lib/style.css"
-import { disabilityOptions } from "./Disabilities"
-import { PORT } from "./constants"
+import { disabilityOptions } from "../Disabilities"
+import { PORT } from "../constants"
 import { Text } from "@mantine/core"
 
 const CreateStudent = () => {

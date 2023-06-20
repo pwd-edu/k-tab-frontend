@@ -4,9 +4,9 @@ import {
 } from '@mantine/core';
 import { IconAccessible, IconMoon, IconSun } from '@tabler/icons-react';
 import { upperFirst } from '@mantine/hooks';
-import { FontPicker } from './FontPicker';
-import { QuantityInput } from './NumberInputComponent';
-import { camelCaseToWord } from './CamelCaseToWord';
+import { FontPicker } from '../FontPicker';
+import { QuantityInput } from '../NumberInputComponent';
+import { camelCaseToWord } from '../helpers/CamelCaseToWord';
 
 const useStyles = createStyles((theme) => ({
     card: {

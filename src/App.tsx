@@ -2,21 +2,22 @@ import { BrowserRouter, Routes, Route } from "react-router-dom"
 
 import { Home } from "./author-app/Home"
 import { LessonEditor } from "./editor/Editor"
-import CreateStudent from "./CreateStudent"
+import CreateStudent from "./student-app/CreateStudent"
 import CreateAuthor from "./author-app/CreateAuthor"
-import Login from "./login"
+import Login from "./user-app/login"
 import { Library } from "./student-app/StudentLibrary"
 import { BookInfoForm } from "./author-app/BookInfo"
 import StudentBookInfo from "./student-app/StudentBookInfo"
-import UIsettings from "./UserUISettings"
-import UserInfoAction from "./UserProfile"
-import ProfileSettings from "./UserProfileSettings"
+import UIsettings from "./user-app/UserUISettings"
+import UserInfoAction from "./user-app/UserProfile"
+import ProfileSettings from "./user-app/UserProfileSettings"
 import DarkMode from "./ChangeStyle"
-import UserSettingsData from "./UserUISettingsData"
+import UserSettingsData from "./user-app/UserUISettingsData"
+import { PasswordInput } from "@mantine/core"
 
 
 
-function App() {
+const App: React.FC = () => {
   return (
     <BrowserRouter>
       <Routes>
@@ -40,7 +41,7 @@ function App() {
         />
         <Route path="/settingsdata" element={<UserSettingsData />} />
         <Route path="/profilesettings" element={<ProfileSettings />} />
-        <Route path="/darkmode" element={<DarkMode component={<BookInfoForm />} />} />
+        <Route path="/darkmode" element={<DarkMode component={<PasswordInput/>} />} />
       </Routes>
     </BrowserRouter>
   )

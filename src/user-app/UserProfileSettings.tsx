@@ -3,7 +3,7 @@ import { Avatar, Text } from "@mantine/core"
 import PhoneInput from "react-phone-input-2"
 import "react-phone-input-2/lib/style.css"
 import { useNavigate } from "react-router-dom"
-import { PORT } from "./constants"
+import { PORT } from "../constants"
 import axios from "axios"
 
 const ProfileSettings = () => {

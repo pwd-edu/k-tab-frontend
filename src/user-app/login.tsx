@@ -1,9 +1,16 @@
-import { useState } from "react"
 import axios from "axios"
-import { PORT } from "./constants"
-import React from "react"
+import React , { useState } from "react"
+import { NavigateFunction, useNavigate } from 'react-router-dom';
+import { Formik, Field, Form, ErrorMessage } from "formik";
+import * as Yup from "yup";
 
-const Login = () => {
+import { PasswordStrength } from "../PasswordInput"
+import { login } from "../auth-services/auth.services";
+import { PORT } from "../constants"
+
+type Props = {}
+
+const Login: React.FC <Props> = () => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
 
@@ -62,6 +69,8 @@ const Login = () => {
                     />
                 </label>
 
+                {/* <PasswordStrength /> */}
+
                 <label htmlFor="">
                     Password
                     <input
@@ -70,6 +79,7 @@ const Login = () => {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     />
+                    
                 </label>
 
                 {<button>Login!</button>}
