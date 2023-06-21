@@ -1,15 +1,14 @@
-import { useState, useRef } from "react"
+import { useState, useRef, FC } from "react"
 import { FileButton, Button, Group, Text } from "@mantine/core"
+import { useForm } from "react-hook-form";
 import PhoneInput from "react-phone-input-2"
 import "react-phone-input-2/lib/style.css"
 import { useNavigate } from "react-router-dom"
-import { Author } from "../user-types/types"
-import { Formik, Field, Form, ErrorMessage } from "formik";
-import * as Yup from "yup";
-import { registerAuthor } from "../auth-services/auth.services"
+import { ToastContainer, toast, Flip } from "react-toastify";
+import axios from "axios";
+import { PORT } from "../constants"
 
-const CreateAuthor: React.FC = () => {
-
+const CreateAuthor = () => {
     const [authorFirstName, setFirstName] = useState("")
     const [authorSecondName, setSecondName] = useState("")
     const [authorEmail, setEmail] = useState("")
@@ -17,16 +16,72 @@ const CreateAuthor: React.FC = () => {
     const [profilePhotoFile, setProfilePhotoFile] = useState<File | null>() //useState<File | null>(null);
     const [profilePhotoBase64, setProfilePhotoBase64] = useState("")
     const [contact, setContact] = useState("")
-
-    const [successful, setSuccessful] = useState(false);
-    const [message, setMessage] = useState("");
-
     const [isPending, setIsPending] = useState(false)
     const backHistory = useNavigate()
     const resetRef = useRef<() => void>(null)
 
-    // const handleSubmit = (e: { preventDefault: () => void }) => {
-    //     e.preventDefault() //prevents refresh
+    const handleSubmit = (e: { preventDefault: () => void }) => {
+        e.preventDefault() //prevents refresh
+
+        const author = {
+            authorName: authorFirstName + " " + authorSecondName,
+            authorEmail: authorEmail,
+            password: password,
+            profilePhotoAsBinaryString: profilePhotoBase64,
+            contact: contact,
+        }
+
+        setIsPending(true)
+
+        // const response = fetch(`http://localhost:${PORT}/author/signup/`, {
+        //     method: "POST",
+        //     headers: {
+        //         "Content-Type": "application/json",
+        //     },
+        //     body: JSON.stringify(author),
+        // }).then(() => {
+        //     console.log(JSON.stringify(author))
+        //     console.log("added new author")
+        //     console.log()
+
+        // })
+
+        // setIsPending(false)
+        // backHistory("/")
+
+        // console.log(author)
+        // console.log(JSON.stringify(response))
+        console.log(JSON.stringify(author))
+        axios
+            .post(`http://localhost:${PORT}/author/signup/`, author)
+            .then(function (response) {
+
+
+                console.log(JSON.stringify(author))
+                console.log(response.data)
+                setTimeout(() => {
+                    backHistory("/login")
+                }, 3000);
+            })
+
+            .catch(function (error) {
+                console.log(error);
+            });
+
+        setIsPending(false)
+
+    }
+
+
+    // const {
+    //     register,
+    //     handleSubmit,
+    //     watch,
+    //     reset,
+    //     formState: { errors },
+    // } = useForm();
+    // const submitData = () => {
+
 
     //     const author = {
     //         authorName: authorFirstName + " " + authorSecondName,
@@ -35,24 +90,34 @@ const CreateAuthor: React.FC = () => {
     //         profilePhotoAsBinaryString: profilePhotoBase64,
     //         contact: contact,
     //     }
+    //     console.log(author);
+    //     console.log(JSON.stringify(author))
+    //     axios
+    //         .post(`http://localhost:${PORT}/author/signup/`, JSON.stringify(author))
+    //         .then(function (response) {
+    //             // toast.success(response.data.message, {
+    //             //     position: "top-right",
+    //             //     autoClose: 3000,
+    //             //     hideProgressBar: true,
+    //             //     closeOnClick: true,
+    //             //     pauseOnHover: true,
+    //             //     draggable: false,
+    //             //     progress: 0,
+    //             //     toastId: "my_toast",
+    //             // });
 
-    //     setIsPending(true)
+    //             console.log(JSON.stringify(author))
+    //             console.log(response.data)
+    //             reset();
+    //             setTimeout(() => {
+    //                 backHistory("/")
+    //             }, 3000);
+    //         })
 
-    //     fetch(`http://localhost:${PORT}/author/signup/`, {
-    //         method: "POST",
-    //         headers: {
-    //             "Content-Type": "application/json",
-    //         },
-    //         body: JSON.stringify(author),
-    //     }).then(() => {
-    //         console.log(JSON.stringify(author))
-    //         console.log("added new author")
-    //     })
-    //     setIsPending(false)
-    //     backHistory("/")
-
-    //     console.log(author)
-    // }
+    //         .catch(function (error) {
+    //             console.log(error);
+    //         });
+    // };
 
     const clearFile = () => {
         setProfilePhotoFile(null)
@@ -77,194 +142,112 @@ const CreateAuthor: React.FC = () => {
         }
     }
 
-    const initialValues: Author = {
-        authorName: "",
-        authorEmail: "",
-        password: "",
-        contact: "",
-        profilePhotoAsBinaryString: "",
-    };
-
-    const validationSchema = Yup.object().shape({
-        authorEmail: Yup.string()
-            .email("This is not a valid email.")
-            .required("This field is required!"),
-        password: Yup.string()
-            .test(
-                "len",
-                "The password must be between 6 and 40 characters.",
-                (val: any) =>
-                    val &&
-                    val.toString().length >= 6 &&
-                    val.toString().length <= 40
-            )
-            .required("This field is required!"),
-    });
-
-    const handleRegister = (formValue: Author) => {
-        console.log("kkkkkkkkk")
-        const { authorName,
-            authorEmail,
-            password,
-            contact,
-            profilePhotoAsBinaryString 
-        } = formValue;
-
-        registerAuthor({
-            authorName,
-            authorEmail,
-            password,
-            contact,
-            profilePhotoAsBinaryString,
-        }).then(
-            (response) => {
-                setMessage(response.data.message);
-                setSuccessful(true);
-            },
-            (error) => {
-                const resMessage =
-                    (error.response &&
-                        error.response.data &&
-                        error.response.data.message) ||
-                    error.message ||
-                    error.toString();
-
-                setMessage(resMessage);
-                setSuccessful(false);
-            }
-        )
-
-        setIsPending(false)
-        backHistory("/")
-    }
-
-
-
     return (
         <div className="create-user">
             <h2>
                 <b>Author Sign Up!</b>
             </h2>
-            <Formik
-                initialValues={initialValues}
-                validationSchema={validationSchema}
-                onSubmit={handleRegister}
-            >
-                <Form>
-                    {!successful && (<div>
-                        <div>
-                            <label htmlFor="">Name</label>
-                            <Field
-                                name="name"
-                                type="text"
-                                required
-                                className="form-control"
+            <form onSubmit={handleSubmit}>
+                <label htmlFor="">
+                    First Name
+                    <input
+                        type="text"
+                        required
+                        value={authorFirstName}
+                        onChange={(e) => setFirstName(e.target.value)}
+                    // {...register("firstname", {
+                    //     required: "Firstname is required!",
+                    // })}
+                    />
+                </label>
+                <label htmlFor="">
+                    Second Name
+                    <input
+                        type="text"
+                        required
+                        value={authorSecondName}
+                        onChange={(e) => setSecondName(e.target.value)}
+                    // {...register("lastname", {
+                    //     required: "Lastname is required!",
+                    // })}
 
-                            />
-                            <ErrorMessage
-                                name="name"
-                                component="div"
-                                className="alert alert-danger"
-                            />
-                        </div>
-                        <div>
-                            <label htmlFor="">Email</label>
-                            <Field
-                                name="email"
-                                type="email"
-                                required
-                                className="form-control"
+                    />
+                </label>
+                <label htmlFor="">
+                    Email
+                    <input
+                        type="email"
+                        required
+                        value={authorEmail}
+                        onChange={(e) => setEmail(e.target.value)}
+                    // {...register("email", { required: "Email is required!" })}
+                    />
+                </label>
 
-                            />
-                            <ErrorMessage
-                                name="email"
-                                component="div"
-                                className="alert alert-danger"
-                            />
-                        </div>
-                        <div>
-                            <label htmlFor="">Password</label>
-                            <Field
-                                name="password"
-                                type="password"
-                                className="form-control"
-                            />
-                            <ErrorMessage
-                                name="password"
-                                component="div"
-                                className="alert alert-danger"
-                            />
-                        </div>
-                        <label>Phone Number</label>
-                        <PhoneInput
-                            enableAreaCodes={true}
-                            country={"eg"}
-                            value={contact}
-                            onChange={(contact) => setContact(contact)}
-                        />
+                <label htmlFor="">
+                    Password
+                    <input
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    // {...register("password", { required: "password is required!" })}
+                    />
+                </label>
 
-                        <br></br>
+                <Text>Phone Number</Text>
+                <PhoneInput
+                    enableAreaCodes={true}
+                    country={"eg"}
+                    value={contact}
+                    onChange={(contact) => setContact(contact)}
+                />
 
-                        <>
-                            <Group position="center">
-                                <FileButton
-                                    resetRef={resetRef}
-                                    onChange={setProfilePhotoFile}
-                                    accept="image/png,image/jpeg"
-                                >
-                                    {(props) => <Button {...props}>Upload image</Button>}
-                                </FileButton>
-                                <Button
-                                    disabled={!profilePhotoFile}
-                                    color="red"
-                                    onClick={clearFile}
-                                    size="xs"
-                                >
-                                    Reset
-                                </Button>
-                                <Button
-                                    disabled={!profilePhotoFile}
-                                    color="green"
-                                    onClick={handleUploadPicture}
-                                    size="xs"
-                                >
-                                    Verify
-                                </Button>
-                            </Group>
+                <br></br>
 
-                            {profilePhotoFile && (
-                                <Text size="sm" align="center" mt="sm">
-                                    Picked file: {profilePhotoFile.name}
-                                </Text>
-                            )}
-                        </>
-                        <br />
+                <>
+                    <Group position="center">
+                        <FileButton
+                            resetRef={resetRef}
+                            onChange={setProfilePhotoFile}
+                            accept="image/png,image/jpeg"
+                        >
+                            {(props) => <Button {...props}>Upload image</Button>}
+                        </FileButton>
+                        <Button
+                            disabled={!profilePhotoFile}
+                            color="red"
+                            onClick={clearFile}
+                            size="xs"
+                        >
+                            Reset
+                        </Button>
+                        <Button
+                            disabled={!profilePhotoFile}
+                            color="green"
+                            onClick={handleUploadPicture}
+                            size="xs"
+                        >
+                            Verify
+                        </Button>
+                    </Group>
 
-                        {!isPending && (
-                            <button type="submit">
-                                <b>Sign UP!</b>
-                            </button>
-                        )}
-                        {isPending && <button disabled>Adding info..</button>}
-                    </div>)}
-
-                    {message && (
-                        <div>
-                            <div
-                                className={
-                                    successful ? "alert alert-success" : "alert alert-danger"
-                                }
-                                role="alert"
-                            >
-                                {message}
-                            </div>
-                        </div>
+                    {profilePhotoFile && (
+                        <Text size="sm" align="center" mt="sm">
+                            Picked file: {profilePhotoFile.name}
+                        </Text>
                     )}
+                </>
+                <br />
 
-                </Form>
-            </Formik>
-
+                {!isPending && (
+                    <button>
+                        <b>Sign UP!</b>
+                    </button>
+                )}
+                {isPending && <button disabled>Adding info..</button>}
+            </form>
         </div>
+
     )
 }
 

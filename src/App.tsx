@@ -4,7 +4,6 @@ import { Home } from "./author-app/Home"
 import { LessonEditor } from "./editor/Editor"
 import CreateStudent from "./student-app/CreateStudent"
 import CreateAuthor from "./author-app/CreateAuthor"
-import Login from "./user-app/login"
 import { Library } from "./student-app/StudentLibrary"
 import { BookInfoForm } from "./author-app/BookInfo"
 import StudentBookInfo from "./student-app/StudentBookInfo"
@@ -15,6 +14,8 @@ import DarkMode from "./ChangeStyle"
 import UserSettingsData from "./user-app/UserUISettingsData"
 import { PasswordInput } from "@mantine/core"
 import AuthenticationTitle from "./user-app/new_login"
+import PrivateRoute from "./Auth/PrivateRoute"
+import RestrictedRoute from "./Auth/RestrictedRoute"
 
 
 
@@ -26,8 +27,15 @@ const App: React.FC = () => {
         <Route path="/editor" element={<LessonEditor />} />
         <Route path="/student" element={<CreateStudent />} />
         <Route path="/author" element={<CreateAuthor />} />
-        <Route path="/user" element={<Login />} />
-        <Route path="/login" element={<AuthenticationTitle/>}/>
+
+        <Route path='/' element={<PrivateRoute/>}>
+            <Route path='/' element={<Home/>}/>
+          </Route>
+
+        <Route path='/login' element={<RestrictedRoute/>}>
+          <Route path='/login' element={<AuthenticationTitle/>}></Route>
+        </Route>
+        
         <Route path="/library" element={<Library />} />
         {/* <Route path="/navdraw" element={<LessonsNavDrawer />} /> */}
         <Route path="/bookinfo" element={<BookInfoForm />} />
