@@ -1,5 +1,4 @@
-
-export function stringToBoolean(value: string){
-var isTrue = (value === 'true');
-return isTrue
+export function stringToBoolean(value: string) {
+    const isTrue = value === "true"
+    return isTrue
 }

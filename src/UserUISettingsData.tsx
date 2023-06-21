@@ -1,11 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from "react"
 import { PORT } from "./constants"
 import axios from "axios"
-import UIsettings from "./UserUISettings";
-
+import UIsettings from "./UserUISettings"
 
 const UserSettingsData = () => {
-    const [data, setData] = useState([]);
+    const [data, setData] = useState([])
 
     const URL = `http://localhost:${PORT}/settings/`
 
@@ -13,42 +12,39 @@ const UserSettingsData = () => {
         try {
             const fetchData = await axios.get(URL, {
                 headers: {
-                    authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtYWhtb3VkQGdtYWlsLmNvbSIsInVzZXJJZCI6IjUyNDExOTdjLTViMmQtNGJkZS1hNDRjLTE3YWM0NTU1Zjc3YSIsInVzZXJUeXBlIjoiQURNSU4iLCJpYXQiOjE2ODY5OTk1MTQsImV4cCI6MTY4ODE2MjQwMH0.gQPmaOQ_7chkhHR_fvpV-WJ5Qui33LeVSq_CiyVgDDQ"  },
+                    authorization:
+                        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtYWhtb3VkQGdtYWlsLmNvbSIsInVzZXJJZCI6IjUyNDExOTdjLTViMmQtNGJkZS1hNDRjLTE3YWM0NTU1Zjc3YSIsInVzZXJUeXBlIjoiQURNSU4iLCJpYXQiOjE2ODY5OTk1MTQsImV4cCI6MTY4ODE2MjQwMH0.gQPmaOQ_7chkhHR_fvpV-WJ5Qui33LeVSq_CiyVgDDQ",
+                },
             })
             console.log(fetchData.data.settings)
 
             setData(fetchData.data.settings)
-            console.log("data: " + data);
-
+            console.log("data: " + data)
         } catch (error) {
             console.log(error)
         }
     }
 
-
     useEffect(() => {
-        window.addEventListener('load', getSettings)
+        window.addEventListener("load", getSettings)
         return () => {
-            window.removeEventListener('load', getSettings)
+            window.removeEventListener("load", getSettings)
         }
     }, [data])
-    console.log("settings:" + data);
+    console.log("settings:" + data)
 
     const updateSettings = () => {
         // PUT request using axios with set headers
-        const article = { title: 'React PUT Request Example' };
-        const headers = { 
-            'Authorization': 'Bearer my-token',
-            'My-Custom-Header': 'foobar'
-        };
+        const article = { title: "React PUT Request Example" }
+        const headers = {
+            Authorization: "Bearer my-token",
+            "My-Custom-Header": "foobar",
+        }
         // axios.put(`http://localhost:${PORT}/settings/`, article, { headers })
         //     .then(response => this.setState({ updatedAt: response.data.updatedAt }));
     }
 
-
-    return (
-        <UIsettings data={data} />
-    )
+    return <UIsettings data={data} />
 }
 
 export default UserSettingsData

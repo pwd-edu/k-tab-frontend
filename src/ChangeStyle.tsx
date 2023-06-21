@@ -1,5 +1,5 @@
 // // export function invertColors(className: string, value: string){
-// //     document.getElementsByClassName(className)[0].style.filter =  grayscale(1); 
+// //     document.getElementsByClassName(className)[0].style.filter =  grayscale(1);
 // // }
 
 // import { MantineProvider } from '@mantine/core';
@@ -36,40 +36,29 @@
 //   );
 // }
 
-import { MantineProvider, useMantineTheme, MantineTheme } from '@mantine/core';
-
+import { MantineProvider, useMantineTheme, MantineTheme } from "@mantine/core"
 
 interface ReactCompProps {
-    component: React.ReactNode | React.ReactNode[];
-  }
+    component: React.ReactNode | React.ReactNode[]
+}
 
 export default function DarkMode({
     component,
-  }: {
-    component: React.ReactNode | React.ReactNode[];
-  })
-   {
-  return (
-    <MantineProvider theme={{ colorScheme: 'dark' }}>
-     {component}
-    </MantineProvider>
-  );
+}: {
+    component: React.ReactNode | React.ReactNode[]
+}) {
+    return <MantineProvider theme={{ colorScheme: "dark" }}>{component}</MantineProvider>
 }
 
-
-
-
 function getColor(theme: MantineTheme) {
-    return theme.colors.blue[5];
-  }
-  
+    return theme.colors.blue[5]
+}
+
 export function changeBackground({
     component,
-  }: {
-    component: React.ReactNode | React.ReactNode[];
-  })
-  {
-    const theme = useMantineTheme();
-    return <div style={{ background: getColor(theme) }} > {component}
-    </div>;
-  }
+}: {
+    component: React.ReactNode | React.ReactNode[]
+}) {
+    const theme = useMantineTheme()
+    return <div style={{ background: getColor(theme) }}> {component}</div>
+}
