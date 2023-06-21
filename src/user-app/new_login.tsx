@@ -1,112 +1,139 @@
-import { useToggle, upperFirst } from '@mantine/hooks';
-import { useForm } from '@mantine/form';
 import {
     TextInput,
     PasswordInput,
-    Text,
-    Paper,
-    Group,
-    PaperProps,
-    Button,
-    Divider,
     Checkbox,
     Anchor,
-    Stack,
+    Paper,
+    Title,
+    Text,
+    Container,
+    Group,
+    Button,
 } from '@mantine/core';
-import { GoogleButton, TwitterButton } from '../components/SocialMediaButtons/SocialMediaButtons';
+import { NavigateFunction, useNavigate } from "react-router-dom"
+import { Formik, Field, Form, ErrorMessage } from "formik";
+import * as Yup from "yup";
+import React, { useState } from "react"
 
-function AuthenticationForm(props: PaperProps) {
-    const [type, toggle] = useToggle(['login', 'register']);
-    const form = useForm({
-        initialValues: {
-            email: '',
-            name: '',
-            password: '',
-            terms: true,
-        },
+import { login } from "../auth-services/auth.services";
+import { PORT } from "../constants"
 
-        validate: {
-            email: (val) => (/^\S+@\S+$/.test(val) ? null : 'Invalid email'),
-            password: (val) => (val.length <= 6 ? 'Password should include at least 6 characters' : null),
+type Props = {}
+
+const AuthenticationTitle: React.FC<Props> = () => {
+    const navigation = useNavigate()
+
+    let navigate: NavigateFunction = useNavigate();
+
+    const [loading, setLoading] = useState(false)
+    const [message, setMessage] = useState("")
+
+    const initialValues: {
+        email: string;
+        password: string;
+    } = {
+        email: "",
+        password: "",
+    };
+
+    const validationSchema = Yup.object().shape({
+        email: Yup.string().required("This is required!"),
+        password: Yup.string().required("This is required!")
+    })
+
+    const handleLogin = (formValue: { email: string, password: string }) => {
+        const { email, password } = formValue;
+
+        setMessage("");
+        setLoading(true);
+
+        console.log("mmmm")
+
+        login(email, password).then(() => {
+            navigate("/")
+            window.location.reload();
+            console.log("mmmmkkkk")
         },
-    });
+            (error) => {
+                const resMessage =
+                    (error.response &&
+                        error.response.data &&
+                        error.response.data.message) ||
+                    error.message ||
+                    error.toString();
+
+                setLoading(false);
+                setMessage(resMessage);
+            }
+        );
+
+    }
 
     return (
+        <Container size={420} my={40}>
+            <Title
+                align="center"
+                sx={(theme) => ({ fontFamily: `Greycliff CF, ${theme.fontFamily}`, fontWeight: 900 })}
+            >
+                Welcome back!
+            </Title>
+            <Text color="dimmed" size="sm" align="center" mt={5}>
+                Do not have an account yet? Create account as {' '}
+                <Anchor size="sm" component="button" onClick={() => navigation("/author")}>
+                    Author
+                </Anchor>
+                {' '}or
+                <Anchor size="sm" component="button" onClick={() => navigation("/student")}>
+                    Student
+                </Anchor>
+            </Text>
 
-        <div>
-            <div> HELLLLLo</div>
-            <Paper radius="md" p="xl" withBorder {...props}>
-                <Text size="lg" weight={500}>
-                    Welcome to Mantine, {type} with
-                </Text>
-
-                <Group grow mb="md" mt="md">
-                    <GoogleButton radius="xl">Google</GoogleButton>
-                    <TwitterButton radius="xl">Twitter</TwitterButton>
-                </Group>
-
-                <Divider label="Or continue with email" labelPosition="center" my="lg" />
-
-                <form onSubmit={form.onSubmit(() => { })}>
-                    <Stack>
-                        {type === 'register' && (
-                            <TextInput
-                                label="Name"
-                                placeholder="Your name"
-                                value={form.values.name}
-                                onChange={(event) => form.setFieldValue('name', event.currentTarget.value)}
-                                radius="md"
+            <Formik
+                initialValues={initialValues}
+                validationSchema={validationSchema}
+                onSubmit={handleLogin}
+            >
+                <Paper withBorder shadow="md" p={30} mt={30} radius="md">
+                    <form>
+                        <div>
+                            <TextInput label="Email" placeholder="you@mantine.dev" required />
+                            <ErrorMessage
+                                name="username"
+                                component="div"
+                                className="alert alert-danger"
                             />
+                        </div>
+                        <div>
+                            <PasswordInput label="Password" placeholder="Your password" required mt="md" />
+                            <ErrorMessage
+                                name="password"
+                                component="div"
+                                className="alert alert-danger"
+                            />
+                        </div>
+                        <Group position="apart" mt="lg">
+                            <Checkbox label="Remember me" />
+                            <Anchor component="button" size="sm">
+                                Forgot password?
+                            </Anchor>
+                        </Group>
+
+                        {message && (
+                            <div className="form-group">
+                                <div className="alert alert-danger" role="alert">
+                                    {message}
+                                </div>
+                            </div>
                         )}
 
-                        <TextInput
-                            required
-                            label="Email"
-                            placeholder="hello@mantine.dev"
-                            value={form.values.email}
-                            onChange={(event) => form.setFieldValue('email', event.currentTarget.value)}
-                            error={form.errors.email && 'Invalid email'}
-                            radius="md"
-                        />
-
-                        <PasswordInput
-                            required
-                            label="Password"
-                            placeholder="Your password"
-                            value={form.values.password}
-                            onChange={(event) => form.setFieldValue('password', event.currentTarget.value)}
-                            error={form.errors.password && 'Password should include at least 6 characters'}
-                            radius="md"
-                        />
-
-                        {type === 'register' && (
-                            <Checkbox
-                                label="I accept terms and conditions"
-                                checked={form.values.terms}
-                                onChange={(event) => form.setFieldValue('terms', event.currentTarget.checked)}
-                            />
-                        )}
-                    </Stack>
-
-                    <Group position="apart" mt="xl">
-                        <Anchor
-                            component="button"
-                            type="button"
-                            color="dimmed"
-                            onClick={() => toggle()}
-                            size="xs"
-                        >
-                            {type === 'register'
-                                ? 'Already have an account? Login'
-                                : "Don't have an account? Register"}
-                        </Anchor>
-                        <Button type="submit" radius="xl">
-                            {upperFirst(type)}
+                        <Button type="submit" fullWidth mt="xl" radius="xl">
+                            Login
                         </Button>
-                    </Group>
-                </form>
-            </Paper>
-        </div>
+                    </form>
+                </Paper>
+            </Formik>
+        </Container>
     );
 }
-export default AuthenticationForm
+
+export default AuthenticationTitle

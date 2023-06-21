@@ -14,7 +14,7 @@ import ProfileSettings from "./user-app/UserProfileSettings"
 import DarkMode from "./ChangeStyle"
 import UserSettingsData from "./user-app/UserUISettingsData"
 import { PasswordInput } from "@mantine/core"
-import AuthenticationForm from "./user-app/new_login"
+import AuthenticationTitle from "./user-app/new_login"
 
 
 
@@ -27,7 +27,7 @@ const App: React.FC = () => {
         <Route path="/student" element={<CreateStudent />} />
         <Route path="/author" element={<CreateAuthor />} />
         <Route path="/user" element={<Login />} />
-        {/* <Route path="/login" element={<AuthenticationForm/>}/> */}
+        <Route path="/login" element={<AuthenticationTitle/>}/>
         <Route path="/library" element={<Library />} />
         {/* <Route path="/navdraw" element={<LessonsNavDrawer />} /> */}
         <Route path="/bookinfo" element={<BookInfoForm />} />

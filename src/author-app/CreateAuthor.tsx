@@ -3,7 +3,6 @@ import { FileButton, Button, Group, Text } from "@mantine/core"
 import PhoneInput from "react-phone-input-2"
 import "react-phone-input-2/lib/style.css"
 import { useNavigate } from "react-router-dom"
-import { PORT } from "../constants"
 import { Author } from "../user-types/types"
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
@@ -19,41 +18,41 @@ const CreateAuthor: React.FC = () => {
     const [profilePhotoBase64, setProfilePhotoBase64] = useState("")
     const [contact, setContact] = useState("")
 
-    const [successful, setSuccessful] = useState<boolean>(false);
-    const [message, setMessage] = useState<string>("");
+    const [successful, setSuccessful] = useState(false);
+    const [message, setMessage] = useState("");
 
     const [isPending, setIsPending] = useState(false)
     const backHistory = useNavigate()
     const resetRef = useRef<() => void>(null)
 
-    const handleSubmit = (e: { preventDefault: () => void }) => {
-        e.preventDefault() //prevents refresh
+    // const handleSubmit = (e: { preventDefault: () => void }) => {
+    //     e.preventDefault() //prevents refresh
 
-        const author = {
-            authorName: authorFirstName + " " + authorSecondName,
-            authorEmail: authorEmail,
-            password: password,
-            profilePhotoAsBinaryString: profilePhotoBase64,
-            contact: contact,
-        }
+    //     const author = {
+    //         authorName: authorFirstName + " " + authorSecondName,
+    //         authorEmail: authorEmail,
+    //         password: password,
+    //         profilePhotoAsBinaryString: profilePhotoBase64,
+    //         contact: contact,
+    //     }
 
-        setIsPending(true)
+    //     setIsPending(true)
 
-        fetch(`http://localhost:${PORT}/author/signup/`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(author),
-        }).then(() => {
-            console.log(JSON.stringify(author))
-            console.log("added new author")
-        })
-        setIsPending(false)
-        backHistory("/")
+    //     fetch(`http://localhost:${PORT}/author/signup/`, {
+    //         method: "POST",
+    //         headers: {
+    //             "Content-Type": "application/json",
+    //         },
+    //         body: JSON.stringify(author),
+    //     }).then(() => {
+    //         console.log(JSON.stringify(author))
+    //         console.log("added new author")
+    //     })
+    //     setIsPending(false)
+    //     backHistory("/")
 
-        console.log(author)
-    }
+    //     console.log(author)
+    // }
 
     const clearFile = () => {
         setProfilePhotoFile(null)
@@ -103,29 +102,40 @@ const CreateAuthor: React.FC = () => {
     });
 
     const handleRegister = (formValue: Author) => {
-        const { authorEmail, password } = formValue;
+        console.log("kkkkkkkkk")
+        const { authorName,
+            authorEmail,
+            password,
+            contact,
+            profilePhotoAsBinaryString 
+        } = formValue;
 
-    //     registerAuthor({ authorName,
-    //         authorEmail,
-    //         password,
-    //         contact,
-    //         profilePhotoAsBinaryString }).then(
-    //         (response) => {
-    //             setMessage(response.data.message);
-    //             setSuccessful(true);
-    //         },
-    //         (error) => {
-    //             const resMessage =
-    //                 (error.response &&
-    //                     error.response.data &&
-    //                     error.response.data.message) ||
-    //                 error.message ||
-    //                 error.toString();
+        registerAuthor({
+            authorName,
+            authorEmail,
+            password,
+            contact,
+            profilePhotoAsBinaryString,
+        }).then(
+            (response) => {
+                setMessage(response.data.message);
+                setSuccessful(true);
+            },
+            (error) => {
+                const resMessage =
+                    (error.response &&
+                        error.response.data &&
+                        error.response.data.message) ||
+                    error.message ||
+                    error.toString();
 
-    //             setMessage(resMessage);
-    //             setSuccessful(false);
-    //         }
-    //     )
+                setMessage(resMessage);
+                setSuccessful(false);
+            }
+        )
+
+        setIsPending(false)
+        backHistory("/")
     }
 
 
@@ -135,96 +145,125 @@ const CreateAuthor: React.FC = () => {
             <h2>
                 <b>Author Sign Up!</b>
             </h2>
-            <form onSubmit={handleSubmit}>
-                <label htmlFor="">
-                    First Name
-                    <input
-                        type="text"
-                        required
-                        value={authorFirstName}
-                        onChange={(e) => setFirstName(e.target.value)}
-                    />
-                </label>
-                <label htmlFor="">
-                    Second Name
-                    <input
-                        type="text"
-                        required
-                        value={authorSecondName}
-                        onChange={(e) => setSecondName(e.target.value)}
-                    />
-                </label>
-                <label htmlFor="">
-                    Email
-                    <input
-                        type="email"
-                        required
-                        value={authorEmail}
-                        onChange={(e) => setEmail(e.target.value)}
-                    />
-                </label>
+            <Formik
+                initialValues={initialValues}
+                validationSchema={validationSchema}
+                onSubmit={handleRegister}
+            >
+                <Form>
+                    {!successful && (<div>
+                        <div>
+                            <label htmlFor="">Name</label>
+                            <Field
+                                name="name"
+                                type="text"
+                                required
+                                className="form-control"
 
-                <label htmlFor="">
-                    Password
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
-                </label>
+                            />
+                            <ErrorMessage
+                                name="name"
+                                component="div"
+                                className="alert alert-danger"
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="">Email</label>
+                            <Field
+                                name="email"
+                                type="email"
+                                required
+                                className="form-control"
 
-                <Text>Phone Number</Text>
-                <PhoneInput
-                    enableAreaCodes={true}
-                    country={"eg"}
-                    value={contact}
-                    onChange={(contact) => setContact(contact)}
-                />
+                            />
+                            <ErrorMessage
+                                name="email"
+                                component="div"
+                                className="alert alert-danger"
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="">Password</label>
+                            <Field
+                                name="password"
+                                type="password"
+                                className="form-control"
+                            />
+                            <ErrorMessage
+                                name="password"
+                                component="div"
+                                className="alert alert-danger"
+                            />
+                        </div>
+                        <label>Phone Number</label>
+                        <PhoneInput
+                            enableAreaCodes={true}
+                            country={"eg"}
+                            value={contact}
+                            onChange={(contact) => setContact(contact)}
+                        />
 
-                <br></br>
+                        <br></br>
 
-                <>
-                    <Group position="center">
-                        <FileButton
-                            resetRef={resetRef}
-                            onChange={setProfilePhotoFile}
-                            accept="image/png,image/jpeg"
-                        >
-                            {(props) => <Button {...props}>Upload image</Button>}
-                        </FileButton>
-                        <Button
-                            disabled={!profilePhotoFile}
-                            color="red"
-                            onClick={clearFile}
-                            size="xs"
-                        >
-                            Reset
-                        </Button>
-                        <Button
-                            disabled={!profilePhotoFile}
-                            color="green"
-                            onClick={handleUploadPicture}
-                            size="xs"
-                        >
-                            Verify
-                        </Button>
-                    </Group>
+                        <>
+                            <Group position="center">
+                                <FileButton
+                                    resetRef={resetRef}
+                                    onChange={setProfilePhotoFile}
+                                    accept="image/png,image/jpeg"
+                                >
+                                    {(props) => <Button {...props}>Upload image</Button>}
+                                </FileButton>
+                                <Button
+                                    disabled={!profilePhotoFile}
+                                    color="red"
+                                    onClick={clearFile}
+                                    size="xs"
+                                >
+                                    Reset
+                                </Button>
+                                <Button
+                                    disabled={!profilePhotoFile}
+                                    color="green"
+                                    onClick={handleUploadPicture}
+                                    size="xs"
+                                >
+                                    Verify
+                                </Button>
+                            </Group>
 
-                    {profilePhotoFile && (
-                        <Text size="sm" align="center" mt="sm">
-                            Picked file: {profilePhotoFile.name}
-                        </Text>
+                            {profilePhotoFile && (
+                                <Text size="sm" align="center" mt="sm">
+                                    Picked file: {profilePhotoFile.name}
+                                </Text>
+                            )}
+                        </>
+                        <br />
+
+                        {!isPending && (
+                            <button type="submit">
+                                <b>Sign UP!</b>
+                            </button>
+                        )}
+                        {isPending && <button disabled>Adding info..</button>}
+                    </div>)}
+
+                    {message && (
+                        <div>
+                            <div
+                                className={
+                                    successful ? "alert alert-success" : "alert alert-danger"
+                                }
+                                role="alert"
+                            >
+                                {message}
+                            </div>
+                        </div>
                     )}
-                </>
-                <br />
 
-                {!isPending && (
-                    <button>
-                        <b>Sign UP!</b>
-                    </button>
-                )}
-                {isPending && <button disabled>Adding info..</button>}
-            </form>
+                </Form>
+            </Formik>
+
         </div>
     )
 }

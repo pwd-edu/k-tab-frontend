@@ -1,19 +1,26 @@
 import axios from "axios";
-import { URL } from "../constants"
+import { URL, PORT } from "../constants"
 import { Author, Student } from "../user-types/types"
 
 export const registerAuthor = ({ authorName,
     authorEmail,
     password,
     contact,
-    profilePhotoAsBinaryString }: Author) => {
-    return axios.post(URL + "author/signup", {
+    profilePhotoAsBinaryString
+}: Author) => {
+    const request = axios.post(`http://localhost:${PORT}/author/signup/`, {
         authorName,
         authorEmail,
         password,
         contact,
         profilePhotoAsBinaryString
-    });
+    })
+
+    console.log(
+        "h3et"
+    )
+    return request;
+
 };
 
 

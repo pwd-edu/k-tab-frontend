@@ -4,7 +4,6 @@ import { NavigateFunction, useNavigate } from 'react-router-dom';
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
-import { PasswordStrength } from "../PasswordInput"
 import { login } from "../auth-services/auth.services";
 import { PORT } from "../constants"
 
