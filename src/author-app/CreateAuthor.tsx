@@ -4,8 +4,13 @@ import PhoneInput from "react-phone-input-2"
 import "react-phone-input-2/lib/style.css"
 import { useNavigate } from "react-router-dom"
 import { PORT } from "../constants"
+import { Author } from "../user-types/types"
+import { Formik, Field, Form, ErrorMessage } from "formik";
+import * as Yup from "yup";
+import { registerAuthor } from "../auth-services/auth.services"
 
-const CreateAuthor = () => {
+const CreateAuthor: React.FC = () => {
+
     const [authorFirstName, setFirstName] = useState("")
     const [authorSecondName, setSecondName] = useState("")
     const [authorEmail, setEmail] = useState("")
@@ -13,6 +18,10 @@ const CreateAuthor = () => {
     const [profilePhotoFile, setProfilePhotoFile] = useState<File | null>() //useState<File | null>(null);
     const [profilePhotoBase64, setProfilePhotoBase64] = useState("")
     const [contact, setContact] = useState("")
+
+    const [successful, setSuccessful] = useState<boolean>(false);
+    const [message, setMessage] = useState<string>("");
+
     const [isPending, setIsPending] = useState(false)
     const backHistory = useNavigate()
     const resetRef = useRef<() => void>(null)
@@ -68,6 +77,58 @@ const CreateAuthor = () => {
             return "error"
         }
     }
+
+    const initialValues: Author = {
+        authorName: "",
+        authorEmail: "",
+        password: "",
+        contact: "",
+        profilePhotoAsBinaryString: "",
+    };
+
+    const validationSchema = Yup.object().shape({
+        authorEmail: Yup.string()
+            .email("This is not a valid email.")
+            .required("This field is required!"),
+        password: Yup.string()
+            .test(
+                "len",
+                "The password must be between 6 and 40 characters.",
+                (val: any) =>
+                    val &&
+                    val.toString().length >= 6 &&
+                    val.toString().length <= 40
+            )
+            .required("This field is required!"),
+    });
+
+    const handleRegister = (formValue: Author) => {
+        const { authorEmail, password } = formValue;
+
+    //     registerAuthor({ authorName,
+    //         authorEmail,
+    //         password,
+    //         contact,
+    //         profilePhotoAsBinaryString }).then(
+    //         (response) => {
+    //             setMessage(response.data.message);
+    //             setSuccessful(true);
+    //         },
+    //         (error) => {
+    //             const resMessage =
+    //                 (error.response &&
+    //                     error.response.data &&
+    //                     error.response.data.message) ||
+    //                 error.message ||
+    //                 error.toString();
+
+    //             setMessage(resMessage);
+    //             setSuccessful(false);
+    //         }
+    //     )
+    }
+
+
 
     return (
         <div className="create-user">
