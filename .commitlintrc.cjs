@@ -6,11 +6,7 @@ module.exports = {
         "footer-leading-blank": [1, "always"],
         "footer-max-line-length": [2, "always", 100],
         "header-max-length": [2, "always", 100],
-        "subject-case": [
-            2,
-            "never",
-            ["sentence-case", "start-case", "pascal-case", "upper-case"],
-        ],
+        "subject-case": [2, "never", ["sentence-case", "start-case", "pascal-case", "upper-case"]],
         "subject-empty": [2, "never"],
         "subject-full-stop": [2, "never", "."],
         "type-case": [2, "always", "lower-case"],
@@ -60,8 +56,7 @@ module.exports = {
                         emoji: "💎",
                     },
                     refactor: {
-                        description:
-                            "A code change that neither fixes a bug nor adds a feature",
+                        description: "A code change that neither fixes a bug nor adds a feature",
                         title: "Code Refactoring",
                         emoji: "📦",
                     },
@@ -71,8 +66,7 @@ module.exports = {
                         emoji: "🚀",
                     },
                     test: {
-                        description:
-                            "Adding missing tests or correcting existing tests",
+                        description: "Adding missing tests or correcting existing tests",
                         title: "Tests",
                         emoji: "🚨",
                     },
@@ -89,8 +83,7 @@ module.exports = {
                         emoji: "⚙️",
                     },
                     chore: {
-                        description:
-                            "Other changes that don't modify src or test files",
+                        description: "Other changes that don't modify src or test files",
                         title: "Chores",
                         emoji: "♻️",
                     },
@@ -102,12 +95,10 @@ module.exports = {
                 },
             },
             scope: {
-                description:
-                    "What is the scope of this change (e.g. component or file name)",
+                description: "What is the scope of this change (e.g. component or file name)",
             },
             subject: {
-                description:
-                    "Write a short, imperative tense description of the change",
+                description: "Write a short, imperative tense description of the change",
             },
             body: {
                 description: "Provide a longer description of the change",
@@ -130,8 +121,7 @@ module.exports = {
                     "If issues are closed, the commit requires a body. Please enter a longer description of the commit itself",
             },
             issues: {
-                description:
-                    'Add issue references (e.g. "fix #123", "re #123".)',
+                description: 'Add issue references (e.g. "fix #123", "re #123".)',
             },
         },
     },
