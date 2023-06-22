@@ -51,6 +51,7 @@ const CreateAuthor = () => {
 
         // console.log(author)
         // console.log(JSON.stringify(response))
+        
         console.log(JSON.stringify(author))
         axios
             .post(`http://localhost:${PORT}/author/signup/`, author)

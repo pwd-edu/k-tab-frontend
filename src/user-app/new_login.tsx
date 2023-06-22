@@ -13,10 +13,43 @@ import {
 import { NavigateFunction, useNavigate } from "react-router-dom"
 import React, { useState } from "react"
 import { PORT } from "../constants"
+import { useForm } from "react-hook-form";
+import axios from "axios";
+
 
 
 function AuthenticationTitle() {
     const navigation = useNavigate()
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+      } = useForm();
+    
+      const login = (data: any) => {
+        let params = {
+          email: data.email,
+          password: data.password,
+        };
+        axios
+          .post(`http://localhost:${PORT}/api/security/login/`, params)
+          .then(function (response) {
+            //   IF EMAIL ALREADY EXISTS
+            if (response.data.success === false) {
+            } else {
+             
+              localStorage.setItem("auth", response.data.token);
+              setTimeout(() => {
+                navigation("/home");
+                console.log(response.data.token)
+              }, 3000);
+            }
+          })
+    
+          .catch(function (error) {
+            console.log(error);
+          });
+      };
     return (
         <Container size={420} my={40}>
             <Title
