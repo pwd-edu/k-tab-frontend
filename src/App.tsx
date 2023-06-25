@@ -1,5 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, BrowserRouter } from "react-router-dom"
-import React, { Fragment } from "react"
+import { BrowserRouter, Routes, Route } from "react-router-dom"
 import { Home } from "./author-app/Home"
 import { LessonEditor } from "./editor/Editor"
 import CreateStudent from "./student-app/CreateStudent"
@@ -16,6 +15,9 @@ import PrivateRoute from "./Auth/PrivateRoute"
 import RestrictedRoute from "./Auth/RestrictedRoute"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
+import TableOfContentsData from "./author-app/BookContentsData"
+// eslint-disable-next-line import/namespace
+import Dashboard from "./author-app/Dashboard/AuthorDashboard"
 
 const queryClient = new QueryClient()
 function App() {
@@ -27,14 +29,16 @@ function App() {
                     <Route path="/editor" element={<LessonEditor />} />
                     <Route path="/student" element={<CreateStudent />} />
                     <Route path="/author" element={<CreateAuthor />} />
-                    {/* <Route  path='/' element={<PrivateRoute/>}>
-                    <Route path='/' element={<Home/>}/>
-                      </Route> */}
 
-                    <Route path="/login" element={<PrivateRoute />}>
-                        <Route path="/login" element={<AuthenticationTitle />}></Route>
+                    <Route path="/" element={<PrivateRoute />}>
+                        <Route path="/" element={<Home />} />
                     </Route>
-                    {/* <Route path='/login' element={<AuthenticationTitle />}></Route> */}
+
+                    <Route path="/login" element={<RestrictedRoute />}>
+                        <Route path="/login" element={<AuthenticationTitle />} />
+                    </Route>
+
+                    <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/library" element={<Library />} />
                     <Route path="/bookinfo" element={<BookInfoForm />} />
                     <Route
@@ -65,6 +69,49 @@ function App() {
                             />
                         }
                     />
+                    {/* <Route path="/contents" element={<TableOfContents links={[
+                        {
+                            "label": "Usage",
+                            "link": "#usage",
+                            "order": 1
+                          },
+                          {
+                            "label": "Position and placement",
+                            "link": "#position",
+                            "order": 1
+                          },
+                          {
+                            "label": "With other overlays",
+                            "link": "#overlays",
+                            "order": 1
+                          },
+                          {
+                            "label": "Manage focus",
+                            "link": "#focus",
+                            "order": 1
+                          },
+                          {
+                            "label": "Examples",
+                            "link": "#1",
+                            "order": 1
+                          },
+                          {
+                            "label": "Show on focus",
+                            "link": "#2",
+                            "order": 2
+                          },
+                          {
+                            "label": "Show on hover",
+                            "link": "#3",
+                            "order": 2
+                          },
+                          {
+                            "label": "With form",
+                            "link": "#4",
+                            "order": 2
+                          }
+                    ]} active={"#"} />} /> */}
+                    <Route path="/contents" element={<TableOfContentsData />} />
                     <Route path="/settingsdata" element={<UserSettingsData />} />
                     <Route path="/profilesettings" element={<ProfileSettings />} />
                     <Route path="/darkmode" element={<DarkMode component={<LessonEditor />} />} />

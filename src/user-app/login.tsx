@@ -17,25 +17,25 @@ import axios from "axios"
 
 function AuthenticationTitle() {
     const navigation = useNavigate()
-    const {
-        formState: { errors },
-    } = useForm()
+    const { register, handleSubmit } = useForm()
 
     const login = (data: any) => {
         const params = {
             email: data.email,
             password: data.password,
         }
+        console.log(params)
         axios
             .post(`http://localhost:${PORT}/api/security/login/`, params)
             .then(function (response) {
                 //   IF EMAIL ALREADY EXISTS
                 if (response.data.success === false) {
-                    return
+                    console.log("failed")
                 } else {
                     localStorage.setItem("auth", response.data.token)
+                    console.log("success login")
                     setTimeout(() => {
-                        navigation("/home")
+                        navigation("/")
                         console.log(response.data.token)
                     }, 3000)
                 }
@@ -67,16 +67,21 @@ function AuthenticationTitle() {
                 </Anchor>
             </Text>
             <Paper withBorder shadow="md" p={30} mt={30} radius="md">
-                <form>
+                <form onSubmit={handleSubmit(login)}>
                     <div>
-                        <TextInput label="Email" placeholder="you@mantine.dev" required />
+                        <TextInput
+                            label="Email"
+                            placeholder="you@mantine.dev"
+                            required
+                            {...register("email")}
+                        />
                     </div>
                     <div>
                         <PasswordInput
                             label="Password"
                             placeholder="Your password"
                             required
-                            mt="md"
+                            {...register("password")}
                         />
                     </div>
                     <Group position="apart" mt="lg">

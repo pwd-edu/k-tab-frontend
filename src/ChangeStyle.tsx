@@ -37,7 +37,6 @@
 // }
 
 import { MantineProvider, useMantineTheme, MantineTheme } from "@mantine/core"
-import App from "./App"
 
 interface ReactCompProps {
     component: React.ReactNode | React.ReactNode[]
@@ -62,20 +61,4 @@ export function changeBackground({
 }) {
     const theme = useMantineTheme()
     return <div style={{ background: getColor(theme) }}> {component}</div>
-}
-
-function AppDarkMode() {
-    return (
-        <MantineProvider theme={{ colorScheme: "dark" }}>
-            <App />
-        </MantineProvider>
-    )
-}
-
-function AppDarkMode() {
-    return (
-        <MantineProvider theme={{ colorScheme: "dark" }}>
-            <App />
-        </MantineProvider>
-    )
 }
