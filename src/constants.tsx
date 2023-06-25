@@ -1,4 +1,5 @@
 export const PORT = 8080
+export const URL = `http://localhost:${PORT}/`
 
 export const EDITOR_SAMPLE = `
     <h1>Typography should be easy</h1>

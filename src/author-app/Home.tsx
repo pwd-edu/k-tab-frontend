@@ -1,7 +1,7 @@
-import { Article, AddArticle } from "./Article"
-import { Navbar } from "./Navbar"
+import { Article, AddArticle } from "../Article"
+import { Navbar } from "../Navbar"
 import { Group, createStyles } from "@mantine/core"
-import aofm from "./assets/aofm.jpg"
+import aofm from "../assets/aofm.jpg"
 
 const useStyles = createStyles((theme) => ({
     grid: {

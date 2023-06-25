@@ -1,6 +1,6 @@
 import { Center, ActionIcon, Card, createStyles, Group, Image, Stack, Text } from "@mantine/core"
 import { IconClock, IconPlus } from "@tabler/icons"
-import { FlexSpace } from "./shared"
+import { FlexSpace } from "../shared"
 
 const useStyles = createStyles(() => ({
     Book_card: {

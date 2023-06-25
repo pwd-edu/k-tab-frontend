@@ -1,5 +1,5 @@
 import { useState, useRef } from "react"
-import { PORT } from "./constants"
+import { PORT } from "../constants"
 import { useToggle, upperFirst } from "@mantine/hooks"
 import { useForm } from "@mantine/form"
 import {
@@ -15,7 +15,7 @@ import {
     Stack,
     Textarea,
 } from "@mantine/core"
-import StudentBookInfo from "./StudentBookInfo"
+import StudentBookInfo from "../student-app/StudentBookInfo"
 
 export function BookInfoForm(props: PaperProps) {
     const [type, toggle] = useToggle(["edit", "view"])

@@ -1,6 +1,6 @@
-import { Navbar } from "./Navbar"
+import { Navbar } from "../Navbar"
 import { Group, createStyles } from "@mantine/core"
-import aofm from "./assets/aofm.jpg"
+import aofm from "../assets/aofm.jpg"
 import { Book } from "./StudentBook"
 
 const useStyles = createStyles((theme) => ({

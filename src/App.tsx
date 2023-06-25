@@ -1,19 +1,22 @@
-import { Home } from "./Home"
+import { BrowserRouter as Router, Routes, Route, BrowserRouter } from "react-router-dom"
+import React, { Fragment } from "react"
+import { Home } from "./author-app/Home"
 import { LessonEditor } from "./editor/Editor"
-import { BrowserRouter, Routes, Route } from "react-router-dom"
-import CreateStudent from "./CreateStudent"
-import CreateAuthor from "./CreateAuthor"
-import Login from "./login"
-import { Library } from "./StudentLibrary"
-import { BookInfoForm } from "./BookInfo"
-import StudentBookInfo from "./StudentBookInfo"
-import UserInfoAction from "./UserProfile"
-import ProfileSettings from "./UserProfileSettings"
+import CreateStudent from "./student-app/CreateStudent"
+import CreateAuthor from "./author-app/CreateAuthor"
+import { Library } from "./student-app/StudentLibrary"
+import { BookInfoForm } from "./author-app/BookInfo"
+import StudentBookInfo from "./student-app/StudentBookInfo"
+import UserInfoAction from "./user-app/UserProfile"
+import ProfileSettings from "./user-app/UserProfileSettings"
+import DarkMode from "./ChangeStyle"
+import UserSettingsData from "./user-app/UserUISettingsData"
+import { PasswordInput } from "@mantine/core"
+import AuthenticationTitle from "./user-app/login"
+import PrivateRoute from "./Auth/PrivateRoute"
+import RestrictedRoute from "./Auth/RestrictedRoute"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
-import DarkMode from "./ChangeStyle"
-import UserSettingsData from "./UserUISettingsData"
-//import UIsettings from "./UserUISettings"
 
 const queryClient = new QueryClient()
 function App() {
@@ -25,7 +28,14 @@ function App() {
                     <Route path="/editor" element={<LessonEditor />} />
                     <Route path="/student" element={<CreateStudent />} />
                     <Route path="/author" element={<CreateAuthor />} />
-                    <Route path="/user" element={<Login />} />
+                    {/* <Route  path='/' element={<PrivateRoute/>}>
+                    <Route path='/' element={<Home/>}/>
+                      </Route> */}
+
+                    <Route path="/login" element={<PrivateRoute />}>
+                        <Route path="/login" element={<AuthenticationTitle />}></Route>
+                    </Route>
+                    {/* <Route path='/login' element={<AuthenticationTitle />}></Route> */}
                     <Route path="/library" element={<Library />} />
                     <Route path="/bookinfo" element={<BookInfoForm />} />
                     <Route

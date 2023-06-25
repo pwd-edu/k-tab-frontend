@@ -1,12 +1,21 @@
-import { createStyles, Card, Group, Switch, Text, rem, UnstyledButton, Center } from "@mantine/core"
-
-// TODO: Remove unused imports
-
-//import { IconAccessible } from "@tabler/icons-react"
-//import { upperFirst } from "@mantine/hooks"
-//imp/////ort { FontPicker } from "./FontPicker"
-//import { QuantityInput } from "./NumberInputComponent"
-import { camelCaseToWord } from "./CamelCaseToWord"
+import {
+    createStyles,
+    Card,
+    Group,
+    Switch,
+    Text,
+    rem,
+    TextInput,
+    Slider,
+    UnstyledButton,
+    Center,
+    useMantineColorScheme,
+} from "@mantine/core"
+import { IconAccessible, IconMoon, IconSun } from "@tabler/icons-react"
+import { upperFirst } from "@mantine/hooks"
+import { FontPicker } from "../FontPicker"
+import { QuantityInput } from "../NumberInputComponent"
+import { camelCaseToWord } from "../helpers/CamelCaseToWord"
 
 const useStyles = createStyles((theme) => ({
     card: {
@@ -32,6 +41,7 @@ const useStyles = createStyles((theme) => ({
     title: {
         lineHeight: 1,
     },
+
     control: {
         backgroundColor: theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.colors.gray[0],
         display: "flex",
@@ -66,19 +76,6 @@ export interface SwitchesCardProps {
     }[]
 }
 
-const useStylesSlider = createStyles((theme) => ({
-    thumb: {
-        border: `${rem(1)} solid ${
-            theme.colorScheme === "dark" ? theme.colors.dark[2] : theme.colors.gray[3]
-        }`,
-        width: rem(28),
-        height: rem(22),
-        color: theme.colors.gray[5],
-        backgroundColor: theme.white,
-        borderRadius: theme.radius.sm,
-    },
-}))
-
 export function UIsettings({ data }: SwitchesCardProps) {
     const { classes } = useStyles()
     const stylesSlider = { thumb: { borderWidth: 2, height: 26, width: 26, padding: 3 } }
@@ -88,12 +85,12 @@ export function UIsettings({ data }: SwitchesCardProps) {
     // const { colorScheme, toggleColorScheme } = useMantineColorScheme();
     // const Icon = colorScheme === 'dark' ? IconSun : IconMoon;
 
-    const items = data.map((item, idx) => {
+    const items = data.map((item) => {
         if (item.type === "Boolean") {
             console.log(item.value)
             if (item.name === "darkMode") {
                 return (
-                    <Group key={idx} position="center" my="xl">
+                    <Group position="center" my="xl" key={item.name}>
                         <UnstyledButton
                             aria-label="Toggle theme"
                             className={classes.control}
@@ -114,7 +111,13 @@ export function UIsettings({ data }: SwitchesCardProps) {
                 )
             } else {
                 return (
-                    <Group key={idx} position="apart" className={classes.item} noWrap spacing="xl">
+                    <Group
+                        position="apart"
+                        className={classes.item}
+                        noWrap
+                        spacing="xl"
+                        key={item.name}
+                    >
                         <div>
                             <Text>{camelCaseToWord(item.name)}</Text>
                         </div>
@@ -129,43 +132,89 @@ export function UIsettings({ data }: SwitchesCardProps) {
                 )
             }
         }
-        // TDOD: Fix types for string and integer (title, description)
-        /*
-        if (item.type === "string") {
-            return (
-                <Group key={idx} position="apart" className={classes.item} noWrap spacing="xl">
-                    <div>
-                        <Text>{item.title}</Text>
-                        <Text size="xs" color="dimmed">
-                            {item.description}
-                        </Text>
-                    </div>
-                    <TextInput value={item.title} size="lg" />
-                </Group>
-            )
+        if (item.type === "String") {
+            if (item.name === "fontStyle") {
+                return (
+                    <Group
+                        position="apart"
+                        className={classes.item}
+                        noWrap
+                        spacing="xl"
+                        key={item.name}
+                    >
+                        <div>
+                            <Text>{camelCaseToWord(item.name)}</Text>
+                        </div>
+                        <FontPicker
+                            defaultValue={item.value}
+                            onChange={(e: any) => (item.value = e)}
+                        />
+                    </Group>
+                )
+            } else {
+                return (
+                    <Group
+                        position="apart"
+                        className={classes.item}
+                        noWrap
+                        spacing="xl"
+                        key={item.name}
+                    >
+                        <div>
+                            <Text>{camelCaseToWord(item.name)}</Text>
+                        </div>
+                        <TextInput value={item.value} size="lg" />
+                    </Group>
+                )
+            }
         }
-        if (item.type === "integer") {
-            return (
-                <Group key={idx} position="apart" className={classes.item} noWrap spacing="xl">
-                    <div>
-                        <Text>{item.title}</Text>
-                        <Text size="xs" color="dimmed">
-                            {item.description}
-                        </Text>
-                    </div>
-                    <div>
+        if (item.type === "Integer") {
+            if (item.name === "fontSize") {
+                return (
+                    <Group
+                        position="apart"
+                        className={classes.item}
+                        noWrap
+                        spacing="xl"
+                        key={item.name}
+                    >
+                        <div>
+                            <Text>{camelCaseToWord(item.name)}</Text>
+                        </div>
+                        <QuantityInput
+                            defaultValue={item.value}
+                            min={8}
+                            max={120}
+                            onChange={(e: any) => (item.value = e.valueOf)}
+                        />
+                    </Group>
+                )
+            } else {
+                console.log(item.value)
+                console.log(data)
+                return (
+                    <div key={item.name}>
+                        <Group position="apart" className={classes.item} noWrap spacing="xl">
+                            <div>
+                                <Text>{camelCaseToWord(item.name)}</Text>
+                            </div>
+                        </Group>
+                        <br></br>
                         <Slider
                             thumbChildren={<IconAccessible size="1rem" stroke={1.5} />}
                             color="blue"
                             label={null}
-                            defaultValue={40}
+                            defaultValue={item.value}
+                            min={0}
+                            max={100}
+                            onChange={(e) => (item.value = e.toString)}
                             styles={stylesSlider}
                         />
+                        <br></br>
                     </div>
-                </Group>
-            )
+                )
+            }
         }
-        */
     })
 
     return (
