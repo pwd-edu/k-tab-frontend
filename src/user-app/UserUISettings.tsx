@@ -16,6 +16,7 @@ import { upperFirst } from "@mantine/hooks"
 import { FontPicker } from "../FontPicker"
 import { QuantityInput } from "../NumberInputComponent"
 import { camelCaseToWord } from "../helpers/CamelCaseToWord"
+import React from "react"
 
 const useStyles = createStyles((theme) => ({
     card: {
