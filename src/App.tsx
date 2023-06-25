@@ -43,42 +43,6 @@ function App() {
                             />
                         }
                     />
-                    {/*
-                    <Route
-                        path="/settings"
-                        element={
-                            <UIsettings
-                                title={"Configure notifications"}
-                                description={"Choose what notifications you want to receive"}
-                                data={[
-                                    {
-                                        type: "integer",
-                                        title: "Messages",
-                                        description:
-                                            "Direct messages you have received from other users",
-                                    },
-                                    {
-                                        type: "boolean",
-                                        title: "Review requests",
-                                        description: "Code review requests from your team members",
-                                    },
-                                    {
-                                        type: "string",
-                                        title: "Comments",
-                                        description: "Daily digest with comments on your posts",
-                                    },
-                                    {
-                                        type: "boolean",
-                                        title: "Recommendations",
-                                        description:
-                                            "Digest with best community posts from previous week",
-                                    },
-                                ]}
-                            />
-                        }
-                    />
-                    */}
-
                     <Route
                         path="/profile"
                         element={
