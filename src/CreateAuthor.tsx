@@ -51,7 +51,7 @@ const CreateAuthor = () => {
         resetRef.current?.()
     }
 
-    const handleUploadPicture = (e: { preventDefault: () => void }) => {
+    const handleUploadPicture = () => {
         let document = ""
         const reader = new FileReader()
         const blobFile = profilePhotoFile as Blob
