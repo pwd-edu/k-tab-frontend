@@ -1,6 +1,7 @@
 import { Center, ActionIcon, Card, createStyles, Group, Image, Stack, Text } from "@mantine/core"
 import { IconClock, IconEdit, IconChartPie, IconPlus, IconEye } from "@tabler/icons"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
+import { SAMPLE_BOOK_ID } from "./constants"
 import { FlexSpace } from "./shared"
 
 const useStyles = createStyles(() => ({
@@ -18,6 +19,8 @@ type ArticleProps = {
 
 export const Article = ({ title, thumbnail_img, last_update }: ArticleProps) => {
     const { classes } = useStyles()
+    const navigate = useNavigate()
+
     const formatDateTime = (date_time: Date) => {
         const options: Intl.DateTimeFormatOptions = {
             month: "long",
@@ -27,6 +30,7 @@ export const Article = ({ title, thumbnail_img, last_update }: ArticleProps) => 
         const formated = date_time.toLocaleDateString("en-US", options)
         return formated
     }
+
     return (
         <Card className={classes.article_card} shadow="sm" p="sm" radius="sm" withBorder>
             <Text weight={700} size="xs">
@@ -47,9 +51,10 @@ export const Article = ({ title, thumbnail_img, last_update }: ArticleProps) => 
                         <ActionIcon
                             component={Link}
                             to="/editor"
+                            title="Edit"
                             size="xs"
                             variant="transparent"
-                            title="Edit"
+                            onClick={() => navigate(`/book-editor/${SAMPLE_BOOK_ID}/1`)}
                         >
                             <IconEdit color={"#4F4F4F"} size={14} />
                         </ActionIcon>

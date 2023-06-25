@@ -45,6 +45,13 @@ export interface ChapterClientType {
     get: (chapterId: string) => Promise<Chapter>
 }
 
+export const ChapterPresignedSchema = z.object({
+    contentUrl: z.string(),
+    imagesUrls: z.array(z.string()),
+})
+
+export type ChapterPresigned = z.infer<typeof ChapterPresignedSchema>
+
 export const ImagePresignedSchema = z.object({
     imagePath: z.string(),
     imageUrl: z.string(),
@@ -54,6 +61,7 @@ export type ImagePresigned = z.infer<typeof ImagePresignedSchema>
 
 export interface S3ClientType {
     getChapterPresignedUpload: (content_path: string) => Promise<string>
+    getChapterPresignedDownload: (chapter_id: string) => Promise<ChapterPresigned>
     getImagePresignedUpload: (chapter_id: string) => Promise<ImagePresigned>
     uploadChapterContent: (presigned_url: string, chapter_content: JSONContent) => Promise<void>
 }
@@ -61,6 +69,14 @@ export interface S3ClientType {
 export interface AiClientType {
     getImageDescription: (image_path: string) => Promise<ImageDescription>
 }
+
+export const chaptersHeadersSchema = z.array(
+    z.object({
+        chapterId: z.string(),
+        chapterTitle: z.string(),
+        chapterOrder: z.number(),
+    })
+)
 
 export const BookSchema = z.object({
     bookId: z.string(),
@@ -70,8 +86,8 @@ export const BookSchema = z.object({
     bookCoverPath: z.string(),
     lastEditDate: z.string(),
     avgRate: z.number(),
-    chaptersTitles: z.array(z.string()),
     contributors: z.array(z.string()),
+    chapterHeaders: chaptersHeadersSchema,
 })
 
 export type Book = z.infer<typeof BookSchema>
@@ -80,6 +96,7 @@ export type CreateBookRequest = Omit<Book, "bookId" | "lastEditDate" | "avgRate"
 
 export interface BookClientType {
     post: (book: CreateBookRequest) => Promise<Book>
+    get: (book_id: string) => Promise<Book>
 }
 
 export const AuthorSchema = z.object({
