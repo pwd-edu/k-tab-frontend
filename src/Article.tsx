@@ -1,5 +1,6 @@
 import { Center, ActionIcon, Card, createStyles, Group, Image, Stack, Text } from "@mantine/core"
-import { IconClock, IconEdit, IconChartPie, IconPlus } from "@tabler/icons"
+import { IconClock, IconEdit, IconChartPie, IconPlus, IconEye } from "@tabler/icons"
+import { Link } from "react-router-dom"
 import { FlexSpace } from "./shared"
 
 const useStyles = createStyles(() => ({
@@ -40,11 +41,26 @@ export const Article = ({ title, thumbnail_img, last_update }: ArticleProps) => 
                     </Text>
                     <FlexSpace />
                     <Group spacing={0}>
-                        <ActionIcon size="xs" variant="transparent">
+                        <ActionIcon size="xs" variant="transparent" title="Dashboard">
                             <IconChartPie color={"#4F4F4F"} size={14} />
                         </ActionIcon>
-                        <ActionIcon size="xs" variant="transparent">
+                        <ActionIcon
+                            component={Link}
+                            to="/editor"
+                            size="xs"
+                            variant="transparent"
+                            title="Edit"
+                        >
                             <IconEdit color={"#4F4F4F"} size={14} />
+                        </ActionIcon>
+                        <ActionIcon
+                            component={Link}
+                            to=""
+                            size="xs"
+                            variant="transparent"
+                            title="Preview"
+                        >
+                            <IconEye color={"#4F4F4F"} size={14} />
                         </ActionIcon>
                     </Group>
                 </Group>
