@@ -71,11 +71,3 @@ function AppDarkMode() {
         </MantineProvider>
     )
 }
-
-function AppDarkMode() {
-    return (
-        <MantineProvider theme={{ colorScheme: "dark" }}>
-            <App />
-        </MantineProvider>
-    )
-}
