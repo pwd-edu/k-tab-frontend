@@ -81,3 +81,23 @@ export type CreateBookRequest = Omit<Book, "bookId" | "lastEditDate" | "avgRate"
 export interface BookClientType {
     post: (book: CreateBookRequest) => Promise<Book>
 }
+
+export const AuthorSchema = z.object({
+    authorId: z.string(),
+    authorName: z.string(),
+    authorEmail: z.string().email(),
+    contact: z.string(),
+    profilePhotoPath: z.string(),
+    authorSettingsId: z.string(),
+})
+
+export const AuthorSignUpSchema = AuthorSchema.extend({
+    token: z.string(),
+})
+
+export type Author = z.infer<typeof AuthorSchema>
+export type AuthorSignUp = z.infer<typeof AuthorSignUpSchema>
+
+export interface AuthorCLientType {
+    get: (authorId?: string) => Promise<Author>
+}

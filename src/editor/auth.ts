@@ -1,7 +1,7 @@
-import { VALID_TOKEN } from "../constants"
+import { JWT_TOKEN } from "../constants"
 
 export const getJwtToken = () => {
-    return VALID_TOKEN
+    return localStorage.getItem(JWT_TOKEN)
 }
 
 export const getAuthHeader = () => "Bearer " + getJwtToken()

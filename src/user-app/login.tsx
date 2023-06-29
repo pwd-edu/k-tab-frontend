@@ -12,40 +12,38 @@ import {
     Center,
     Box,
 } from "@mantine/core"
-import { Link, useNavigate } from "react-router-dom"
-import { PORT } from "../constants"
-import axios from "axios"
+
+import { Link, Navigate } from "react-router-dom"
+import "react-toastify/dist/ReactToastify.css"
 
 import Cover from "../assets/login-cover.png"
 import Logo from "../assets/logo.svg"
+import { useAuth } from "../auth/useAuth"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { z } from "zod"
+import { CenteredLoading } from "../shared"
+import { toast, ToastContainer } from "react-toastify"
+
+const LoginSchema = z.object({
+    email: z.string().email("Invalid email address").nonempty("Email is required"),
+    password: z.string().nonempty("Password is required"),
+})
+
+type LoginFormInputs = z.infer<typeof LoginSchema>
 
 export function LoginPage() {
-    const navigation = useNavigate()
+    const { isAuthenticated, isLoading } = useAuth()
 
-    const login = (data: any) => {
-        const params = {
-            email: data.email,
-            password: data.password,
-        }
-        axios
-            .post(`http://localhost:${PORT}/api/security/login/`, params)
-            .then(function (response) {
-                //   IF EMAIL ALREADY EXISTS
-                if (response.data.success === false) {
-                    return
-                } else {
-                    localStorage.setItem("auth", response.data.token)
-                    setTimeout(() => {
-                        navigation("/home")
-                        console.log(response.data.token)
-                    }, 3000)
-                }
-            })
-
-            .catch(function (error) {
-                console.log(error)
-            })
+    if (isLoading) {
+        return <CenteredLoading />
     }
+
+    if (isAuthenticated) {
+        console.log("navigate to /")
+        return <Navigate to="/" replace />
+    }
+
     return (
         <Group className="h-screen gap-0">
             <LoginForm />
@@ -55,23 +53,60 @@ export function LoginPage() {
 }
 
 function LoginForm() {
+    const { login } = useAuth()
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+        reset,
+    } = useForm<LoginFormInputs>({
+        resolver: zodResolver(LoginSchema),
+    })
+
+    const onSubmit = async (data: LoginFormInputs) => {
+        try {
+            const { email, password } = data
+            await login(email, password)
+        } catch (e) {
+            toast.error("Invalid credentials", {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            })
+            reset()
+        }
+    }
+
     return (
         <Stack className="h-full grow-[1.3] basis-0 p-5">
             <img src={Logo} alt="K tab logo" width={150} height={150} />
             <Center className="flex-1">
                 <Stack className="w-5/6 justify-start" spacing={10} mt={10}>
                     <Title>Welcome back!</Title>
-                    <form>
-                        <TextInput label="Email" placeholder="Your mail" required />
+
+                    <form onSubmit={handleSubmit(onSubmit)}>
+                        <TextInput
+                            label="Email"
+                            placeholder="Your mail"
+                            {...register("email")}
+                            error={errors.email?.message}
+                        />
                         <PasswordInput
                             label="Password"
                             placeholder="Your password"
-                            required
                             mt="md"
+                            {...register("password")}
+                            error={errors.password?.message}
                         />
                         <Group position="apart" mt="lg">
                             <Checkbox label="Remember me" />
                             <Anchor component="button" size="sm">
+                                {" "}
                                 Forgot password?
                             </Anchor>
                         </Group>
@@ -88,6 +123,18 @@ function LoginForm() {
                     </Text>
                 </Stack>
             </Center>
+            <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+            />
         </Stack>
     )
 }
@@ -99,6 +146,7 @@ function ProductBranding() {
             <Stack
                 className="h-full items-center justify-center gap-20 rounded-lg"
                 bg={theme.colors.indigo[6]}
+                p={20}
             >
                 <Box>
                     <Text size="xl" weight={500} color="white" align="left">
