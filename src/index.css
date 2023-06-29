@@ -1,61 +1,7 @@
 /*font for forms*/
-@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;1,400;1,500&display=swap");
 
 /* eslint-disable */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-/*fonts*/
-body,
-html {
-    font-family: Roboto, Helvetica, sans-serif, "Quicksand";
-}
-
-/* user form */
-.create-user {
-    max-width: 400px;
-    margin: 0 auto;
-    text-align: center;
-    font-family: "Quicksand";
-    color: #545563;
-}
-
-.create-user label {
-    text-align: left;
-    display: block;
-}
-
-.create-user h2 {
-    font-size: 20px;
-    color: #4e60ff;
-    margin-bottom: 30px;
-}
-
-.create-user input,
-.create-user textarea,
-.create-user select {
-    width: 100%;
-    padding: 6px 10px;
-    margin: 10px 0;
-    border: 1px solid #ddd;
-    box-sizing: border-box;
-    display: block;
-}
-
-.create-user button {
-    background: #4e60ff;
-    color: #fff;
-    border: 0;
-    padding: 8px;
-    border-radius: 8px;
-    cursor: pointer;
-}
-
-.nav-drawer {
-    max-width: 400px;
-    margin: 0 auto;
-    text-align: center;
-    font-family: "Quicksand";
-    color: #545563;
-}
