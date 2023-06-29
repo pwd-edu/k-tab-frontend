@@ -57,3 +57,4 @@ export const EDITOR_OBJ = {
 export const EDITOR_JSON_SAMPLE = JSON.stringify(EDITOR_OBJ)
 export const EDITOR_PARSED_JSON = JSON.parse(EDITOR_JSON_SAMPLE)
 export const VALID_TOKEN = "<REPLACE_WITH_TOKEN_UNTIL_AUTH_IS_DONE>"
+export const JWT_TOKEN = "jwt_token"

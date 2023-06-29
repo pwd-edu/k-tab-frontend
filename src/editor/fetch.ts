@@ -2,6 +2,7 @@ import axios from "axios"
 import { getAuthHeader } from "./auth"
 import {
     AiClientType,
+    AuthorCLientType,
     Book,
     BookClientType,
     Chapter,
@@ -19,11 +20,14 @@ const API_URL = "http://localhost:8080"
 
 export const axios_instance = axios.create({
     baseURL: API_URL,
-    timeout: 1000,
+})
 
-    headers: {
-        Authorization: getAuthHeader(),
-    },
+axios_instance.interceptors.request.use((config) => {
+    const auth_header = getAuthHeader()
+    if (auth_header) {
+        config.headers["Authorization"] = auth_header
+    }
+    return config
 })
 
 export const BookClient = (): BookClientType => ({
@@ -69,5 +73,12 @@ export const AiClient = (): AiClientType => ({
             params: { imagePath: image_path },
         })
         return ImageDescriptionSchema.parse(response.data)
+    },
+})
+
+export const AuthorClient = (): AuthorCLientType => ({
+    get: async (authorId?: string) => {
+        const response = await axios_instance.get(`/author/`, { params: { authorId } })
+        return response.data
     },
 })
