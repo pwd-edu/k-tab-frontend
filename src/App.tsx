@@ -1,5 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, BrowserRouter } from "react-router-dom"
-import React, { Fragment } from "react"
+import { Routes, Route, BrowserRouter } from "react-router-dom"
 import { Home } from "./author-app/Home"
 import { LessonEditor } from "./editor/Editor"
 import CreateStudent from "./student-app/CreateStudent"
@@ -11,9 +10,7 @@ import UserInfoAction from "./user-app/UserProfile"
 import ProfileSettings from "./user-app/UserProfileSettings"
 import DarkMode from "./ChangeStyle"
 import UserSettingsData from "./user-app/UserUISettingsData"
-import AuthenticationTitle from "./user-app/login"
-import PrivateRoute from "./Auth/PrivateRoute"
-import RestrictedRoute from "./Auth/RestrictedRoute"
+import { LoginPage } from "./user-app/login"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 
@@ -27,14 +24,7 @@ function App() {
                     <Route path="/editor" element={<LessonEditor />} />
                     <Route path="/student" element={<CreateStudent />} />
                     <Route path="/author" element={<CreateAuthor />} />
-                    {/* <Route  path='/' element={<PrivateRoute/>}>
-                    <Route path='/' element={<Home/>}/>
-                      </Route> */}
-
-                    <Route path="/login" element={<PrivateRoute />}>
-                        <Route path="/login" element={<AuthenticationTitle />}></Route>
-                    </Route>
-                    {/* <Route path='/login' element={<AuthenticationTitle />}></Route> */}
+                    <Route path="/login" element={<LoginPage />} />
                     <Route path="/library" element={<Library />} />
                     <Route path="/bookinfo" element={<BookInfoForm />} />
                     <Route

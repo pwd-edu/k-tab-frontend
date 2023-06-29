@@ -3,23 +3,24 @@ import {
     PasswordInput,
     Checkbox,
     Anchor,
-    Paper,
     Title,
     Text,
-    Container,
     Group,
     Button,
+    Stack,
+    useMantineTheme,
+    Center,
+    Box,
 } from "@mantine/core"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { PORT } from "../constants"
-import { useForm } from "react-hook-form"
 import axios from "axios"
 
-function AuthenticationTitle() {
+import Cover from "../assets/login-cover.png"
+import Logo from "../assets/logo.svg"
+
+export function LoginPage() {
     const navigation = useNavigate()
-    const {
-        formState: { errors },
-    } = useForm()
 
     const login = (data: any) => {
         const params = {
@@ -46,53 +47,69 @@ function AuthenticationTitle() {
             })
     }
     return (
-        <Container size={420} my={40}>
-            <Title
-                align="center"
-                sx={(theme) => ({
-                    fontFamily: `Greycliff CF, ${theme.fontFamily}`,
-                    fontWeight: 900,
-                })}
-            >
-                Welcome back!
-            </Title>
-            <Text color="dimmed" size="sm" align="center" mt={5}>
-                Do not have an account yet? Create account as{" "}
-                <Anchor size="sm" component="button" onClick={() => navigation("/author")}>
-                    Author
-                </Anchor>{" "}
-                or
-                <Anchor size="sm" component="button" onClick={() => navigation("/student")}>
-                    Student
-                </Anchor>
-            </Text>
-            <Paper withBorder shadow="md" p={30} mt={30} radius="md">
-                <form>
-                    <div>
-                        <TextInput label="Email" placeholder="you@mantine.dev" required />
-                    </div>
-                    <div>
+        <Group className="h-screen gap-0">
+            <LoginForm />
+            <ProductBranding />
+        </Group>
+    )
+}
+
+function LoginForm() {
+    return (
+        <Stack className="h-full grow-[1.3] basis-0 p-5">
+            <img src={Logo} alt="K tab logo" width={150} height={150} />
+            <Center className="flex-1">
+                <Stack className="w-5/6 justify-start" spacing={10} mt={10}>
+                    <Title>Welcome back!</Title>
+                    <form>
+                        <TextInput label="Email" placeholder="Your mail" required />
                         <PasswordInput
                             label="Password"
                             placeholder="Your password"
                             required
                             mt="md"
                         />
-                    </div>
-                    <Group position="apart" mt="lg">
-                        <Checkbox label="Remember me" />
-                        <Anchor component="button" size="sm">
-                            Forgot password?
-                        </Anchor>
-                    </Group>
+                        <Group position="apart" mt="lg">
+                            <Checkbox label="Remember me" />
+                            <Anchor component="button" size="sm">
+                                Forgot password?
+                            </Anchor>
+                        </Group>
 
-                    <Button type="submit" fullWidth mt="xl" radius="xl">
-                        Login
-                    </Button>
-                </form>
-            </Paper>
-        </Container>
+                        <Button type="submit" fullWidth mt="xl" radius="xl">
+                            Login
+                        </Button>
+                    </form>
+                    <Text color="dimmed" size="sm" mt={5}>
+                        Do not have an account yet? &nbsp;
+                        <Anchor component={Link} to="/student">
+                            Sign up
+                        </Anchor>
+                    </Text>
+                </Stack>
+            </Center>
+        </Stack>
     )
 }
 
-export default AuthenticationTitle
+function ProductBranding() {
+    const theme = useMantineTheme()
+    return (
+        <Stack className="h-full grow-[1] basis-0" bg="white" p={20}>
+            <Stack
+                className="h-full items-center justify-center gap-20 rounded-lg"
+                bg={theme.colors.indigo[6]}
+            >
+                <Box>
+                    <Text size="xl" weight={500} color="white" align="left">
+                        Learn effectively and inclusively with <strong>K-tab</strong>
+                    </Text>
+                    <Text size="xs" color="white" align="left">
+                        Join now and start learning from the most modern effective books.
+                    </Text>
+                </Box>
+                <img src={Cover} alt="Login cover" width="60%" />
+            </Stack>
+        </Stack>
+    )
+}
