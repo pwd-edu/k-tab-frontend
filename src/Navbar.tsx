@@ -1,9 +1,20 @@
 import { forwardRef } from "react"
 import { useState } from "react"
-import { createStyles, Group, Input, Avatar, Tooltip, Stack, Text, Menu } from "@mantine/core"
-import { IconSearch, IconNotification } from "@tabler/icons"
+import {
+    createStyles,
+    Group,
+    Input,
+    Avatar,
+    Tooltip,
+    Stack,
+    Text,
+    Menu,
+    ThemeIcon,
+    Button,
+} from "@mantine/core"
+import { IconSearch, IconNotification, IconBook2, IconHome } from "@tabler/icons"
 import messi from "./assets/messi.jpg"
-import { FlexSpace } from "./shared"
+import { KtabLogo } from "./shared"
 import {
     backgroundColor,
     boxShadow,
@@ -14,11 +25,69 @@ import {
     typography,
 } from "tailwindcss-classnames"
 
-const useStyles = createStyles(() => ({
+import { Navbar, getStylesRef, rem } from "@mantine/core"
+import { IconBellRinging, IconSettings, IconLogout } from "@tabler/icons-react"
+import { Link } from "react-router-dom"
+
+const useStyles = createStyles((theme) => ({
     alert_notification: {
         [`& circle`]: {
             fill: "red",
             stroke: "red",
+        },
+    },
+    header: {
+        paddingBottom: theme.spacing.md,
+        marginBottom: `calc(${theme.spacing.md} * 1.5)`,
+        borderBottom: `${rem(1)} solid ${
+            theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.gray[2]
+        }`,
+    },
+
+    footer: {
+        paddingTop: theme.spacing.md,
+        marginTop: theme.spacing.md,
+        borderTop: `${rem(1)} solid ${
+            theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.gray[2]
+        }`,
+    },
+
+    link: {
+        ...theme.fn.focusStyles(),
+        display: "flex",
+        alignItems: "center",
+        textDecoration: "none",
+        fontSize: theme.fontSizes.sm,
+        color: theme.colorScheme === "dark" ? theme.colors.dark[1] : theme.colors.gray[7],
+        padding: `${theme.spacing.xxxs} ${theme.spacing.xxs}`,
+        borderRadius: theme.radius.sm,
+        fontWeight: 500,
+
+        "&:hover": {
+            backgroundColor:
+                theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.gray[0],
+            color: theme.colorScheme === "dark" ? theme.white : theme.black,
+
+            [`& .${getStylesRef("icon")}`]: {
+                color: theme.colorScheme === "dark" ? theme.white : theme.black,
+            },
+        },
+    },
+
+    linkIcon: {
+        ref: getStylesRef("icon"),
+        color: theme.colorScheme === "dark" ? theme.colors.dark[2] : theme.colors.gray[6],
+        marginRight: theme.spacing.sm,
+    },
+
+    linkActive: {
+        "&, &:hover": {
+            backgroundColor: theme.fn.variant({ variant: "light", color: theme.primaryColor })
+                .background,
+            color: theme.fn.variant({ variant: "light", color: theme.primaryColor }).color,
+            [`& .${getStylesRef("icon")}`]: {
+                color: theme.fn.variant({ variant: "light", color: theme.primaryColor }).color,
+            },
         },
     },
 }))
@@ -33,19 +102,16 @@ const buildStyles = () => {
             backgroundColor("bg-slate-500")
         ),
         notification_container: classnames(padding("p-1")),
+        ...classes,
     }
     return { styles, classes, cx, theme }
 }
 
 const Notification = forwardRef<HTMLDivElement>(function Notification(props, ref) {
-    const { classes } = buildStyles()
+    const { styles } = buildStyles()
     return (
         <div ref={ref} {...props}>
-            <IconNotification
-                size="30px"
-                className={classes.alert_notification}
-                color={"#333333"}
-            />
+            <IconNotification size="30px" className={styles.alert_notification} color={"#333333"} />
         </div>
     )
 })
@@ -80,38 +146,73 @@ export const NotificationContainer = ({ children }: { children: React.ReactNode 
     )
 }
 
-export const Navbar = () => {
+export const AppNavbar = () => {
     const { styles } = buildStyles()
-    const [opened, setOpened] = useState(false)
 
     return (
-        <Group spacing="lg" className={styles.navbar} align="center">
-            <img alt="Platform Logo" src="/logo.svg" style={{ width: "38px", height: "38px" }} />
-            <Search />
-            <FlexSpace />
+        <Navbar width={{ sm: 250 }} p="md">
+            <Navbar.Section grow>
+                <Group className={styles.header} position="apart">
+                    <KtabLogo width={150} height={150} />
+                </Group>
+                <NavbarLinks />
+            </Navbar.Section>
 
-            <Menu opened={opened} onChange={setOpened} position="bottom-end">
-                <Menu.Target>
-                    <Tooltip
-                        classNames={{ tooltip: styles.tooltip }}
-                        label="Notification"
-                        position="bottom"
-                        disabled={opened}
-                    >
-                        <Notification />
-                    </Tooltip>
-                </Menu.Target>
-                <Menu.Dropdown>
-                    <Menu.Label>Notification</Menu.Label>
-                    <NotificationContainer>
-                        <NotificationItem notifi_msg="Comment from 7h by Mohamed Ibrahim" />
-                        <NotificationItem notifi_msg="Comment from 7h by Mohamed Ibrahim" />
-                        <NotificationItem notifi_msg="Comment from 7h by Mohamed Ibrahim" />
-                    </NotificationContainer>
-                </Menu.Dropdown>
-            </Menu>
-            <Avatar src={messi} radius="xl" size="md" />
-        </Group>
+            <Navbar.Section className={styles.footer}>
+                <Button
+                    variant="white"
+                    onClick={(event) => event.preventDefault()}
+                    color="indigo"
+                    aria-label="Logout"
+                >
+                    <IconLogout stroke={1.5} aria-hidden="true" />
+                    <Text className="ml-2">Logout</Text>
+                </Button>
+            </Navbar.Section>
+        </Navbar>
+    )
+}
+
+const NavbarLinks = () => {
+    const { styles, cx, theme } = buildStyles()
+    const [active, setActive] = useState("Billing")
+
+    const data = [
+        { link: "/", label: "Home", icon: IconHome, color: theme.primaryColor },
+        { link: "/", label: "Notifications", icon: IconBellRinging, color: theme.primaryColor },
+        { link: "/editor", label: "Book Editor", icon: IconBook2, color: theme.primaryColor },
+        { link: "/", label: "Settings", icon: IconSettings, color: theme.primaryColor },
+    ]
+
+    const isActive = (item: { label: string }) => {
+        return item.label === active
+    }
+
+    return (
+        <>
+            {data.map((item) => (
+                <Link
+                    className={cx(styles.link, { [styles.linkActive]: isActive(item) })}
+                    to={item.link}
+                    key={item.label}
+                    onClick={() => {
+                        setActive(item.label)
+                    }}
+                >
+                    <Group>
+                        <ThemeIcon
+                            variant={"light"}
+                            size="lg"
+                            color={isActive(item) ? theme.primaryColor : "indigo"}
+                        >
+                            {<item.icon size="1.25rem" />}
+                        </ThemeIcon>
+
+                        <Text size="sm">{item.label}</Text>
+                    </Group>
+                </Link>
+            ))}
+        </>
     )
 }
 
@@ -123,5 +224,36 @@ const Search = () => {
             placeholder="Search"
             radius="md"
         />
+    )
+}
+
+type NotificationMenuProps = {
+    opened: boolean
+    setOpened: (opened: boolean) => void
+}
+
+const NotificationMenu = ({ opened, setOpened }: NotificationMenuProps) => {
+    const { styles } = buildStyles()
+    return (
+        <Menu opened={opened} onChange={setOpened} position="bottom-end">
+            <Menu.Target>
+                <Tooltip
+                    classNames={{ tooltip: styles.tooltip }}
+                    label="Notification"
+                    position="bottom"
+                    disabled={opened}
+                >
+                    <Notification />
+                </Tooltip>
+            </Menu.Target>
+            <Menu.Dropdown>
+                <Menu.Label>Notification</Menu.Label>
+                <NotificationContainer>
+                    <NotificationItem notifi_msg="Comment from 7h by Mohamed Ibrahim" />
+                    <NotificationItem notifi_msg="Comment from 7h by Mohamed Ibrahim" />
+                    <NotificationItem notifi_msg="Comment from 7h by Mohamed Ibrahim" />
+                </NotificationContainer>
+            </Menu.Dropdown>
+        </Menu>
     )
 }

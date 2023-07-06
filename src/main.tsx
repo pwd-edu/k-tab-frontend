@@ -17,6 +17,12 @@ const APP_THEME: MantineTheme = {
         fontFamily: "Roboto, Noto Sans JP, sans-serif, Helvetica, sans-serif",
     },
     primaryColor: "indigo",
+    spacing: {
+        ...DEFAULT_THEME.spacing,
+        xxs: "8px",
+        xxxs: "6px",
+    },
+    primaryShade: 7,
 }
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
