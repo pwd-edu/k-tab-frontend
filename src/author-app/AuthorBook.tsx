@@ -2,22 +2,22 @@ import { Center, ActionIcon, Card, createStyles, Group, Image, Stack, Text } fro
 import { IconClock, IconEdit, IconChartPie, IconPlus, IconEye } from "@tabler/icons"
 import { Link, useNavigate } from "react-router-dom"
 import { SAMPLE_BOOK_ID } from "./constants"
-import { FlexSpace } from "./shared"
+import { FlexSpace } from "../shared"
 
 const useStyles = createStyles(() => ({
-    article_card: {
+    book_card: {
         width: 240,
         height: 138,
     },
 }))
 
-type ArticleProps = {
+type BookProps = {
     title: string
     thumbnail_img: string
     last_update: Date
 }
 
-export const Article = ({ title, thumbnail_img, last_update }: ArticleProps) => {
+export const Book = ({ title, thumbnail_img, last_update }: BookProps) => {
     const { classes } = useStyles()
     const navigate = useNavigate()
 
@@ -32,7 +32,7 @@ export const Article = ({ title, thumbnail_img, last_update }: ArticleProps) => 
     }
 
     return (
-        <Card className={classes.article_card} shadow="sm" p="sm" radius="sm" withBorder>
+        <Card className={classes.book_card} shadow="sm" p="sm" radius="sm" withBorder>
             <Text weight={700} size="xs">
                 {title}
             </Text>
@@ -74,11 +74,10 @@ export const Article = ({ title, thumbnail_img, last_update }: ArticleProps) => 
     )
 }
 
-export const AddArticle = () => {
+export const AddBook = () => {
     const { classes, theme } = useStyles()
-    console.log(theme)
     return (
-        <Card className={classes.article_card} shadow="sm" p="md" radius="sm" withBorder>
+        <Card className={classes.book_card} shadow="sm" p="md" radius="sm" withBorder>
             <Center style={{ width: "100%", height: "100%" }}>
                 <ActionIcon size={58} variant="transparent">
                     <IconPlus

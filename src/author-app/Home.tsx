@@ -1,6 +1,6 @@
-import { Article, AddArticle } from "../Article"
 import { AppNavbar } from "../Navbar"
 import { Group, createStyles, AppShell, Header, Footer } from "@mantine/core"
+import { Book, AddBook } from "./AuthorBook"
 import aofm from "../assets/aofm.jpg"
 import useAuthorBooksData from "../hooks/useAuthorBooksData"
 import Example from "../exampleRQ"
@@ -33,8 +33,8 @@ export const Home = () => {
     return (
         <AppShell navbar={<AppNavbar />}>
             <Group className={styles.home_grid}>
-                <AddArticle />
-                <Article
+                <AddBook />
+                <Book
                     title="The art of mathematics"
                     thumbnail_img={aofm}
                     last_update={new Date(Date.now())}

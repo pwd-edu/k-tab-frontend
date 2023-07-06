@@ -1,4 +1,4 @@
-import { AppNavbar } from "../Navbar"
+import { Navbar } from "../Navbar"
 import { Group, createStyles } from "@mantine/core"
 import aofm from "../assets/aofm.jpg"
 import { StudentBook } from "./StudentBook"
@@ -17,11 +17,11 @@ const buildStyles = (params?: any) => {
     return { styles, classes, cx, theme }
 }
 
-const Library = () => {
+export const BookStore = () => {
     const { styles } = buildStyles()
     return (
         <>
-            <AppNavbar />
+            <Navbar />
             <Group className={styles.home_grid}>
                 <StudentBook
                     title="The art of mathematics"
@@ -37,5 +37,3 @@ const Library = () => {
         </>
     )
 }
-
-export default Library

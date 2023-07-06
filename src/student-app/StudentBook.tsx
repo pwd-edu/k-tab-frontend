@@ -1,67 +1,105 @@
-import { Center, ActionIcon, Card, createStyles, Group, Image, Stack, Text } from "@mantine/core"
-import { IconClock, IconPlus } from "@tabler/icons"
-import { FlexSpace } from "../shared"
+import { Card, Image, Text, Group, Badge, createStyles, Center, Button, rem } from "@mantine/core"
+import { IconGasStation, IconGauge, IconManualGearbox, IconUsers } from "@tabler/icons-react"
 
-const useStyles = createStyles(() => ({
-    Book_card: {
-        width: 1000,
-        height: 800,
+const useStyles = createStyles((theme) => ({
+    card: {
+        backgroundColor: theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
+        width: 260,
+        height: 300,
+    },
+
+    imageSection: {
+        padding: theme.spacing.md,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        borderBottom: `${rem(1)} solid ${
+            theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.gray[3]
+        }`,
+        height: 160,
+    },
+
+    label: {
+        marginBottom: theme.spacing.xs,
+        lineHeight: 1,
+        fontWeight: 700,
+        fontSize: theme.fontSizes.xs,
+        letterSpacing: rem(-0.25),
+        textTransform: "uppercase",
+    },
+
+    section: {
+        padding: theme.spacing.md,
+        // borderTop: `${rem(1)} solid ${
+        //   theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[3]
+        // }`,
+    },
+
+    icon: {
+        marginRight: rem(5),
+        color: theme.colorScheme === "dark" ? theme.colors.dark[2] : theme.colors.gray[5],
     },
 }))
 
-type BookProps = {
-    title: string
-    thumbnail_img: string
-    last_update: Date
-}
+const mockdata = [
+    { label: "Author Name", icon: IconUsers },
+    //   { label: '100 km/h in 4 seconds', icon: IconGauge },
+    //   { label: 'Automatic gearbox', icon: IconManualGearbox },
+    //   { label: 'Electric', icon: IconGasStation },
+]
 
-export const Book = ({ title, thumbnail_img, last_update }: BookProps) => {
+export function StudentBook() {
     const { classes } = useStyles()
-    const formatDateTime = (date_time: Date) => {
-        const options: Intl.DateTimeFormatOptions = {
-            month: "long",
-            day: "numeric",
-            year: "numeric",
-        }
-        const formated = date_time.toLocaleDateString("en-US", options)
-        return formated
-    }
-    return (
-        <Card className={classes.Book_card} shadow="sm" p="sm" radius="sm" withBorder>
-            <Text weight={700} size="xs">
-                {title}
+    const features = mockdata.map((feature) => (
+        <Center key={feature.label}>
+            <feature.icon size="1.05rem" className={classes.icon} stroke={1.5} />
+            <Text fz="sm" c="dimmed" className={classes.label} size="xs">
+                {feature.label}
             </Text>
-            <Stack spacing="xs">
-                <Image height={70} radius="sm" src={thumbnail_img} />
-                <Group className="gap-1">
-                    <IconClock color={"#4F4F4F"} size={14} />
-                    <Text style={{ fontSize: "10px" }} weight={700} color={"#4F4F4F"}>
-                        {`Updated ${formatDateTime(last_update)}`}
-                    </Text>
-                    <FlexSpace />
-                    <Group spacing={0}></Group>
-                </Group>
-            </Stack>
-        </Card>
-    )
-}
+        </Center>
+    ))
 
-export const AddBook = () => {
-    const { classes } = useStyles()
     return (
-        <Card className={classes.Book_card} shadow="sm" p="md" radius="sm" withBorder>
-            <Center style={{ width: "100%", height: "100%" }}>
-                <ActionIcon size={58} variant="transparent">
-                    <IconPlus
-                        color={"#155EEF"}
-                        width={58}
-                        height={58}
-                        strokeLinecap="square"
-                        strokeLinejoin="inherit"
-                        viewBox="4 4 16 16"
-                    />
-                </ActionIcon>
-            </Center>
+        <Card withBorder radius="md" className={classes.card}>
+            <Card.Section className={classes.imageSection}>
+                <Image src="https://i.imgur.com/ZL52Q2D.png" alt="Tesla Model S" />
+            </Card.Section>
+
+            {/* <Card.Section className={classes.section} mt="md">
+        <Text fz="sm" c="dimmed" className={classes.label}>
+          Basic configuration
+        </Text>
+
+        <Group spacing={8} mb={-8}>
+          {features}
+        </Group>
+      </Card.Section> */}
+
+            <Card.Section className={classes.section}>
+                <Card.Section className={classes.section} mt="md">
+                    {/* <Text fz="sm" c="dimmed" className={classes.label}>
+                        Basic configuration
+                    </Text> */}
+
+                    <Group spacing={8} mb={-8}>
+                        {features}
+                    </Group>
+                </Card.Section>
+                <Group spacing={30}>
+                    <div>
+                        <Text fz="xl" fw={700} sx={{ lineHeight: 1 }}>
+                            $168.00
+                        </Text>
+                        {/* <Text fz="sm" c="dimmed" fw={500} sx={{ lineHeight: 1 }} mt={3}>
+                            per day
+                        </Text> */}
+                    </div>
+
+                    <Button radius="xl" style={{ flex: 1 }}>
+                        Rent now
+                    </Button>
+                </Group>
+            </Card.Section>
         </Card>
     )
 }
