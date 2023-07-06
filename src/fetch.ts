@@ -1,5 +1,5 @@
 import axios from "axios"
-import { getAuthHeader } from "./auth"
+import { getAuthHeader } from "./editor/auth"
 import {
     AiClientType,
     AuthorCLientType,
@@ -7,6 +7,7 @@ import {
     BookClientType,
     Chapter,
     ChapterClientType,
+    ChapterPresigned,
     CreateBookRequest,
     CreateChapterRequest,
     ImageDescription,
@@ -14,7 +15,7 @@ import {
     ImagePresigned,
     ImagePresignedSchema,
     S3ClientType,
-} from "./types"
+} from "./editor/types"
 
 const API_URL = "http://localhost:8080"
 
@@ -35,6 +36,10 @@ export const BookClient = (): BookClientType => ({
         const response = await axios_instance.post(`/book`, book)
         return response.data
     },
+    get: async (book_id: string): Promise<Book> => {
+        const response = await axios_instance.get(`/book/`, { params: { bookId: book_id } })
+        return response.data
+    },
 })
 
 export const ChapterClient = (): ChapterClientType => ({
@@ -53,6 +58,10 @@ export const S3Client = (): S3ClientType => ({
         const response = await axios_instance.get(`/s3/save-content/?contentPath=${content_path}`)
         return response.data
     },
+    getChapterPresignedDownload: async (chapter_id: string): Promise<ChapterPresigned> => {
+        const response = await axios_instance.get(`/s3/read/?chapterId=${chapter_id}`)
+        return response.data
+    },
     getImagePresignedUpload: async (chpater_id: string): Promise<ImagePresigned> => {
         const response = await axios_instance.get(`/s3/image/`, {
             params: { chapterId: chpater_id },
@@ -61,9 +70,8 @@ export const S3Client = (): S3ClientType => ({
     },
     uploadChapterContent: async (presigned_url, chapter_content): Promise<void> => {
         const chapter_blob = new Blob([JSON.stringify(chapter_content)], { type: "text/json" })
-        const form = new FormData()
-        form.append("file_content", chapter_blob)
-        await axios.put(presigned_url, form)
+        console.log(chapter_blob)
+        await axios.put(presigned_url, chapter_blob)
     },
 })
 

@@ -16,6 +16,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import TableOfContentsData from "./author-app/BookContentsData"
 import Dashboard from "./author-app/Dashboard/AuthorDashboard"
 import PrivateRoute from "./auth/PrivateRoute"
+import { BookEditor } from "./BookEditor"
 
 const queryClient = new QueryClient()
 function App() {
@@ -34,6 +35,7 @@ function App() {
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/library" element={<Library />} />
                     <Route path="/bookinfo" element={<BookInfoForm />} />
+                    <Route path="/book-editor/:book_id/:chapter_num" element={<BookEditor />} />
                     <Route
                         path="/bookcard"
                         element={

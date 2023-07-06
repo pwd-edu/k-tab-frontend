@@ -6,7 +6,7 @@ import { useEditorStore } from "./editor-store"
 import { FileWithPath } from "@mantine/dropzone"
 
 import axios from "axios"
-import { AiClient, S3Client } from "./fetch"
+import { AiClient, S3Client } from "../fetch"
 import { ImageDescription, ImageInserterProps, ImagePreviewProps } from "./types"
 
 const s3_client = S3Client()

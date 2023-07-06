@@ -1,4 +1,4 @@
-import { useEditor, EditorContent } from "@tiptap/react"
+import { useEditor, EditorContent, JSONContent } from "@tiptap/react"
 import Bold from "@tiptap/extension-bold"
 import Italic from "@tiptap/extension-italic"
 import Underline from "@tiptap/extension-underline"
@@ -24,48 +24,54 @@ import { ModalContainer } from "./ModalContainer"
 import { useEditorStore } from "./editor-store"
 
 import { McqExtension } from "./McqExtenstion"
-import { useEffect } from "react"
-import { ChapterClient, S3Client } from "./fetch"
+import { ChapterClient, S3Client } from "../fetch"
 import { Chapter } from "./types"
 
-export const LessonEditor = () => {
+type LessonEditorProps = {
+    content?: JSONContent
+}
+
+export const LessonEditor = ({ content }: LessonEditorProps) => {
     const [opened, setModalOpened] = useEditorStore((state) => [
         state.modal_opened,
         state.setModalOpened,
     ])
     const [modal_content] = useEditorStore((state) => [state.modal_content])
 
-    const editor = useEditor({
-        extensions: [
-            Document,
-            Paragraph,
-            TextExtension,
-            Bold,
-            Heading,
-            Italic,
-            Underline,
-            History,
-            BulletList,
-            ListItem,
-            OrderedList,
-            Blockquote,
-            Gapcursor,
-            Color,
-            TextStyle,
-            Image,
-            McqExtension,
-        ],
-        content: constants.EDITOR_PARSED_JSON,
-        editorProps: {
-            attributes: {
-                class: "flex-1 max-w-none justify-center py-6 px-6 prose prose-sm [&_p]:m-0 prose-headings:m-0 focus:outline-none",
+    const editor = useEditor(
+        {
+            extensions: [
+                Document,
+                Paragraph,
+                TextExtension,
+                Bold,
+                Heading,
+                Italic,
+                Underline,
+                History,
+                BulletList,
+                ListItem,
+                OrderedList,
+                Blockquote,
+                Gapcursor,
+                Color,
+                TextStyle,
+                Image,
+                McqExtension,
+            ],
+            content: content,
+            editorProps: {
+                attributes: {
+                    class: "flex-1 max-w-none justify-center py-6 px-6 prose prose-sm [&_p]:m-0 prose-headings:m-0 focus:outline-none",
+                },
             },
         },
-    })
+        [content]
+    )
 
     const chapter_client = ChapterClient()
     const s3_client = S3Client()
-    const chapter_id = "118e86ed-47d9-45bc-aa50-91a02c6d9171" // TODO: get chapter id from props
+    const chapter_id = constants.SAMPLE_CHAPTER_ID
 
     const { refetch: fetchChapterInfo } = useQuery({
         queryKey: ["chapter", chapter_id],
@@ -85,12 +91,6 @@ export const LessonEditor = () => {
             saveChapterContent(chapter_info)
         }
     }
-
-    useEffect(() => {
-        editor?.on("transaction", () => {
-            console.log(editor?.getJSON())
-        })
-    }, [editor])
 
     if (!editor) {
         // to avoid error when editor is not ready, actually to shut up typescript
