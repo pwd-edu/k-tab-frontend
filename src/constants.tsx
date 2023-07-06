@@ -16,7 +16,8 @@ import TextStyle from "@tiptap/extension-text-style"
 import Underline from "@tiptap/extension-underline"
 
 import { LineFocusExtension } from "./views/author/editor/LineFocusExtension"
-import { McqExtension } from "./views/author/editor/McqExtenstion"
+import { McqExtension } from "./views/author/editor/extensions/McqExtenstion"
+import { ImageResizeExtension } from "./views/author/editor/extensions/image-resize"
 
 export const PORT = 8080
 export const URL = `http://localhost:${PORT}/`
@@ -108,7 +109,8 @@ export const BASE_EDITOR_EXTENSIONS = [
     Gapcursor,
     Color,
     TextStyle,
-    Image,
     McqExtension,
+    Image,
     LineFocusExtension,
+    ImageResizeExtension,
 ]
