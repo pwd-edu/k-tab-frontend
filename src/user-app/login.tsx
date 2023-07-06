@@ -31,7 +31,6 @@ const LoginSchema = z.object({
 })
 
 type LoginFormInputs = z.infer<typeof LoginSchema>
-
 export function LoginPage() {
     const { isAuthenticated, isLoading } = useAuth()
 
