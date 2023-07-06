@@ -68,13 +68,7 @@ export function StudentBook({
 
     const bookTags = ["AI", "Stats"]
     const tags = bookTags.map((tag) => (
-        <Badge
-            className={classes.tags}
-            variant="gradient"
-            gradient={{ from: "yellow", to: "red" }}
-            color={theme.colorScheme === "dark" ? "dark" : "gray"}
-            key={tag}
-        >
+        <Badge className={classes.tags} color="blue" variant="light" key={tag}>
             {tag}
         </Badge>
     ))
@@ -97,7 +91,7 @@ export function StudentBook({
                 </Center>
 
                 <Center>
-                    <IconWriting size="1.05rem" className={classes.icon} stroke={1.5} />
+                    <IconUser size="1.05rem" className={classes.icon} stroke={1.5} />
                     <Text color={theme.colorScheme === "dark" ? "dark" : "gray"} size="xs">
                         {authorName}
                     </Text>

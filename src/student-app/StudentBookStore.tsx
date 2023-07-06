@@ -37,7 +37,9 @@ export const BookStore = () => {
                 <StudentBook
                     image={aofm}
                     link={"https://mantine.dev/"}
-                    title={"bookkk titlllllle"}
+                    title={
+                        "bookkk titllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllle"
+                    }
                     rating={"outstanding"}
                     price={15}
                     description={"bla bla bla bla bla bla bla bla bla bla bla bla"}

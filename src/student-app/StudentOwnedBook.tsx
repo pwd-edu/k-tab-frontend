@@ -70,7 +70,7 @@ export function StudentOwnedBook({
         <Badge
             className={classes.tags}
             variant="gradient"
-            gradient={{ from: "yellow", to: "red" }}
+            gradient={{ from: "blue", to: "blue" }}
             color={theme.colorScheme === "dark" ? "dark" : "gray"}
             key={tag}
         >
