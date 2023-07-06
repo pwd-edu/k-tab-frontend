@@ -3,6 +3,7 @@ import { Home } from "./author-app/Home"
 import { LessonEditor } from "./editor/Editor"
 import CreateStudent from "./student-app/CreateStudent"
 import CreateAuthor from "./author-app/CreateAuthor"
+import Library from "./student-app/StudentLibrary"
 import { BookStore } from "./student-app/StudentBookStore"
 import { BookInfoForm } from "./author-app/BookInfo"
 import StudentBookInfo from "./student-app/StudentBookInfo"
@@ -34,6 +35,7 @@ function App() {
                     </Route>
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/bookstore" element={<BookStore />} />
+                    <Route path="/library" element={<Library />} />
                     <Route path="/bookinfo" element={<BookInfoForm />} />
                     <Route path="/book-editor/:book_id/:chapter_num" element={<BookEditor />} />
                     <Route

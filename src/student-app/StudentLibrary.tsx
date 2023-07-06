@@ -1,7 +1,7 @@
 import { AppNavbar } from "../Navbar"
 import { Group, createStyles } from "@mantine/core"
 import aofm from "../assets/aofm.jpg"
-import { StudentBook } from "./StudentBook"
+import { StudentOwnedBook } from "./StudentOwnedBook"
 
 const useStyles = createStyles((theme) => ({
     grid: {
@@ -23,15 +23,20 @@ const Library = () => {
         <>
             <AppNavbar />
             <Group className={styles.home_grid}>
-                <StudentBook
-                    title="The art of mathematics"
-                    thumbnail_img={aofm}
-                    last_update={new Date(Date.now())}
+                <StudentOwnedBook
+                    image={aofm}
+                    link={"https://mantine.dev/"}
+                    // tags={bookTags}
+                    rating={"outstanding"}
+                    title={"bookkk titlllllle"}
+                    description={"bla bla bla bla bla bla bla bla bla bla bla bla"}
                 />
-                <StudentBook
-                    title="Software Engineering"
-                    thumbnail_img={aofm}
-                    last_update={new Date(Date.now())}
+                <StudentOwnedBook
+                    image={aofm}
+                    link={"https://mantine.dev/"}
+                    title={"bookkk titlllllle"}
+                    rating={"outstanding"}
+                    description={"bla bla bla bla bla bla bla bla bla bla bla bla"}
                 />
             </Group>
         </>

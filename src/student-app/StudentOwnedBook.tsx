@@ -1,6 +1,15 @@
-import { Card, Image, Text, Badge, Group, Center, createStyles, rem } from "@mantine/core"
-
-import { IconUsers, IconUser, IconWriting } from "@tabler/icons-react"
+import { IconBookmark, IconHeart } from "@tabler/icons-react"
+import {
+    Card,
+    Image,
+    Text,
+    ActionIcon,
+    Badge,
+    Group,
+    Center,
+    createStyles,
+    rem,
+} from "@mantine/core"
 
 const useStyles = createStyles((theme) => ({
     card: {
@@ -27,19 +36,12 @@ const useStyles = createStyles((theme) => ({
                 theme.colorScheme === "dark" ? theme.colors.dark[5] : theme.colors.gray[1],
         }),
     },
-
-    footer: {
-        marginTop: theme.spacing.md,
-    },
     tags: {
         marginRight: theme.spacing.xs,
     },
-    author: {
-        color: theme.colors.dark[2],
-    },
-    icon: {
-        marginRight: rem(5),
-        color: theme.colorScheme === "dark" ? theme.colors.dark[2] : theme.colors.gray[5],
+
+    footer: {
+        marginTop: theme.spacing.md,
     },
 }))
 
@@ -49,17 +51,14 @@ interface StudentBookProps {
     title: string
     description: string
     rating: string
-    price: number
-    authorName: string
 }
 
-export function StudentBook({
+export function StudentOwnedBook({
     className,
     image,
     link,
     title,
-    price,
-    authorName,
+    // tags,
     description,
     ...others
 }: StudentBookProps & Omit<React.ComponentPropsWithoutRef<"div">, keyof StudentBookProps>) {
@@ -96,15 +95,10 @@ export function StudentBook({
                     </Text>
                 </Center>
 
-                <Center>
-                    <IconWriting size="1.05rem" className={classes.icon} stroke={1.5} />
-                    <Text color={theme.colorScheme === "dark" ? "dark" : "gray"} size="xs">
-                        {authorName}
-                    </Text>
-                </Center>
-
                 <Group spacing={8} mr={0}>
-                    <Badge color={theme.colorScheme === "dark" ? "dark" : "gray"}>{price}$</Badge>
+                    <ActionIcon className={classes.action}>
+                        <IconHeart size="1rem" color={theme.colors.red[6]} />
+                    </ActionIcon>
                 </Group>
             </Group>
 

@@ -19,19 +19,29 @@ const buildStyles = (params?: any) => {
 
 export const BookStore = () => {
     const { styles } = buildStyles()
+    const bookTags = ["AI", "Stats"]
     return (
         <>
             <Navbar />
             <Group className={styles.home_grid}>
                 <StudentBook
-                    title="The art of mathematics"
-                    thumbnail_img={aofm}
-                    last_update={new Date(Date.now())}
+                    image={aofm}
+                    link={"https://mantine.dev/"}
+                    // tags={bookTags}
+                    price={15}
+                    rating={"outstanding"}
+                    title={"bookkk titlllllle"}
+                    description={"bla bla bla bla bla bla bla bla bla bla bla bla"}
+                    authorName={"Mariam Ashraf"}
                 />
                 <StudentBook
-                    title="Software Engineering"
-                    thumbnail_img={aofm}
-                    last_update={new Date(Date.now())}
+                    image={aofm}
+                    link={"https://mantine.dev/"}
+                    title={"bookkk titlllllle"}
+                    rating={"outstanding"}
+                    price={15}
+                    description={"bla bla bla bla bla bla bla bla bla bla bla bla"}
+                    authorName={"Mariam Ashraf"}
                 />
             </Group>
         </>
