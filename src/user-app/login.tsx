@@ -22,7 +22,7 @@ import { useAuth } from "../auth/useAuth"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
-import { CenteredLoading } from "../shared"
+import { CenteredLoading, KtabLogo } from "../shared"
 import { toast, ToastContainer } from "react-toastify"
 
 const LoginSchema = z.object({
@@ -83,7 +83,7 @@ function LoginForm() {
 
     return (
         <Stack className="h-full grow-[1.3] basis-0 p-5">
-            <img src={Logo} alt="K tab logo" width={150} height={150} />
+            <KtabLogo width={150} height={150} />
             <Center className="flex-1">
                 <Stack className="w-5/6 justify-start" spacing={10} mt={10}>
                     <Title>Welcome back!</Title>

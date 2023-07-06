@@ -1,6 +1,6 @@
 import { Article, AddArticle } from "../Article"
-import { Navbar } from "../Navbar"
-import { Group, createStyles } from "@mantine/core"
+import { AppNavbar } from "../Navbar"
+import { Group, createStyles, AppShell, Header, Footer } from "@mantine/core"
 import aofm from "../assets/aofm.jpg"
 import useAuthorBooksData from "../hooks/useAuthorBooksData"
 import Example from "../exampleRQ"
@@ -31,8 +31,7 @@ export const Home = () => {
     //     return <h2>{error.message}</h2>
     // }
     return (
-        <>
-            <Navbar />
+        <AppShell navbar={<AppNavbar />}>
             <Group className={styles.home_grid}>
                 <AddArticle />
                 <Article
@@ -45,6 +44,6 @@ export const Home = () => {
                 </div> */}
                 {/* <Example/> */}
             </Group>
-        </>
+        </AppShell>
     )
 }

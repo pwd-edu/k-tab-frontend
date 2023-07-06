@@ -75,13 +75,14 @@ export const Article = ({ title, thumbnail_img, last_update }: ArticleProps) => 
 }
 
 export const AddArticle = () => {
-    const { classes } = useStyles()
+    const { classes, theme } = useStyles()
+    console.log(theme)
     return (
         <Card className={classes.article_card} shadow="sm" p="md" radius="sm" withBorder>
             <Center style={{ width: "100%", height: "100%" }}>
                 <ActionIcon size={58} variant="transparent">
                     <IconPlus
-                        color={"#155EEF"}
+                        color={theme.colors.indigo[8]}
                         width={58}
                         height={58}
                         strokeLinecap="square"
