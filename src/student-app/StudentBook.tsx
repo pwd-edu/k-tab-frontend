@@ -1,6 +1,6 @@
 import { Card, Image, Text, Badge, Group, Center, createStyles, rem } from "@mantine/core"
 
-import { IconUsers, IconUser, IconWriting } from "@tabler/icons-react"
+import { IconUser, IconWriting } from "@tabler/icons-react"
 
 const useStyles = createStyles((theme) => ({
     card: {
@@ -48,9 +48,9 @@ interface StudentBookProps {
     link: string
     title: string
     description: string
-    rating: string
     price: number
     authorName: string
+    tags: string[]
 }
 
 export function StudentBook({
@@ -60,14 +60,14 @@ export function StudentBook({
     title,
     price,
     authorName,
+    tags,
     description,
     ...others
 }: StudentBookProps & Omit<React.ComponentPropsWithoutRef<"div">, keyof StudentBookProps>) {
     const { classes, cx, theme } = useStyles()
     const linkProps = { href: link, target: "_blank", rel: "noopener noreferrer" }
 
-    const bookTags = ["AI", "Stats"]
-    const tags = bookTags.map((tag) => (
+    const bookTags = tags.map((tag) => (
         <Badge className={classes.tags} color="blue" variant="light" key={tag}>
             {tag}
         </Badge>
@@ -81,7 +81,7 @@ export function StudentBook({
                 </a>
             </Card.Section>
 
-            {tags}
+            {bookTags}
 
             <Group position="apart" className={classes.footer}>
                 <Center>

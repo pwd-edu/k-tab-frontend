@@ -50,7 +50,7 @@ interface StudentBookProps {
     link: string
     title: string
     description: string
-    rating: string
+    tags: string[]
 }
 
 export function StudentOwnedBook({
@@ -58,22 +58,15 @@ export function StudentOwnedBook({
     image,
     link,
     title,
-    // tags,
+    tags,
     description,
     ...others
 }: StudentBookProps & Omit<React.ComponentPropsWithoutRef<"div">, keyof StudentBookProps>) {
     const { classes, cx, theme } = useStyles()
     const linkProps = { href: link, target: "_blank", rel: "noopener noreferrer" }
 
-    const bookTags = ["AI", "Stats"]
-    const tags = bookTags.map((tag) => (
-        <Badge
-            className={classes.tags}
-            variant="gradient"
-            gradient={{ from: "blue", to: "blue" }}
-            color={theme.colorScheme === "dark" ? "dark" : "gray"}
-            key={tag}
-        >
+    const bookTags = tags.map((tag) => (
+        <Badge className={classes.tags} color="blue" variant="light" key={tag}>
             {tag}
         </Badge>
     ))
@@ -86,7 +79,7 @@ export function StudentOwnedBook({
                 </a>
             </Card.Section>
 
-            {tags}
+            {bookTags}
 
             <Group position="apart" className={classes.footer}>
                 <Center>

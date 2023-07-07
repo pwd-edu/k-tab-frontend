@@ -19,6 +19,7 @@ const buildStyles = (params?: any) => {
 
 const Library = () => {
     const { styles } = buildStyles()
+    const bookTags = ["Maths", "Physics"]
     return (
         <>
             <AppNavbar />
@@ -26,16 +27,15 @@ const Library = () => {
                 <StudentOwnedBook
                     image={aofm}
                     link={"https://mantine.dev/"}
-                    // tags={bookTags}
-                    rating={"outstanding"}
+                    tags={bookTags}
                     title={"bookkk titlllllle"}
                     description={"bla bla bla bla bla bla bla bla bla bla bla bla"}
                 />
                 <StudentOwnedBook
                     image={aofm}
                     link={"https://mantine.dev/"}
+                    tags={bookTags}
                     title={"bookkk titlllllle"}
-                    rating={"outstanding"}
                     description={"bla bla bla bla bla bla bla bla bla bla bla bla"}
                 />
             </Group>

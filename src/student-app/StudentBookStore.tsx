@@ -27,9 +27,8 @@ export const BookStore = () => {
                 <StudentBook
                     image={aofm}
                     link={"https://mantine.dev/"}
-                    // tags={bookTags}
                     price={15}
-                    rating={"outstanding"}
+                    tags={bookTags}
                     title={"bookkk titlllllle"}
                     description={"bla bla bla bla bla bla bla bla bla bla bla bla"}
                     authorName={"Mariam Ashraf"}
@@ -40,7 +39,8 @@ export const BookStore = () => {
                     title={
                         "bookkk titllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllle"
                     }
-                    rating={"outstanding"}
+                    tags={bookTags}
+                    // rating={"outstanding"}
                     price={15}
                     description={"bla bla bla bla bla bla bla bla bla bla bla bla"}
                     authorName={"Mariam Ashraf"}
