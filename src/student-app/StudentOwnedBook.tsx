@@ -1,4 +1,4 @@
-import { IconBookmark, IconHeart } from "@tabler/icons-react"
+import { IconHeart } from "@tabler/icons-react"
 import {
     Card,
     Image,
@@ -15,17 +15,15 @@ const useStyles = createStyles((theme) => ({
     card: {
         position: "relative",
         backgroundColor: theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
-    },
-
-    rating: {
-        position: "absolute",
-        top: theme.spacing.xs,
-        right: rem(12),
-        pointerEvents: "none",
+        width: 310,
+        maxWidth: 340,
+        height: 320,
+        maxHeight: 355,
     },
 
     title: {
-        display: "block",
+        display: "inline",
+        width: 200,
         marginBottom: rem(5),
     },
 
@@ -83,7 +81,7 @@ export function StudentOwnedBook({
 
             <Group position="apart" className={classes.footer}>
                 <Center>
-                    <Text className={classes.title} fw={500} component="a" {...linkProps}>
+                    <Text truncate className={classes.title} fw={500} component="a" {...linkProps}>
                         {title}
                     </Text>
                 </Center>
@@ -95,7 +93,7 @@ export function StudentOwnedBook({
                 </Group>
             </Group>
 
-            <Text fz="sm" color="dimmed" lineClamp={4}>
+            <Text fz="sm" color="dimmed" lineClamp={3}>
                 {description}
             </Text>
         </Card>

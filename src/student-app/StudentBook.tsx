@@ -1,23 +1,21 @@
 import { Card, Image, Text, Badge, Group, Center, createStyles, rem } from "@mantine/core"
 
-import { IconUser, IconWriting } from "@tabler/icons-react"
+import { IconUser } from "@tabler/icons-react"
 
 const useStyles = createStyles((theme) => ({
     card: {
         position: "relative",
         backgroundColor: theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
-    },
-
-    rating: {
-        position: "absolute",
-        top: theme.spacing.xs,
-        right: rem(12),
-        pointerEvents: "none",
+        width: 310,
+        maxWidth: 340,
+        height: 320,
+        maxHeight: 355,
     },
 
     title: {
-        display: "block",
-        marginBottom: rem(5),
+        display: "inline",
+        width: 100,
+        // marginBottom: rem(5),
     },
 
     action: {
@@ -30,6 +28,7 @@ const useStyles = createStyles((theme) => ({
 
     footer: {
         marginTop: theme.spacing.md,
+        // width: 160
     },
     tags: {
         marginRight: theme.spacing.xs,
@@ -85,7 +84,14 @@ export function StudentBook({
 
             <Group position="apart" className={classes.footer}>
                 <Center>
-                    <Text className={classes.title} fw={500} component="a" {...linkProps}>
+                    <Text
+                        truncate
+                        sx={{ textOverflow: "ellipsis", overflow: "hidden" }}
+                        className={classes.title}
+                        fw={500}
+                        component="a"
+                        {...linkProps}
+                    >
                         {title}
                     </Text>
                 </Center>
@@ -102,7 +108,7 @@ export function StudentBook({
                 </Group>
             </Group>
 
-            <Text fz="sm" color="dimmed" lineClamp={4}>
+            <Text fz="sm" color="dimmed" lineClamp={3}>
                 {description}
             </Text>
         </Card>

@@ -30,7 +30,9 @@ export const BookStore = () => {
                     price={15}
                     tags={bookTags}
                     title={"bookkk titlllllle"}
-                    description={"bla bla bla bla bla bla bla bla bla bla bla bla"}
+                    description={
+                        "bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla"
+                    }
                     authorName={"Mariam Ashraf"}
                 />
                 <StudentBook

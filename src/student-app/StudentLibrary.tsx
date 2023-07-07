@@ -28,8 +28,10 @@ const Library = () => {
                     image={aofm}
                     link={"https://mantine.dev/"}
                     tags={bookTags}
-                    title={"bookkk titlllllle"}
-                    description={"bla bla bla bla bla bla bla bla bla bla bla bla"}
+                    title={"bookkk titlllllllllllllllllllllllllllllllllllllle"}
+                    description={
+                        "bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla"
+                    }
                 />
                 <StudentOwnedBook
                     image={aofm}

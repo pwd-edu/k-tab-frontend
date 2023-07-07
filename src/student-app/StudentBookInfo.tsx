@@ -53,10 +53,10 @@ function StudentBookInfo({ tags }: BookProps) {
     const getBook = async () => {
         try {
             const fetchData = await axios.get(API_URL, {
-                headers: {
-                    authorization:
-                        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtYXJpYW1AZ21haWwuY29tIiwidXNlcklkIjoiNmMxMzg2YjMtOTZiYi00NWQwLWJiNGItYzM1YTI4MGI0NGNlIiwidXNlclR5cGUiOiJBRE1JTiIsImlhdCI6MTY4NDc2MzM1MiwiZXhwIjoxNjg1OTE2MDAwfQ.O0AvLmwmqbTweVbNzL2sRvbgBC0sUT9kZtX8z8bX7kw",
-                },
+                // headers: {
+                //     authorization:
+                //         "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtYXJpYW1AZ21haWwuY29tIiwidXNlcklkIjoiNmMxMzg2YjMtOTZiYi00NWQwLWJiNGItYzM1YTI4MGI0NGNlIiwidXNlclR5cGUiOiJBRE1JTiIsImlhdCI6MTY4NDc2MzM1MiwiZXhwIjoxNjg1OTE2MDAwfQ.O0AvLmwmqbTweVbNzL2sRvbgBC0sUT9kZtX8z8bX7kw",
+                // },
             })
 
             const authorId = fetchData.data.authorId
