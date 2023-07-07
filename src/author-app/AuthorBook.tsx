@@ -1,5 +1,6 @@
 import { Center, ActionIcon, Card, createStyles, Group, Image, Stack, Text } from "@mantine/core"
 import { IconClock, IconEdit, IconChartPie, IconPlus, IconEye } from "@tabler/icons"
+import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { SAMPLE_BOOK_ID } from "../constants"
 import { FlexSpace } from "../shared"
@@ -17,7 +18,8 @@ type BookProps = {
     last_update: Date
 }
 
-export const Book = ({ title, thumbnail_img, last_update }: BookProps) => {
+export const AuthorBookCard = ({ title, thumbnail_img, last_update }: BookProps) => {
+    const [image_src, setImageSrc] = useState(thumbnail_img)
     const { classes } = useStyles()
     const navigate = useNavigate()
 
@@ -31,13 +33,17 @@ export const Book = ({ title, thumbnail_img, last_update }: BookProps) => {
         return formated
     }
 
+    const handleImageError = () => {
+        setImageSrc("https://via.placeholder.com/512x512")
+    }
+
     return (
         <Card className={classes.book_card} shadow="sm" p="sm" radius="sm" withBorder>
             <Text weight={700} size="xs">
                 {title}
             </Text>
             <Stack spacing="xs">
-                <Image height={70} radius="sm" src={thumbnail_img} />
+                <Image height={70} radius="sm" src={thumbnail_img} onError={handleImageError} />
                 <Group className="gap-1">
                     <IconClock color={"#4F4F4F"} size={14} />
                     <Text style={{ fontSize: "10px" }} weight={700} color={"#4F4F4F"}>

@@ -1,8 +1,10 @@
+import { AuthorBookCard, AddBook } from "./AuthorBook"
 import { AppNavbar } from "../Navbar"
-import { Group, createStyles, AppShell, Header, Footer } from "@mantine/core"
-import { Book, AddBook } from "./AuthorBook"
-import aofm from "../assets/aofm.jpg"
-import useAuthorBooksData from "../hooks/useAuthorBooksData"
+import { Group, createStyles, AppShell } from "@mantine/core"
+import { AuthorClient, RESOURCE_URL } from "../fetch"
+import { toast, ToastContainer } from "react-toastify"
+import { BookHeader } from "../editor/types"
+import { useQuery } from "@tanstack/react-query"
 
 const useStyles = createStyles((theme) => ({
     grid: {
@@ -18,19 +20,60 @@ const buildStyles = () => {
     return { styles, classes, cx, theme }
 }
 
+const author_client = AuthorClient()
+
 export const Home = () => {
     const { styles } = buildStyles()
+    const { isLoading, data, isError } = useQuery(["home-books"], () => author_client.getBooks())
+
+    if (isLoading) {
+        return <div>Loading...</div>
+    }
+
+    if (isError) {
+        toast.error("Unexpected error occurred", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+        })
+    }
 
     return (
         <AppShell navbar={<AppNavbar />}>
             <Group className={styles.home_grid}>
                 <AddBook />
-                <Book
-                    title="The art of mathematics"
-                    thumbnail_img={aofm}
-                    last_update={new Date(Date.now())}
-                />
+                {data?.map((book) => (
+                    <HomeBookCard key={book.bookId} book={book} />
+                ))}
             </Group>
+
+            <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+            />
         </AppShell>
+    )
+}
+
+const HomeBookCard = ({ book }: { book: BookHeader }) => {
+    return (
+        <AuthorBookCard
+            title={`${book.title} ${book.bookId}`}
+            thumbnail_img={RESOURCE_URL(book.bookCoverPath)}
+            last_update={new Date(Date.now())}
+        />
     )
 }

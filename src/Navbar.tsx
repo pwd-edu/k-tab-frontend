@@ -205,7 +205,7 @@ const NavbarLinks = () => {
                             size="lg"
                             color={isActive(item) ? theme.primaryColor : "indigo"}
                         >
-                            {<item.icon size="1.25rem" />}
+                            {<item.icon />}
                         </ThemeIcon>
 
                         <Text size="sm">{item.label}</Text>

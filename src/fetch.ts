@@ -106,6 +106,10 @@ export const AuthorClient = (): AuthorCLientType => ({
         const response = await axios_instance.get(`/author/`, { params: { authorId } })
         return response.data
     },
+    getBooks: async () => {
+        const response = await axios_instance.get(`/author/home/`)
+        return response.data
+    },
 })
 
 export const StudentClient = (): StudentCLientType => ({
@@ -122,3 +126,5 @@ export const StudentClient = (): StudentCLientType => ({
         return response.data
     },
 })
+export const RESOURCE_URL = (resource_path: string) =>
+    `${API_URL}/s3/resources/?resourcePath=${resource_path}`
