@@ -31,7 +31,7 @@ function App() {
                     <Route path="/author" element={<CreateAuthor />} />
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/" element={<PrivateRoute />}>
-                        <Route path="/" element={<Home />} />
+                        <Route index element={<Home />} />
                     </Route>
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/bookstore" element={<BookStore />} />
