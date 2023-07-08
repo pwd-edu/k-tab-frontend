@@ -1,14 +1,6 @@
 export const PORT = 8080
 export const URL = `http://localhost:${PORT}/`
 
-export const JWT_TOKEN = "jwt_token"
-export const VALID_TOKEN = import.meta.env.VITE_VALID_TOKEN
-export const USE_STATIC_JWT = import.meta.env.VITE_USE_STATIC_JWT
-export const AUTHOR_JWT = import.meta.env.VITE_AUTHOR_JWT
-export const STUDENT_JWT = import.meta.env.VITE_AUTHOR_JWT
-export const SAMPLE_BOOK_ID = import.meta.env.VITE_SAMPLE_BOOK_ID
-export const SAMPLE_CHAPTER_ID = import.meta.env.VITE_SAMPLE_CHAPTER_ID
-
 export const EDITOR_SAMPLE = `
     <h1>Typography should be easy</h1>
     <p></p>
@@ -62,9 +54,12 @@ export const EDITOR_OBJ = {
         },
     ],
 }
+
 export const EDITOR_JSON_SAMPLE = JSON.stringify(EDITOR_OBJ)
 export const EDITOR_PARSED_JSON = JSON.parse(EDITOR_JSON_SAMPLE)
 export const JWT_TOKEN = "jwt_token"
-export const VALID_TOKEN = import.meta.env.VITE_VALID_TOKEN
+export const USE_STATIC_JWT = import.meta.env.VITE_USE_STATIC_JWT
+export const AUTHOR_JWT = import.meta.env.VITE_AUTHOR_JWT
+export const STUDENT_JWT = import.meta.env.VITE_AUTHOR_JWT
 export const SAMPLE_BOOK_ID = import.meta.env.VITE_SAMPLE_BOOK_ID
 export const SAMPLE_CHAPTER_ID = import.meta.env.VITE_SAMPLE_CHAPTER_ID

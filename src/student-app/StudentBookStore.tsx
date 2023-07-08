@@ -1,6 +1,6 @@
-import { Navbar } from "../Navbar"
 import { Group, createStyles } from "@mantine/core"
 import aofm from "../assets/aofm.jpg"
+import { AppNavbar } from "../Navbar"
 import { StudentBook } from "./StudentBook"
 
 const useStyles = createStyles((theme) => ({
@@ -22,7 +22,7 @@ export const BookStore = () => {
     const bookTags = ["AI", "Stats"]
     return (
         <>
-            <Navbar />
+            <AppNavbar />
             <Group className={styles.home_grid}>
                 <StudentBook
                     image={aofm}

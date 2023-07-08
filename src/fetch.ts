@@ -1,5 +1,5 @@
 import axios from "axios"
-import { getAuthHeader } from "../auth/helpers"
+import { getAuthHeader } from "./auth/helpers"
 import {
     AiClientType,
     AuthorCLientType,

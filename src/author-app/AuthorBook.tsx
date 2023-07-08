@@ -1,7 +1,7 @@
 import { Center, ActionIcon, Card, createStyles, Group, Image, Stack, Text } from "@mantine/core"
 import { IconClock, IconEdit, IconChartPie, IconPlus, IconEye } from "@tabler/icons"
 import { Link, useNavigate } from "react-router-dom"
-import { SAMPLE_BOOK_ID } from "./constants"
+import { SAMPLE_BOOK_ID } from "../constants"
 import { FlexSpace } from "../shared"
 
 const useStyles = createStyles(() => ({
