@@ -25,6 +25,14 @@ const APP_THEME: MantineTheme = {
     primaryShade: 7,
 }
 
+const registerServiceWorker = () => {
+    if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register(
+            import.meta.env.MODE === "production" ? "/service-worker.js" : "/dev-sw.js?dev-sw"
+        )
+    }
+}
+
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <React.StrictMode>
         <MantineProvider theme={APP_THEME}>
@@ -33,3 +41,5 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
         </MantineProvider>
     </React.StrictMode>
 )
+
+registerServiceWorker()
