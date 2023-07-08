@@ -108,6 +108,22 @@ export const AuthorSchema = z.object({
     authorSettingsId: z.string(),
 })
 
+export const StudentSchema = z.object({
+    studentId: z.string(),
+    studentName: z.string(),
+    studentEmail: z.string().email(),
+    contact: z.string(),
+    profilePhotoPath: z.string(),
+    studentSettingsId: z.string(),
+    educationLevel: z.string(),
+    disabilities: z.array(
+        z.object({
+            name: z.string(),
+            details: z.string(),
+        })
+    ),
+})
+
 export const AuthorSignUpSchema = AuthorSchema.extend({
     token: z.string(),
 })
@@ -115,6 +131,12 @@ export const AuthorSignUpSchema = AuthorSchema.extend({
 export type Author = z.infer<typeof AuthorSchema>
 export type AuthorSignUp = z.infer<typeof AuthorSignUpSchema>
 
+export type Student = z.infer<typeof StudentSchema>
+
 export interface AuthorCLientType {
     get: (authorId?: string) => Promise<Author>
+}
+
+export interface StudentCLientType {
+    get: (studentId?: string) => Promise<Student>
 }

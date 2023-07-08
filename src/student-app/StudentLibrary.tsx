@@ -34,8 +34,8 @@ const Library = () => {
         },
     })
 
-    if (bookQuery.isLoading) return <h1>Loading....</h1>
-    if (bookQuery.isError) return <h1>Error loading data!!!</h1>
+    if (bookQuery.isLoading) return <h1>Loading....</h1> //mantine loading
+    if (bookQuery.isError) return <h1>Error loading data!!!</h1> ////mantine Error
 
     return (
         <>

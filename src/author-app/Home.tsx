@@ -4,6 +4,7 @@ import { Book, AddBook } from "./AuthorBook"
 import aofm from "../assets/aofm.jpg"
 import useAuthorBooksData from "../hooks/useAuthorBooksData"
 import Example from "../exampleRQ"
+import { JWT_TOKEN } from "../constants"
 
 const useStyles = createStyles((theme) => ({
     grid: {
@@ -21,15 +22,7 @@ const buildStyles = () => {
 
 export const Home = () => {
     const { styles } = buildStyles()
-    // const { isLoading, data, isError, error } = useAuthorBooksData()
 
-    // if (isLoading) {
-    //     return <h2>Loading...</h2>
-    // }
-
-    // if (isError) {
-    //     return <h2>{error.message}</h2>
-    // }
     return (
         <AppShell navbar={<AppNavbar />}>
             <Group className={styles.home_grid}>
@@ -39,10 +32,6 @@ export const Home = () => {
                     thumbnail_img={aofm}
                     last_update={new Date(Date.now())}
                 />
-                {/* <div>
-                    {data.data}
-                </div> */}
-                {/* <Example/> */}
             </Group>
         </AppShell>
     )

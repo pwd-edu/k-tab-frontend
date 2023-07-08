@@ -15,6 +15,7 @@ import {
     ImagePresigned,
     ImagePresignedSchema,
     S3ClientType,
+    StudentCLientType,
 } from "./editor/types"
 
 const API_URL = "http://localhost:8080"
@@ -87,6 +88,13 @@ export const AiClient = (): AiClientType => ({
 export const AuthorClient = (): AuthorCLientType => ({
     get: async (authorId?: string) => {
         const response = await axios_instance.get(`/author/`, { params: { authorId } })
+        return response.data
+    },
+})
+
+export const StudentClient = (): StudentCLientType => ({
+    get: async (studentId?: string) => {
+        const response = await axios_instance.get(`/student/`, { params: { studentId } })
         return response.data
     },
 })
