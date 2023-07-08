@@ -32,7 +32,7 @@ const LoginSchema = z.object({
 
 type LoginFormInputs = z.infer<typeof LoginSchema>
 export function LoginPage() {
-    const { isAuthenticated, isLoading } = useAuth()
+    const { isAuthenticated, isLoading } = useAuth(true)
 
     if (isLoading) {
         return <CenteredLoading />

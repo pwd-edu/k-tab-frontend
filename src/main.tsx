@@ -27,11 +27,18 @@ const APP_THEME: MantineTheme = {
 
 const registerServiceWorker = () => {
     if ("serviceWorker" in navigator) {
-        navigator.serviceWorker.register(
-            import.meta.env.MODE === "production" ? "/service-worker.js" : "/dev-sw.js?dev-sw"
-        )
+        navigator.serviceWorker.getRegistrations().then((registrations) => {
+            for (const registration of registrations) {
+                registration.unregister()
+            }
+            navigator.serviceWorker.register(
+                import.meta.env.MODE === "production" ? "/service-worker.js" : "/dev-sw.js?dev-sw"
+            )
+        })
     }
 }
+
+registerServiceWorker()
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <React.StrictMode>
@@ -41,5 +48,3 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
         </MantineProvider>
     </React.StrictMode>
 )
-
-registerServiceWorker()

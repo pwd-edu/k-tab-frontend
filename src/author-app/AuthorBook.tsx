@@ -8,7 +8,7 @@ import { FlexSpace } from "../shared"
 const useStyles = createStyles(() => ({
     book_card: {
         width: 240,
-        height: 138,
+        minHeight: 138,
     },
 }))
 
@@ -84,18 +84,20 @@ export const AddBook = () => {
     const { classes, theme } = useStyles()
     return (
         <Card className={classes.book_card} shadow="sm" p="md" radius="sm" withBorder>
-            <Center style={{ width: "100%", height: "100%" }}>
-                <ActionIcon size={58} variant="transparent">
-                    <IconPlus
-                        color={theme.colors.indigo[8]}
-                        width={58}
-                        height={58}
-                        strokeLinecap="square"
-                        strokeLinejoin="inherit"
-                        viewBox="4 4 16 16"
-                    />
-                </ActionIcon>
-            </Center>
+            <Stack justify="center" align="center">
+                <Center style={{ width: "100%", height: "100%" }}>
+                    <ActionIcon size={58} variant="transparent">
+                        <IconPlus
+                            color={theme.colors.indigo[8]}
+                            width={58}
+                            height={58}
+                            strokeLinecap="square"
+                            strokeLinejoin="inherit"
+                            viewBox="4 4 16 16"
+                        />
+                    </ActionIcon>
+                </Center>
+            </Stack>
         </Card>
     )
 }

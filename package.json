@@ -50,6 +50,7 @@
         "eslint": "^8.43.0",
         "formik": "^2.4.2",
         "history": "^5.3.0",
+        "idb-keyval": "^6.2.1",
         "immer": "^10.0.2",
         "multiselect-react-dropdown": "^2.0.25",
         "nanoid": "^4.0.2",

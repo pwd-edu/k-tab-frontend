@@ -71,7 +71,7 @@ export const Home = () => {
 const HomeBookCard = ({ book }: { book: BookHeader }) => {
     return (
         <AuthorBookCard
-            title={`${book.title} ${book.bookId}`}
+            title={`${book.title} ${" " || book.bookId}`}
             thumbnail_img={RESOURCE_URL(book.bookCoverPath)}
             last_update={new Date(Date.now())}
         />

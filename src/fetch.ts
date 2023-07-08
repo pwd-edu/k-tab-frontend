@@ -25,8 +25,8 @@ export const axios_instance = axios.create({
     maxRedirects: 0,
 })
 
-axios_instance.interceptors.request.use((config) => {
-    const auth_header = getAuthHeader()
+axios_instance.interceptors.request.use(async (config) => {
+    const auth_header = await getAuthHeader()
     if (auth_header) {
         config.headers["Authorization"] = auth_header
     }

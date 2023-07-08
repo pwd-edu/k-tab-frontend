@@ -28,6 +28,7 @@ import {
 import { Navbar, getStylesRef, rem } from "@mantine/core"
 import { IconBellRinging, IconSettings, IconLogout } from "@tabler/icons-react"
 import { Link } from "react-router-dom"
+import { useAuth } from "./auth/useAuth"
 
 const useStyles = createStyles((theme) => ({
     alert_notification: {
@@ -148,6 +149,7 @@ export const NotificationContainer = ({ children }: { children: React.ReactNode 
 
 export const AppNavbar = () => {
     const { styles } = buildStyles()
+    const { logout } = useAuth()
 
     return (
         <Navbar width={{ sm: 250 }} p="md">
@@ -159,12 +161,7 @@ export const AppNavbar = () => {
             </Navbar.Section>
 
             <Navbar.Section className={styles.footer}>
-                <Button
-                    variant="white"
-                    onClick={(event) => event.preventDefault()}
-                    color="indigo"
-                    aria-label="Logout"
-                >
+                <Button variant="white" onClick={() => logout()} color="indigo" aria-label="Logout">
                     <IconLogout stroke={1.5} aria-hidden="true" />
                     <Text className="ml-2">Logout</Text>
                 </Button>
