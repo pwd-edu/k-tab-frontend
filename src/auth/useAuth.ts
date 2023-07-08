@@ -2,7 +2,7 @@ import { useCallback } from "react"
 import { useQuery } from "@tanstack/react-query"
 import { AuthorClient, axios_instance } from "../fetch"
 import { JWT_TOKEN } from "../constants"
-import { getJwtToken } from "../editor/auth"
+import { getJwtToken } from "./helpers"
 
 const author_client = AuthorClient()
 
