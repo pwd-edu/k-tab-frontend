@@ -3,8 +3,6 @@ import { Group, createStyles, AppShell, Header, Footer } from "@mantine/core"
 import { Book, AddBook } from "./AuthorBook"
 import aofm from "../assets/aofm.jpg"
 import useAuthorBooksData from "../hooks/useAuthorBooksData"
-import Example from "../exampleRQ"
-import { JWT_TOKEN } from "../constants"
 
 const useStyles = createStyles((theme) => ({
     grid: {

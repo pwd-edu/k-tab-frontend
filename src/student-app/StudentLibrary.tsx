@@ -1,5 +1,5 @@
 import { AppNavbar } from "../Navbar"
-import { Group, createStyles } from "@mantine/core"
+import { Group, createStyles, AppShell } from "@mantine/core"
 import aofm from "../assets/aofm.jpg"
 import { StudentOwnedBook } from "./StudentOwnedBook"
 import { useQuery } from "@tanstack/react-query"
@@ -23,6 +23,7 @@ const buildStyles = (params?: any) => {
 const Library = () => {
     const { styles } = buildStyles()
     const bookTags = ["Maths", "Physics"]
+    console.log("Library")
 
     const bookQuery = useQuery({
         queryKey: ["libraryBooks"],
@@ -39,9 +40,9 @@ const Library = () => {
 
     return (
         <>
-            <AppNavbar />
-            <Group className={styles.home_grid}>
-                {/* {bookQuery.data.map((book) => (
+            <AppShell navbar={<AppNavbar />}>
+                <Group className={styles.home_grid}>
+                    {/* {bookQuery.data.map((book) => (
                     // <StudentOwnedBook
                     //     image= book.
                     //     link={"https://mantine.dev/"}
@@ -53,23 +54,24 @@ const Library = () => {
                     // />
                 ))} */}
 
-                <StudentOwnedBook
-                    image={aofm}
-                    link={"link opens book info card where student buys book"}
-                    tags={bookTags}
-                    title={"bookkk titlllllllllllllllllllllllllllllllllllllle"}
-                    description={
-                        "bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla"
-                    }
-                />
-                <StudentOwnedBook
-                    image={aofm}
-                    link={"https://mantine.dev/"}
-                    tags={bookTags}
-                    title={"bookkk titlllllle"}
-                    description={"bla bla bla bla bla bla bla bla bla bla bla bla"}
-                />
-            </Group>
+                    <StudentOwnedBook
+                        image={aofm}
+                        link={"link opens book info card where student buys book"}
+                        tags={bookTags}
+                        title={"bookkk titlllllllllllllllllllllllllllllllllllllle"}
+                        description={
+                            "bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla"
+                        }
+                    />
+                    <StudentOwnedBook
+                        image={aofm}
+                        link={"https://mantine.dev/"}
+                        tags={bookTags}
+                        title={"bookkk titlllllle"}
+                        description={"bla bla bla bla bla bla bla bla bla bla bla bla"}
+                    />
+                </Group>
+            </AppShell>
         </>
     )
 }
