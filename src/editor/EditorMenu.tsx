@@ -18,11 +18,12 @@ import {
 } from "@tabler/icons"
 import { useEditorStore } from "./editor-store"
 import { ImageInserter } from "./ImageInserter"
-import { FileWithPath } from "@mantine/dropzone"
 import { FontColorMenu } from "./FontColorMenu"
 import { HeadingMenu } from "./HeadingMenu"
 import { nanoid } from "nanoid"
 import { ImageDescription } from "./types"
+import { shallow } from "zustand/shallow"
+import { RESOURCE_URL } from "../fetch"
 
 interface EditorMenuProps {
     editor: Editor
@@ -30,8 +31,8 @@ interface EditorMenuProps {
 }
 
 export const EditorMenu = ({ editor, onSaveClick }: EditorMenuProps) => {
-    const [setModalOpened] = useEditorStore((state) => [state.setModalOpened])
-    const [setModalContent] = useEditorStore((state) => [state.setModalContent])
+    const [setModalOpened] = useEditorStore((state) => [state.setModalOpened], shallow)
+    const [setModalContent] = useEditorStore((state) => [state.setModalContent], shallow)
 
     const addImage = () => {
         setModalContent(
@@ -43,11 +44,14 @@ export const EditorMenu = ({ editor, onSaveClick }: EditorMenuProps) => {
         setModalOpened(true)
     }
 
-    const insertImgIntoEditor = (images: FileWithPath[], description: ImageDescription) => {
-        const image = images.at(-1)
-        if (image) {
-            const url = URL.createObjectURL(image)
-            editor.chain().focus().setImage({ src: url, alt: description.content }).run()
+    const insertImgIntoEditor = (images: string[], description: ImageDescription) => {
+        const url = images.at(-1)
+        if (url) {
+            editor
+                .chain()
+                .focus()
+                .setImage({ src: RESOURCE_URL(url), alt: description.content })
+                .run()
         }
     }
 

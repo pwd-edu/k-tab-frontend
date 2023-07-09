@@ -1,9 +1,10 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import { Home } from "./author-app/Home"
-import { LessonEditor } from "./editor/Editor"
+import { ChapterEditor } from "./editor/Editor"
 import CreateStudent from "./student-app/CreateStudent"
 import CreateAuthor from "./author-app/CreateAuthor"
-import { Library } from "./student-app/StudentLibrary"
+import Library from "./student-app/StudentLibrary"
+import { BookStore } from "./student-app/StudentBookStore"
 import { BookInfoForm } from "./author-app/BookInfo"
 import StudentBookInfo from "./student-app/StudentBookInfo"
 import UserInfoAction from "./user-app/UserProfile"
@@ -25,14 +26,14 @@ function App() {
             <BrowserRouter>
                 <Routes>
                     <Route path="/" element={<Home />} />
-                    <Route path="/editor" element={<LessonEditor />} />
                     <Route path="/student" element={<CreateStudent />} />
                     <Route path="/author" element={<CreateAuthor />} />
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/" element={<PrivateRoute />}>
-                        <Route path="/" element={<Home />} />
+                        <Route index element={<Home />} />
                     </Route>
                     <Route path="/dashboard" element={<Dashboard />} />
+                    <Route path="/bookstore" element={<BookStore />} />
                     <Route path="/library" element={<Library />} />
                     <Route path="/bookinfo" element={<BookInfoForm />} />
                     <Route path="/book-editor/:book_id/:chapter_num" element={<BookEditor />} />
@@ -109,7 +110,7 @@ function App() {
                     <Route path="/contents" element={<TableOfContentsData />} />
                     <Route path="/settingsdata" element={<UserSettingsData />} />
                     <Route path="/profilesettings" element={<ProfileSettings />} />
-                    <Route path="/darkmode" element={<DarkMode component={<LessonEditor />} />} />
+                    <Route path="/darkmode" element={<DarkMode component={<ChapterEditor />} />} />
                 </Routes>
             </BrowserRouter>
 

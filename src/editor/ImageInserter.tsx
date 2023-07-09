@@ -6,8 +6,10 @@ import { useEditorStore } from "./editor-store"
 import { FileWithPath } from "@mantine/dropzone"
 
 import axios from "axios"
-import { AiClient, S3Client } from "../fetch"
+import { AiClient, RESOURCE_URL, S3Client } from "../fetch"
 import { ImageDescription, ImageInserterProps, ImagePreviewProps } from "./types"
+import { shallow } from "zustand/shallow"
+import { toast } from "react-toastify"
 
 const s3_client = S3Client()
 const ai_client = AiClient()
@@ -21,9 +23,8 @@ function ImageDescriptionBody({ type, content }: ImageDescription) {
     )
 }
 
-function ImagePreview({ image }: ImagePreviewProps) {
-    const url = URL.createObjectURL(image)
-    return <Image src={url} alt={image.name} />
+function ImagePreview({ image: url }: ImagePreviewProps) {
+    return <Image src={RESOURCE_URL(url)} alt={"an uploaded image"} />
 }
 
 export function ImageInserter({
@@ -31,19 +32,18 @@ export function ImageInserter({
     onDescriptionChange,
     onAddClick,
 }: ImageInserterProps) {
-    const chapter_id = "118e86ed-47d9-45bc-aa50-91a02c6d9171" // TODO: get chapter id from props / state
-    const [images, setImages] = useEditorStore((state) => [state.images, state.setImages])
+    const [chapter_id] = useEditorStore((state) => [state.chapter_id], shallow)
+    const [images, setImages] = useEditorStore((state) => [state.images, state.setImages], shallow)
     const [inserted, setInserted] = useState(false)
     const [description, setDescription] = useState<ImageDescription | null>(null)
 
     // TODO: use query mutations & cache
     const handleImageInserted = async (files: FileWithPath[]) => {
-        setInserted(true)
-        setImages(files)
-        const image = files[0]
-
         try {
-            const { imageUrl: image_url } = await s3_client.getImagePresignedUpload(chapter_id)
+            const { imageUrl: image_url, imagePath } = await s3_client.getImagePresignedUpload(
+                chapter_id
+            )
+            const image = files[0]
             await uploadS3(image, image_url)
 
             const img_description = await ai_client.getImageDescription(image_url)
@@ -51,6 +51,9 @@ export function ImageInserter({
             if (onDescriptionChange) {
                 onDescriptionChange(img_description)
             }
+
+            setInserted(true)
+            setImages([imagePath])
         } catch (e) {
             console.log(e)
         }
@@ -59,9 +62,30 @@ export function ImageInserter({
     }
 
     const uploadS3 = async (file: FileWithPath, presigned_url: string) => {
-        const form = new FormData()
-        form.append("file", file)
-        const upload_response = await axios.put(presigned_url, form)
+        const upload_response = await axios.put(presigned_url, file)
+        if (upload_response.status !== 200) {
+            toast.error("Failed to save image", {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            })
+            return
+        }
+        toast.success("Image saved", {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+        })
     }
 
     const handleAddImage = () => {
@@ -72,7 +96,7 @@ export function ImageInserter({
 
     return (
         <Stack>
-            {inserted && <ImagePreview image={images.at(-1) || new File([], "")} />}
+            {inserted && <ImagePreview image={images.at(-1) || ""} />}
             {description && (
                 <ImageDescriptionBody type={description.type} content={description.content} />
             )}

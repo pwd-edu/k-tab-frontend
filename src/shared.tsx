@@ -1,6 +1,7 @@
 import { Box, Center, Loader } from "@mantine/core"
 
 import Logo from "./assets/logo.svg"
+import { NotFoundTitle } from "./Error404"
 
 export const FlexSpace = () => {
     return <div className="flex-1"></div>
@@ -14,6 +15,10 @@ export const CenteredLoading = () => {
             </Box>
         </Center>
     )
+}
+
+export const ErrorPage = () => {
+    return <NotFoundTitle />
 }
 
 type ImageProps = Omit<React.ImgHTMLAttributes<HTMLImageElement>, "src" | "alt">

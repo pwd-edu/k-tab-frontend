@@ -1,9 +1,11 @@
-import { Article, AddArticle } from "../Article"
+import { AuthorBookCard, AddBook } from "./AuthorBook"
 import { AppNavbar } from "../Navbar"
-import { Group, createStyles, AppShell, Header, Footer } from "@mantine/core"
-import aofm from "../assets/aofm.jpg"
-import useAuthorBooksData from "../hooks/useAuthorBooksData"
-import Example from "../exampleRQ"
+import { Group, createStyles, AppShell } from "@mantine/core"
+import { AuthorClient, RESOURCE_URL } from "../fetch"
+import { toast, ToastContainer } from "react-toastify"
+import { BookHeader } from "../editor/types"
+import { useQuery } from "@tanstack/react-query"
+import { CenteredLoading } from "../shared"
 
 const useStyles = createStyles((theme) => ({
     grid: {
@@ -19,31 +21,61 @@ const buildStyles = () => {
     return { styles, classes, cx, theme }
 }
 
+const author_client = AuthorClient()
+
 export const Home = () => {
     const { styles } = buildStyles()
-    // const { isLoading, data, isError, error } = useAuthorBooksData()
+    const { isLoading, data, isError } = useQuery(["home-books"], () => author_client.getBooks())
 
-    // if (isLoading) {
-    //     return <h2>Loading...</h2>
-    // }
+    if (isLoading) {
+        return <CenteredLoading />
+    }
 
-    // if (isError) {
-    //     return <h2>{error.message}</h2>
-    // }
+    if (isError) {
+        toast.error("Unexpected error occurred", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+        })
+    }
+
     return (
         <AppShell navbar={<AppNavbar />}>
             <Group className={styles.home_grid}>
-                <AddArticle />
-                <Article
-                    title="The art of mathematics"
-                    thumbnail_img={aofm}
-                    last_update={new Date(Date.now())}
-                />
-                {/* <div>
-                    {data.data}
-                </div> */}
-                {/* <Example/> */}
+                <AddBook />
+                {data?.map((book) => (
+                    <HomeBookCard key={book.bookId} book={book} />
+                ))}
             </Group>
+
+            <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+            />
         </AppShell>
+    )
+}
+
+const HomeBookCard = ({ book }: { book: BookHeader }) => {
+    return (
+        <AuthorBookCard
+            id={book.bookId}
+            title={`${book.title}`}
+            thumbnail_img={RESOURCE_URL(book.bookCoverPath)}
+            last_update={new Date(Date.now())}
+        />
     )
 }

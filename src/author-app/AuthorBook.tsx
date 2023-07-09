@@ -1,23 +1,26 @@
-import { Center, ActionIcon, Card, createStyles, Group, Image, Stack, Text } from "@mantine/core"
+import { ActionIcon, Card, createStyles, Group, Image, Stack, Text } from "@mantine/core"
 import { IconClock, IconEdit, IconChartPie, IconPlus, IconEye } from "@tabler/icons"
+import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import { SAMPLE_BOOK_ID } from "./constants"
-import { FlexSpace } from "./shared"
+import { SAMPLE_BOOK_ID } from "../constants"
+import { FlexSpace } from "../shared"
 
 const useStyles = createStyles(() => ({
-    article_card: {
+    book_card: {
         width: 240,
-        height: 138,
+        height: 170,
     },
 }))
 
-type ArticleProps = {
+type BookCardProps = {
+    id: string
     title: string
     thumbnail_img: string
     last_update: Date
 }
 
-export const Article = ({ title, thumbnail_img, last_update }: ArticleProps) => {
+export const AuthorBookCard = ({ title, thumbnail_img, last_update, id }: BookCardProps) => {
+    const [image_src, setImageSrc] = useState(thumbnail_img)
     const { classes } = useStyles()
     const navigate = useNavigate()
 
@@ -31,13 +34,27 @@ export const Article = ({ title, thumbnail_img, last_update }: ArticleProps) => 
         return formated
     }
 
+    const handleImageError = (e: any) => {
+        console.log(e)
+        setImageSrc("https://placehold.co/512?text=Loading&font=roboto")
+    }
+
+    ;<Text weight={500} size="sm" className="line-clamp-2">
+        {`${title}`}
+    </Text>
+
     return (
-        <Card className={classes.article_card} shadow="sm" p="sm" radius="sm" withBorder>
-            <Text weight={700} size="xs">
-                {title}
+        <Card className={classes.book_card} shadow="sm" p="sm" radius="sm" withBorder>
+            <Text weight={500} size="sm" className="line-clamp-2">
+                {`${title}`}
             </Text>
             <Stack spacing="xs">
-                <Image height={70} radius="sm" src={thumbnail_img} />
+                <Image
+                    height={80}
+                    radius="sm"
+                    src={image_src}
+                    onError={(e) => handleImageError(e)}
+                />
                 <Group className="gap-1">
                     <IconClock color={"#4F4F4F"} size={14} />
                     <Text style={{ fontSize: "10px" }} weight={700} color={"#4F4F4F"}>
@@ -50,11 +67,10 @@ export const Article = ({ title, thumbnail_img, last_update }: ArticleProps) => 
                         </ActionIcon>
                         <ActionIcon
                             component={Link}
-                            to="/editor"
+                            to={`/book-editor/${id}/1`}
                             title="Edit"
                             size="xs"
                             variant="transparent"
-                            onClick={() => navigate(`/book-editor/${SAMPLE_BOOK_ID}/1`)}
                         >
                             <IconEdit color={"#4F4F4F"} size={14} />
                         </ActionIcon>
@@ -74,12 +90,17 @@ export const Article = ({ title, thumbnail_img, last_update }: ArticleProps) => 
     )
 }
 
-export const AddArticle = () => {
-    const { classes, theme } = useStyles()
-    console.log(theme)
+export const AddBook = () => {
+    const { classes, theme, cx } = useStyles()
     return (
-        <Card className={classes.article_card} shadow="sm" p="md" radius="sm" withBorder>
-            <Center style={{ width: "100%", height: "100%" }}>
+        <Card
+            className={cx(classes.book_card, "flex flex-col items-center justify-center")}
+            shadow="sm"
+            p="md"
+            radius="sm"
+            withBorder
+        >
+            <Stack justify="center" align="center">
                 <ActionIcon size={58} variant="transparent">
                     <IconPlus
                         color={theme.colors.indigo[8]}
@@ -90,7 +111,7 @@ export const AddArticle = () => {
                         viewBox="4 4 16 16"
                     />
                 </ActionIcon>
-            </Center>
+            </Stack>
         </Card>
     )
 }

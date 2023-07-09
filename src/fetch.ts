@@ -1,5 +1,5 @@
 import axios from "axios"
-import { getAuthHeader } from "./editor/auth"
+import { getAuthHeader } from "./auth/helpers"
 import {
     AiClientType,
     AuthorCLientType,
@@ -15,16 +15,18 @@ import {
     ImagePresigned,
     ImagePresignedSchema,
     S3ClientType,
+    StudentCLientType,
 } from "./editor/types"
 
 const API_URL = "http://localhost:8080"
 
 export const axios_instance = axios.create({
     baseURL: API_URL,
+    maxRedirects: 0,
 })
 
-axios_instance.interceptors.request.use((config) => {
-    const auth_header = getAuthHeader()
+axios_instance.interceptors.request.use(async (config) => {
+    const auth_header = await getAuthHeader()
     if (auth_header) {
         config.headers["Authorization"] = auth_header
     }
@@ -73,6 +75,20 @@ export const S3Client = (): S3ClientType => ({
         console.log(chapter_blob)
         await axios.put(presigned_url, chapter_blob)
     },
+    getImgResourceRedirect: async (resource_path: string): Promise<string> => {
+        try {
+            const response = await axios_instance.get(`/s3/resources/`, {
+                params: { resourcePath: resource_path },
+            })
+            const imageUrl = URL.createObjectURL(
+                new Blob([response.data.Body], { type: response.data.ContentType })
+            )
+            return imageUrl
+        } catch (error) {
+            console.log(error)
+        }
+        return ""
+    },
 })
 
 export const AiClient = (): AiClientType => ({
@@ -80,6 +96,7 @@ export const AiClient = (): AiClientType => ({
         const response = await axios_instance.get(`/s3/description/`, {
             params: { imagePath: image_path },
         })
+
         return ImageDescriptionSchema.parse(response.data)
     },
 })
@@ -89,4 +106,25 @@ export const AuthorClient = (): AuthorCLientType => ({
         const response = await axios_instance.get(`/author/`, { params: { authorId } })
         return response.data
     },
+    getBooks: async () => {
+        const response = await axios_instance.get(`/author/home/`)
+        return response.data
+    },
 })
+
+export const StudentClient = (): StudentCLientType => ({
+    get: async (studentId?: string) => {
+        const response = await axios_instance.get(`/student/`, { params: { studentId } })
+        return response.data
+    },
+    getLibrary: async () => {
+        const response = await axios_instance.get(`/payment/library/`)
+        return response.data
+    },
+    getFavourites: async () => {
+        const response = await axios_instance.get(`/payment/fav/`)
+        return response.data
+    },
+})
+export const RESOURCE_URL = (resource_path: string) =>
+    `${API_URL}/s3/resources/?resourcePath=${resource_path}`

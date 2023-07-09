@@ -26,17 +26,19 @@ import { useEditorStore } from "./editor-store"
 import { McqExtension } from "./McqExtenstion"
 import { ChapterClient, S3Client } from "../fetch"
 import { Chapter } from "./types"
+import { shallow } from "zustand/shallow"
+import { ToastContainer } from "react-toastify"
 
-type LessonEditorProps = {
+type ChapterEditorProp = {
     content?: JSONContent
 }
 
-export const LessonEditor = ({ content }: LessonEditorProps) => {
-    const [opened, setModalOpened] = useEditorStore((state) => [
-        state.modal_opened,
-        state.setModalOpened,
-    ])
-    const [modal_content] = useEditorStore((state) => [state.modal_content])
+export const ChapterEditor = ({ content }: ChapterEditorProp) => {
+    const [opened, setModalOpened] = useEditorStore(
+        (state) => [state.modal_opened, state.setModalOpened],
+        shallow
+    )
+    const [modal_content] = useEditorStore((state) => [state.modal_content], shallow)
 
     const editor = useEditor(
         {
@@ -104,6 +106,18 @@ export const LessonEditor = ({ content }: LessonEditorProps) => {
                 opened={opened}
                 onClose={() => setModalOpened(false)}
                 content={modal_content}
+            />
+            <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
             />
             <EditorContainer>
                 <EditorMenu editor={editor} onSaveClick={handleSaveChapter} />

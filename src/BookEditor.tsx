@@ -2,8 +2,10 @@ import { useQuery } from "@tanstack/react-query"
 import { JSONContent } from "@tiptap/core"
 import axios from "axios"
 import { useParams } from "react-router-dom"
-import { LessonEditor } from "./editor/Editor"
+import { ChapterEditor } from "./editor/Editor"
+import { useEditorStore } from "./editor/editor-store"
 import { BookClient, ChapterClient, S3Client } from "./fetch"
+import { shallow } from "zustand/shallow"
 
 const book_client = BookClient()
 const chapter_client = ChapterClient()
@@ -15,6 +17,8 @@ type BookEditorParams = {
 }
 
 export function BookEditor() {
+    const [setChapterId] = useEditorStore((state) => [state.setChapterId], shallow)
+
     const { book_id, chapter_num } = useParams<BookEditorParams>()
     const chapter_idx = chapter_num ? Number(chapter_num) - 1 : 0
 
@@ -23,6 +27,8 @@ export function BookEditor() {
     const chapters_headers = book?.chapterHeaders.sort((a, b) => a.chapterOrder - b.chapterOrder)
     const curr_chapter = chapters_headers?.[chapter_idx]
     const chapter_id = curr_chapter?.chapterId
+
+    setChapterId(chapter_id || "")
 
     const { data: chapter } = useQuery(
         ["chapter", book_id, chapter_id],
@@ -48,13 +54,10 @@ export function BookEditor() {
             refetchOnWindowFocus: false,
             select: (data) => {
                 // TODO: inject images urls at iamges sources
-                console.log("data", data.data)
                 return data.data as JSONContent
             },
         }
     )
 
-    console.log("chapter_content", chapter_content)
-
-    return <LessonEditor content={chapter_content} />
+    return <ChapterEditor content={chapter_content} />
 }

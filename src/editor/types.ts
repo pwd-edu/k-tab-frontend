@@ -3,11 +3,11 @@ import { JSONContent } from "@tiptap/core"
 import { z } from "zod"
 
 export interface ImagePreviewProps {
-    image: FileWithPath
+    image: string
 }
 
 export interface ImageInserterProps {
-    onImageInserted: (files: FileWithPath[], description: ImageDescription) => void
+    onImageInserted: (images: string[], description: ImageDescription) => void
     onDescriptionChange?: (description: ImageDescription) => void
     onAddClick?: () => void
 }
@@ -64,6 +64,7 @@ export interface S3ClientType {
     getChapterPresignedDownload: (chapter_id: string) => Promise<ChapterPresigned>
     getImagePresignedUpload: (chapter_id: string) => Promise<ImagePresigned>
     uploadChapterContent: (presigned_url: string, chapter_content: JSONContent) => Promise<void>
+    getImgResourceRedirect: (resource_path: string) => Promise<string>
 }
 
 export interface AiClientType {
@@ -81,6 +82,7 @@ export const chaptersHeadersSchema = z.array(
 export const BookSchema = z.object({
     bookId: z.string(),
     title: z.string(),
+    bookAbstract: z.string(),
     tags: z.array(z.string()),
     authorId: z.string(),
     bookCoverPath: z.string(),
@@ -91,6 +93,7 @@ export const BookSchema = z.object({
 })
 
 export type Book = z.infer<typeof BookSchema>
+export type BookHeader = z.infer<typeof BookHeaderSchema>
 
 export type CreateBookRequest = Omit<Book, "bookId" | "lastEditDate" | "avgRate" | "chaptersTitles">
 
@@ -108,13 +111,48 @@ export const AuthorSchema = z.object({
     authorSettingsId: z.string(),
 })
 
+export const StudentSchema = z.object({
+    studentId: z.string(),
+    studentName: z.string(),
+    studentEmail: z.string().email(),
+    contact: z.string(),
+    profilePhotoPath: z.string(),
+    studentSettingsId: z.string(),
+    educationLevel: z.string(),
+    disabilities: z.array(
+        z.object({
+            name: z.string(),
+            details: z.string(),
+        })
+    ),
+})
+
 export const AuthorSignUpSchema = AuthorSchema.extend({
     token: z.string(),
+})
+
+export const BookHeaderSchema = BookSchema.pick({
+    bookId: true,
+    title: true,
+    bookCoverPath: true,
+    AuthorName: true,
+    tags: true,
+    bookAbstract: true,
+    authorId: true,
 })
 
 export type Author = z.infer<typeof AuthorSchema>
 export type AuthorSignUp = z.infer<typeof AuthorSignUpSchema>
 
+export type Student = z.infer<typeof StudentSchema>
+
 export interface AuthorCLientType {
     get: (authorId?: string) => Promise<Author>
+    getBooks: () => Promise<BookHeader[]>
+}
+
+export interface StudentCLientType {
+    get: (studentId?: string) => Promise<Student>
+    getLibrary: () => Promise<BookHeader[]>
+    getFavourites: () => Promise<BookHeader[]>
 }
