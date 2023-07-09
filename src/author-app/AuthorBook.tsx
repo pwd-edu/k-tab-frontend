@@ -39,10 +39,14 @@ export const AuthorBookCard = ({ title, thumbnail_img, last_update, id }: BookCa
         setImageSrc("https://placehold.co/512?text=Loading&font=roboto")
     }
 
+    ;<Text weight={500} size="sm" className="line-clamp-2">
+        {`${title}`}
+    </Text>
+
     return (
         <Card className={classes.book_card} shadow="sm" p="sm" radius="sm" withBorder>
-            <Text weight={500} size="xs">
-                {title}
+            <Text weight={500} size="sm" className="line-clamp-2">
+                {`${title}`}
             </Text>
             <Stack spacing="xs">
                 <Image

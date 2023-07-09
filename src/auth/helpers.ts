@@ -6,7 +6,7 @@ const PRODUCTION = import.meta.env.PROD
 const initJwtToken = async () => {
     if (!PRODUCTION && USE_STATIC_JWT) {
         if (USE_STATIC_JWT === "STUDENT" && STUDENT_JWT) {
-            await setJwtToken(STUDENT_JWT)
+            return await setJwtToken(STUDENT_JWT)
         }
         if (USE_STATIC_JWT === "AUTHOR" && AUTHOR_JWT) {
             return await setJwtToken(AUTHOR_JWT)
@@ -16,8 +16,9 @@ const initJwtToken = async () => {
 }
 
 export const getJwtToken = async () => {
+    await initJwtToken()
     const token = await idbKeyval.get(JWT_TOKEN)
-    return token || (await initJwtToken())
+    return token
 }
 
 export const setJwtToken = async (token: string) => {

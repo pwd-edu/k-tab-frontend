@@ -92,12 +92,6 @@ export const BookSchema = z.object({
     chapterHeaders: chaptersHeadersSchema,
 })
 
-export const BookHeaderSchema = BookSchema.pick({
-    bookId: true,
-    title: true,
-    bookCoverPath: true,
-})
-
 export type Book = z.infer<typeof BookSchema>
 export type BookHeader = z.infer<typeof BookHeaderSchema>
 
@@ -151,8 +145,6 @@ export type Author = z.infer<typeof AuthorSchema>
 export type AuthorSignUp = z.infer<typeof AuthorSignUpSchema>
 
 export type Student = z.infer<typeof StudentSchema>
-
-export type BookHeader = z.infer<typeof BookHeaderSchema>
 
 export interface AuthorCLientType {
     get: (authorId?: string) => Promise<Author>

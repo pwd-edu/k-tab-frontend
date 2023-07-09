@@ -2,7 +2,7 @@ import { AppNavbar } from "../Navbar"
 import { Group, createStyles, AppShell } from "@mantine/core"
 import { StudentOwnedBook } from "./StudentOwnedBook"
 import { useQuery } from "@tanstack/react-query"
-import { S3Client, StudentClient } from "../fetch"
+import { RESOURCE_URL, S3Client, StudentClient } from "../fetch"
 import { CenteredLoading, ErrorPage } from "../shared"
 import { DndList } from "./FavouritesGrid"
 
@@ -52,11 +52,7 @@ const Library = () => {
                                 tags={book.tags}
                                 title={book.title}
                                 description={book.bookAbstract}
-                                image={
-                                    s3_client.getImgResourceRedirect(
-                                        book.bookCoverPath
-                                    ) as unknown as string
-                                }
+                                image={RESOURCE_URL(book.bookCoverPath)}
                             />
                         ))}
                     </Group>

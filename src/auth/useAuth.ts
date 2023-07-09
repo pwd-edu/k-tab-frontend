@@ -26,6 +26,7 @@ export function useAuth(withUser = false) {
     const login = useCallback(async (email: string, password: string) => {
         const res = await axios_instance.post(`/api/security/login/`, { email, password })
         await setJwtToken(res.data.token)
+        localStorage.setItem(TYPE, res.data.userType)
         await refetch()
         return res.data
     }, [])
