@@ -12,13 +12,14 @@ const useStyles = createStyles(() => ({
     },
 }))
 
-type BookProps = {
+type BookCardProps = {
+    id: string
     title: string
     thumbnail_img: string
     last_update: Date
 }
 
-export const AuthorBookCard = ({ title, thumbnail_img, last_update }: BookProps) => {
+export const AuthorBookCard = ({ title, thumbnail_img, last_update, id }: BookCardProps) => {
     const [image_src, setImageSrc] = useState(thumbnail_img)
     const { classes } = useStyles()
     const navigate = useNavigate()
@@ -33,7 +34,8 @@ export const AuthorBookCard = ({ title, thumbnail_img, last_update }: BookProps)
         return formated
     }
 
-    const handleImageError = () => {
+    const handleImageError = (e: any) => {
+        console.log(e)
         setImageSrc("https://placehold.co/512?text=Loading&font=roboto")
     }
 
@@ -43,7 +45,12 @@ export const AuthorBookCard = ({ title, thumbnail_img, last_update }: BookProps)
                 {title}
             </Text>
             <Stack spacing="xs">
-                <Image height={80} radius="sm" src={image_src} onError={handleImageError} />
+                <Image
+                    height={80}
+                    radius="sm"
+                    src={image_src}
+                    onError={(e) => handleImageError(e)}
+                />
                 <Group className="gap-1">
                     <IconClock color={"#4F4F4F"} size={14} />
                     <Text style={{ fontSize: "10px" }} weight={700} color={"#4F4F4F"}>
@@ -56,11 +63,10 @@ export const AuthorBookCard = ({ title, thumbnail_img, last_update }: BookProps)
                         </ActionIcon>
                         <ActionIcon
                             component={Link}
-                            to="/editor"
+                            to={`/book-editor/${id}/1`}
                             title="Edit"
                             size="xs"
                             variant="transparent"
-                            onClick={() => navigate(`/book-editor/${SAMPLE_BOOK_ID}/1`)}
                         >
                             <IconEdit color={"#4F4F4F"} size={14} />
                         </ActionIcon>

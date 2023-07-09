@@ -3,11 +3,11 @@ import { JSONContent } from "@tiptap/core"
 import { z } from "zod"
 
 export interface ImagePreviewProps {
-    image: FileWithPath
+    image: string
 }
 
 export interface ImageInserterProps {
-    onImageInserted: (files: FileWithPath[], description: ImageDescription) => void
+    onImageInserted: (images: string[], description: ImageDescription) => void
     onDescriptionChange?: (description: ImageDescription) => void
     onAddClick?: () => void
 }

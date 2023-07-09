@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import { Home } from "./author-app/Home"
-import { LessonEditor } from "./editor/Editor"
+import { ChapterEditor } from "./editor/Editor"
 import CreateStudent from "./student-app/CreateStudent"
 import CreateAuthor from "./author-app/CreateAuthor"
 import Library from "./student-app/StudentLibrary"
@@ -26,7 +26,6 @@ function App() {
             <BrowserRouter>
                 <Routes>
                     <Route path="/" element={<Home />} />
-                    <Route path="/editor" element={<LessonEditor />} />
                     <Route path="/student" element={<CreateStudent />} />
                     <Route path="/author" element={<CreateAuthor />} />
                     <Route path="/login" element={<LoginPage />} />
@@ -111,7 +110,7 @@ function App() {
                     <Route path="/contents" element={<TableOfContentsData />} />
                     <Route path="/settingsdata" element={<UserSettingsData />} />
                     <Route path="/profilesettings" element={<ProfileSettings />} />
-                    <Route path="/darkmode" element={<DarkMode component={<LessonEditor />} />} />
+                    <Route path="/darkmode" element={<DarkMode component={<ChapterEditor />} />} />
                 </Routes>
             </BrowserRouter>
 
