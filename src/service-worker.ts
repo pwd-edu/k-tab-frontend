@@ -58,6 +58,6 @@ async function getImageOrPlaceholder(request: Request) {
     if (res.headers.get("Content-Length") !== "0") {
         return res
     } else {
-        return fetch("https://fakeimg.pl/300x300?text=Cover&font=bebas")
+        return fetch("https://placehold.co/512?text=Cover&font=roboto")
     }
 }
