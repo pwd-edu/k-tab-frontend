@@ -15,9 +15,9 @@ export const useStylesCard = createStyles((theme) => ({
     card: {
         position: "relative",
         backgroundColor: theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
-        width: 300,
+        width: 280,
         maxWidth: 320,
-        height: 320,
+        height: 302,
         maxHeight: 355,
     },
 

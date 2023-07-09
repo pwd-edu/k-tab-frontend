@@ -22,6 +22,7 @@ const API_URL = "http://localhost:8080"
 
 export const axios_instance = axios.create({
     baseURL: API_URL,
+    maxRedirects: 0,
 })
 
 axios_instance.interceptors.request.use((config) => {
@@ -74,6 +75,20 @@ export const S3Client = (): S3ClientType => ({
         console.log(chapter_blob)
         await axios.put(presigned_url, chapter_blob)
     },
+    getImgResourceRedirect: async (resource_path: string): Promise<string> => {
+        try {
+            const response = await axios_instance.get(`/s3/resources/`, {
+                params: { resourcePath: resource_path },
+            })
+            const imageUrl = URL.createObjectURL(
+                new Blob([response.data.Body], { type: response.data.ContentType })
+            )
+            return imageUrl
+        } catch (error) {
+            console.log(error)
+        }
+        return ""
+    },
 })
 
 export const AiClient = (): AiClientType => ({
@@ -81,6 +96,7 @@ export const AiClient = (): AiClientType => ({
         const response = await axios_instance.get(`/s3/description/`, {
             params: { imagePath: image_path },
         })
+
         return ImageDescriptionSchema.parse(response.data)
     },
 })

@@ -1,6 +1,6 @@
 import { createStyles, Text, rem } from "@mantine/core"
 import { useListState } from "@mantine/hooks"
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd"
+import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd"
 
 const useStyles = createStyles((theme) => ({
     item: {

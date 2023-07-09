@@ -64,6 +64,7 @@ export interface S3ClientType {
     getChapterPresignedDownload: (chapter_id: string) => Promise<ChapterPresigned>
     getImagePresignedUpload: (chapter_id: string) => Promise<ImagePresigned>
     uploadChapterContent: (presigned_url: string, chapter_content: JSONContent) => Promise<void>
+    getImgResourceRedirect: (resource_path: string) => Promise<string>
 }
 
 export interface AiClientType {

@@ -1,19 +1,10 @@
 import { AppNavbar } from "../Navbar"
-import {
-    Group,
-    createStyles,
-    AppShell,
-    Paper,
-    Text,
-    Title,
-    Button,
-    useMantineTheme,
-    rem,
-} from "@mantine/core"
-import { StudentOwnedBook, useStylesCard } from "./StudentOwnedBook"
+import { Group, createStyles, AppShell } from "@mantine/core"
+import { StudentOwnedBook } from "./StudentOwnedBook"
 import { useQuery } from "@tanstack/react-query"
-import { StudentClient } from "../fetch"
+import { S3Client, StudentClient } from "../fetch"
 import { CenteredLoading, ErrorPage } from "../shared"
+import { DndList } from "./FavouritesGrid"
 
 const useStyles = createStyles((theme) => ({
     grid: {
@@ -26,7 +17,6 @@ const buildStyles = (params?: any) => {
     const styles = {
         home_grid: cx(classes.grid),
     }
-    // const { card_classes, card_cx, card_theme} = useStylesCard()
     return { styles, classes, cx, theme }
 }
 
@@ -35,6 +25,7 @@ const Library = () => {
     console.log("Library")
 
     const student_client = StudentClient()
+    const s3_client = S3Client()
 
     const { isLoading, data, isError } = useQuery({
         queryKey: ["student-library"],
@@ -45,10 +36,10 @@ const Library = () => {
     if (isError) return <ErrorPage />
     console.log(data)
 
-    const favourites = useQuery({
-        queryKey: ["student-favourites"],
-        queryFn: () => student_client.getFavourites(),
-    })
+    // const favourites = useQuery({
+    //     queryKey: ["student-favourites"],
+    //     queryFn: () => student_client.getFavourites(),
+    // })
 
     return (
         <>
@@ -61,7 +52,11 @@ const Library = () => {
                                 tags={book.tags}
                                 title={book.title}
                                 description={book.bookAbstract}
-                                image={book.bookCoverPath}
+                                image={
+                                    s3_client.getImgResourceRedirect(
+                                        book.bookCoverPath
+                                    ) as unknown as string
+                                }
                             />
                         ))}
                     </Group>
