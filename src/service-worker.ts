@@ -3,6 +3,9 @@ const sw: ServiceWorkerGlobalScope & {
     idbKeyval: typeof import("idb-keyval")
 } = self as any
 
+sw.addEventListener("install", () => sw.skipWaiting())
+sw.addEventListener("activate", () => sw.clients.claim())
+
 sw.addEventListener("fetch", (event: FetchEvent) => {
     const request = event.request
 
@@ -18,10 +21,6 @@ sw.addEventListener("fetch", (event: FetchEvent) => {
         })
         event.respondWith(out)
     }
-})
-
-sw.addEventListener("install", () => {
-    sw.skipWaiting()
 })
 
 async function getProtectedImage(request: Request, token: string) {
