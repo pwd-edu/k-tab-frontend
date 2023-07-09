@@ -1,6 +1,16 @@
 import { AppNavbar } from "../Navbar"
-import { Group, createStyles, AppShell } from "@mantine/core"
-import { StudentOwnedBook } from "./StudentOwnedBook"
+import {
+    Group,
+    createStyles,
+    AppShell,
+    Paper,
+    Text,
+    Title,
+    Button,
+    useMantineTheme,
+    rem,
+} from "@mantine/core"
+import { StudentOwnedBook, useStylesCard } from "./StudentOwnedBook"
 import { useQuery } from "@tanstack/react-query"
 import { StudentClient } from "../fetch"
 import { CenteredLoading, ErrorPage } from "../shared"
@@ -16,6 +26,7 @@ const buildStyles = (params?: any) => {
     const styles = {
         home_grid: cx(classes.grid),
     }
+    // const { card_classes, card_cx, card_theme} = useStylesCard()
     return { styles, classes, cx, theme }
 }
 
@@ -33,6 +44,11 @@ const Library = () => {
     if (isLoading) return <CenteredLoading />
     if (isError) return <ErrorPage />
     console.log(data)
+
+    const favourites = useQuery({
+        queryKey: ["student-favourites"],
+        queryFn: () => student_client.getFavourites(),
+    })
 
     return (
         <>

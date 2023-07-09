@@ -153,4 +153,5 @@ export interface AuthorCLientType {
 export interface StudentCLientType {
     get: (studentId?: string) => Promise<Student>
     getLibrary: () => Promise<BookHeader[]>
+    getFavourites: () => Promise<BookHeader[]>
 }

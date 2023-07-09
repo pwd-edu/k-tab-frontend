@@ -101,4 +101,8 @@ export const StudentClient = (): StudentCLientType => ({
         const response = await axios_instance.get(`/payment/library/`)
         return response.data
     },
+    getFavourites: async () => {
+        const response = await axios_instance.get(`/payment/fav/`)
+        return response.data
+    },
 })

@@ -11,12 +11,12 @@ import {
     rem,
 } from "@mantine/core"
 
-const useStyles = createStyles((theme) => ({
+export const useStylesCard = createStyles((theme) => ({
     card: {
         position: "relative",
         backgroundColor: theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
-        width: 310,
-        maxWidth: 340,
+        width: 300,
+        maxWidth: 320,
         height: 320,
         maxHeight: 355,
     },
@@ -60,7 +60,7 @@ export function StudentOwnedBook({
     description,
     ...others
 }: StudentBookProps & Omit<React.ComponentPropsWithoutRef<"div">, keyof StudentBookProps>) {
-    const { classes, cx, theme } = useStyles()
+    const { classes, cx, theme } = useStylesCard()
     const linkProps = { href: link, target: "_blank", rel: "noopener noreferrer" }
 
     const bookTags = tags.map((tag) => (
