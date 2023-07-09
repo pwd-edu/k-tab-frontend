@@ -39,7 +39,6 @@ export function LoginPage() {
     }
 
     if (isAuthenticated) {
-        console.log("navigate to /")
         return <Navigate to="/" replace />
     }
 

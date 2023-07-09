@@ -5,6 +5,7 @@ import { AuthorClient, RESOURCE_URL } from "../fetch"
 import { toast, ToastContainer } from "react-toastify"
 import { BookHeader } from "../editor/types"
 import { useQuery } from "@tanstack/react-query"
+import { CenteredLoading } from "../shared"
 
 const useStyles = createStyles((theme) => ({
     grid: {
@@ -27,7 +28,7 @@ export const Home = () => {
     const { isLoading, data, isError } = useQuery(["home-books"], () => author_client.getBooks())
 
     if (isLoading) {
-        return <div>Loading...</div>
+        return <CenteredLoading />
     }
 
     if (isError) {
