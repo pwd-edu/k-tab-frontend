@@ -1,10 +1,9 @@
 import { AppNavbar } from "../Navbar"
 import { Group, createStyles, AppShell } from "@mantine/core"
-import aofm from "../assets/aofm.jpg"
 import { StudentOwnedBook } from "./StudentOwnedBook"
 import { useQuery } from "@tanstack/react-query"
-import axios from "axios"
-import { PORT } from "../constants"
+import { StudentClient } from "../fetch"
+import { CenteredLoading, ErrorPage } from "../shared"
 
 const useStyles = createStyles((theme) => ({
     grid: {
@@ -22,55 +21,35 @@ const buildStyles = (params?: any) => {
 
 const Library = () => {
     const { styles } = buildStyles()
-    const bookTags = ["Maths", "Physics"]
     console.log("Library")
 
-    const bookQuery = useQuery({
-        queryKey: ["libraryBooks"],
-        queryFn: async () => {
-            const response = await axios.get(`http://localhost:${PORT}/payment/library/`)
-            const data = await response.data
-            console.log(data)
-            return data
-        },
+    const student_client = StudentClient()
+
+    const { isLoading, data, isError } = useQuery({
+        queryKey: ["student-library"],
+        queryFn: () => student_client.getLibrary(),
     })
 
-    if (bookQuery.isLoading) return <h1>Loading....</h1> //mantine loading
-    if (bookQuery.isError) return <h1>Error loading data!!!</h1> ////mantine Error
+    if (isLoading) return <CenteredLoading />
+    if (isError) return <ErrorPage />
+    console.log(data)
 
     return (
         <>
             <AppShell navbar={<AppNavbar />}>
-                <Group className={styles.home_grid}>
-                    {/* {bookQuery.data.map((book) => (
-                    // <StudentOwnedBook
-                    //     image= book.
-                    //     link={"https://mantine.dev/"}
-                    //     tags={bookTags}
-                    //     title={"bookkk titlllllllllllllllllllllllllllllllllllllle"}
-                    //     description={
-                    //         "bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla"
-                    //     }
-                    // />
-                ))} */}
-
-                    <StudentOwnedBook
-                        image={aofm}
-                        link={"link opens book info card where student buys book"}
-                        tags={bookTags}
-                        title={"bookkk titlllllllllllllllllllllllllllllllllllllle"}
-                        description={
-                            "bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla"
-                        }
-                    />
-                    <StudentOwnedBook
-                        image={aofm}
-                        link={"https://mantine.dev/"}
-                        tags={bookTags}
-                        title={"bookkk titlllllle"}
-                        description={"bla bla bla bla bla bla bla bla bla bla bla bla"}
-                    />
-                </Group>
+                {
+                    <Group className={styles.home_grid}>
+                        {data.map((book) => (
+                            // eslint-disable-next-line react/jsx-key
+                            <StudentOwnedBook
+                                tags={book.tags}
+                                title={book.title}
+                                description={book.bookAbstract}
+                                image={book.bookCoverPath}
+                            />
+                        ))}
+                    </Group>
+                }
             </AppShell>
         </>
     )

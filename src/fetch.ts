@@ -97,4 +97,8 @@ export const StudentClient = (): StudentCLientType => ({
         const response = await axios_instance.get(`/student/`, { params: { studentId } })
         return response.data
     },
+    getLibrary: async () => {
+        const response = await axios_instance.get(`/payment/library/`)
+        return response.data
+    },
 })

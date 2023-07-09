@@ -81,6 +81,7 @@ export const chaptersHeadersSchema = z.array(
 export const BookSchema = z.object({
     bookId: z.string(),
     title: z.string(),
+    bookAbstract: z.string(),
     tags: z.array(z.string()),
     authorId: z.string(),
     bookCoverPath: z.string(),
@@ -128,10 +129,22 @@ export const AuthorSignUpSchema = AuthorSchema.extend({
     token: z.string(),
 })
 
+export const BookHeaderSchema = BookSchema.pick({
+    bookId: true,
+    title: true,
+    bookCoverPath: true,
+    AuthorName: true,
+    tags: true,
+    bookAbstract: true,
+    authorId: true,
+})
+
 export type Author = z.infer<typeof AuthorSchema>
 export type AuthorSignUp = z.infer<typeof AuthorSignUpSchema>
 
 export type Student = z.infer<typeof StudentSchema>
+
+export type BookHeader = z.infer<typeof BookHeaderSchema>
 
 export interface AuthorCLientType {
     get: (authorId?: string) => Promise<Author>
@@ -139,4 +152,5 @@ export interface AuthorCLientType {
 
 export interface StudentCLientType {
     get: (studentId?: string) => Promise<Student>
+    getLibrary: () => Promise<BookHeader[]>
 }

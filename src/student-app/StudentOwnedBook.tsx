@@ -44,8 +44,8 @@ const useStyles = createStyles((theme) => ({
 }))
 
 interface StudentBookProps {
-    image: string
-    link: string
+    image?: string
+    link?: string
     title: string
     description: string
     tags: string[]
