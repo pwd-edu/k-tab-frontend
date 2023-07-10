@@ -31,10 +31,12 @@ const Library = () => {
             {
                 queryKey: ["student-library"],
                 queryFn: () => student_client.getLibrary(),
+                refetchInterval: 500, //refetch every 500 ms (0.5 s)
             },
             {
                 queryKey: [`favourites`],
                 queryFn: () => student_client.getFavourites(),
+                refetchInterval: 500, //refetch every 500 ms (0.5 s)
             },
         ],
     })
@@ -53,8 +55,9 @@ const Library = () => {
                         <Group className={styles.home_grid}>
                             {libraryQuery.data.map((book) => (
                                 <StudentOwnedBook
-                                    fav={book.fav}
                                     key={book.bookId}
+                                    book_id={book.bookId}
+                                    fav={book.fav}
                                     tags={book.tags}
                                     title={book.title}
                                     description={book.bookAbstract}
@@ -71,6 +74,7 @@ const Library = () => {
                                 <StudentOwnedBook
                                     fav={true}
                                     key={fav_book.bookId}
+                                    book_id={fav_book.bookId}
                                     tags={fav_book.tags}
                                     title={fav_book.title}
                                     description={fav_book.bookAbstract}

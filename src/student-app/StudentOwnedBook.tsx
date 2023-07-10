@@ -11,7 +11,7 @@ import {
     rem,
 } from "@mantine/core"
 import { useState } from "react"
-import { useMutation, useQuery } from "@tanstack/react-query"
+import { useMutation } from "@tanstack/react-query"
 import { StudentClient } from "../fetch"
 
 export const useStylesCard = createStyles((theme) => ({
@@ -79,14 +79,15 @@ export function StudentOwnedBook({
 
     const [favourite, setFavourite] = useState<boolean>(fav)
 
+    const removeFromFavourites = useMutation(() => student_client.removeFavourite(book_id))
+    const addtoFavourites = useMutation(() => student_client.addFavourite(book_id))
+
     const toggleFavourites = () => {
+        favourite ? removeFromFavourites.mutate() : addtoFavourites.mutate()
         console.log("fav intial state: " + favourite)
         setFavourite(!favourite)
-        removeFavBook.mutate()
     }
     console.log("fav final state: " + favourite)
-
-    const removeFavBook = useMutation(() => student_client.removeFavourite(book_id))
 
     return (
         <Card withBorder radius="md" className={cx(classes.card, className)} {...others}>
@@ -112,7 +113,7 @@ export function StudentOwnedBook({
                         component="button"
                         onClick={() => toggleFavourites()}
                     >
-                        {favourite ? (
+                        {fav ? (
                             <IconHeartFilled size="1rem" color={theme.colors.red[6]} />
                         ) : (
                             <IconHeart size="1rem" color={theme.colors.red[6]} />

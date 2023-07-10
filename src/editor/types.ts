@@ -92,8 +92,23 @@ export const BookSchema = z.object({
     chapterHeaders: chaptersHeadersSchema,
 })
 
+export const StudentBookSchema = z.object({
+    bookId: z.string(),
+    title: z.string(),
+    fav: z.boolean(),
+    bookAbstract: z.string(),
+    tags: z.array(z.string()),
+    authorId: z.string(),
+    bookCoverPath: z.string(),
+    lastEditDate: z.string(),
+    avgRate: z.number(),
+    contributors: z.array(z.string()),
+    chapterHeaders: chaptersHeadersSchema,
+})
+
 export type Book = z.infer<typeof BookSchema>
 export type BookHeader = z.infer<typeof BookHeaderSchema>
+export type StudentBookHeader = z.infer<typeof StudentBookHeaderSchema>
 
 export type CreateBookRequest = Omit<Book, "bookId" | "lastEditDate" | "avgRate" | "chaptersTitles">
 
@@ -141,6 +156,17 @@ export const BookHeaderSchema = BookSchema.pick({
     authorId: true,
 })
 
+export const StudentBookHeaderSchema = StudentBookSchema.pick({
+    bookId: true,
+    title: true,
+    fav: true,
+    bookCoverPath: true,
+    AuthorName: true,
+    tags: true,
+    bookAbstract: true,
+    authorId: true,
+})
+
 export type Author = z.infer<typeof AuthorSchema>
 export type AuthorSignUp = z.infer<typeof AuthorSignUpSchema>
 
@@ -153,7 +179,8 @@ export interface AuthorCLientType {
 
 export interface StudentCLientType {
     get: (studentId?: string) => Promise<Student>
-    getLibrary: () => Promise<BookHeader[]>
-    getFavourites: () => Promise<BookHeader[]>
-    removeFavourite: (bookId: string) => Promise<void>
+    getLibrary: () => Promise<StudentBookHeader[]>
+    getFavourites: () => Promise<StudentBookHeader[]>
+    removeFavourite: (book_id: string) => Promise<void>
+    addFavourite: (book_id: string) => Promise<StudentBookHeader>
 }
