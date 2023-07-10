@@ -1,47 +1,25 @@
+import { useQueryClient } from "@tanstack/react-query"
 import { useCallback } from "react"
-import { JWT_TOKEN, TYPE } from "../constants"
-import { getJwtToken } from "./helpers"
-import { getClient } from "./getClient"
-import { useQuery, useQueryClient } from "@tanstack/react-query"
-import { axios_instance } from "../fetch"
-import { removeJwtToken, setJwtToken } from "./helpers"
 
-const user_client = getClient()
+import { UserClient } from "../fetch"
+import { removeJwtToken, removeUserType, setJwtToken, setUserType } from "./helpers"
 
-export function useAuth(withUser = false) {
+export function useAuth() {
+    const user_client = UserClient()
     const queryClient = useQueryClient()
-    const {
-        data: user,
-        error,
-        isFetching,
-        refetch,
-    } = useQuery({
-        queryKey: [`user`],
-        queryFn: () => user_client.get(),
-        retry: false,
-        staleTime: 1000 * 5 * 60, // 5min
-        enabled: withUser,
-    })
 
     const login = useCallback(async (email: string, password: string) => {
-        const res = await axios_instance.post(`/api/security/login/`, { email, password })
-        await setJwtToken(res.data.token)
-        localStorage.setItem(TYPE, res.data.userType)
-        await refetch()
-        return res.data
+        const { token, userType } = await user_client.login(email, password)
+        await setJwtToken(token)
+        await setUserType(userType)
+        queryClient.refetchQueries({ queryKey: ["user"], exact: true })
     }, [])
 
     const logout = useCallback(async () => {
         await removeJwtToken()
+        await removeUserType()
         await queryClient.resetQueries({ queryKey: ["user"], exact: true })
     }, [])
 
-    return {
-        user,
-        error,
-        isLoading: isFetching,
-        isAuthenticated: !!user,
-        login,
-        logout,
-    }
+    return { login, logout }
 }

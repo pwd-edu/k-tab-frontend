@@ -55,6 +55,12 @@ export const EDITOR_OBJ = {
     ],
 }
 
+export const DISABILITIES = [
+    { code: "BLND", name: "Blind" },
+    { code: "DYSLX", name: "Dyslexia" },
+    { code: "PRTSIG", name: "Partially Sighted" },
+]
+
 export const EDITOR_JSON_SAMPLE = JSON.stringify(EDITOR_OBJ)
 export const EDITOR_PARSED_JSON = JSON.parse(EDITOR_JSON_SAMPLE)
 

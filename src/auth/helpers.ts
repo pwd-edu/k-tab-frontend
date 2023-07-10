@@ -1,14 +1,17 @@
-import { JWT_TOKEN, AUTHOR_JWT, USE_STATIC_JWT, STUDENT_JWT } from "../constants"
 import * as idbKeyval from "idb-keyval"
+
+import { AUTHOR_JWT, JWT_TOKEN, STUDENT_JWT, TYPE, USE_STATIC_JWT } from "../constants"
 
 const PRODUCTION = import.meta.env.PROD
 
-const initJwtToken = async () => {
+export const initJwtToken = async () => {
     if (!PRODUCTION && USE_STATIC_JWT) {
         if (USE_STATIC_JWT === "STUDENT" && STUDENT_JWT) {
+            await setUserType("STUDENT")
             return await setJwtToken(STUDENT_JWT)
         }
         if (USE_STATIC_JWT === "AUTHOR" && AUTHOR_JWT) {
+            await setUserType("AUTHOR")
             return await setJwtToken(AUTHOR_JWT)
         }
     }
@@ -16,9 +19,19 @@ const initJwtToken = async () => {
 }
 
 export const getJwtToken = async () => {
-    await initJwtToken()
-    const token = await idbKeyval.get(JWT_TOKEN)
-    return token
+    return await idbKeyval.get(JWT_TOKEN)
+}
+
+export const setUserType = async (userType: string) => {
+    localStorage.setItem(TYPE, userType)
+}
+
+export const getUserType = async () => {
+    return localStorage.getItem(TYPE)
+}
+
+export const removeUserType = async () => {
+    localStorage.removeItem(TYPE)
 }
 
 export const setJwtToken = async (token: string) => {
