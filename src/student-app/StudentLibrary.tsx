@@ -1,10 +1,10 @@
 import { AppNavbar } from "../Navbar"
-import { Group, createStyles, AppShell } from "@mantine/core"
+import { Group, createStyles, AppShell, Stack, Divider, Title } from "@mantine/core"
 import { StudentOwnedBook } from "./StudentOwnedBook"
-import { useQuery } from "@tanstack/react-query"
-import { RESOURCE_URL, S3Client, StudentClient } from "../fetch"
+import { useQueries } from "@tanstack/react-query"
+import { RESOURCE_URL, StudentClient } from "../fetch"
 import { CenteredLoading, ErrorPage } from "../shared"
-import { DndList } from "./FavouritesGrid"
+import { BookReader } from "./BookReader"
 
 const useStyles = createStyles((theme) => ({
     grid: {
@@ -25,37 +25,64 @@ const Library = () => {
     console.log("Library")
 
     const student_client = StudentClient()
-    const s3_client = S3Client()
 
-    const { isLoading, data, isError } = useQuery({
-        queryKey: ["student-library"],
-        queryFn: () => student_client.getLibrary(),
+    const [libraryQuery, favouritesQuery] = useQueries({
+        queries: [
+            {
+                queryKey: ["student-library"],
+                queryFn: () => student_client.getLibrary(),
+                refetchInterval: 500, //refetch every 500 ms (0.5 s)
+            },
+            {
+                queryKey: [`favourites`],
+                queryFn: () => student_client.getFavourites(),
+                refetchInterval: 500, //refetch every 500 ms (0.5 s)
+            },
+        ],
     })
 
-    if (isLoading) return <CenteredLoading />
-    if (isError) return <ErrorPage />
-    console.log(data)
-
-    // const favourites = useQuery({
-    //     queryKey: ["student-favourites"],
-    //     queryFn: () => student_client.getFavourites(),
-    // })
+    if (libraryQuery.isLoading || favouritesQuery.isLoading) return <CenteredLoading />
+    if (libraryQuery.isError || favouritesQuery.isError) return <ErrorPage />
 
     return (
         <>
             <AppShell navbar={<AppNavbar />}>
                 {
-                    <Group className={styles.home_grid}>
-                        {data.map((book) => (
-                            // eslint-disable-next-line react/jsx-key
-                            <StudentOwnedBook
-                                tags={book.tags}
-                                title={book.title}
-                                description={book.bookAbstract}
-                                image={RESOURCE_URL(book.bookCoverPath)}
-                            />
-                        ))}
-                    </Group>
+                    <Stack>
+                        <Title order={2} weight={100} fw={500}>
+                            Library
+                        </Title>
+                        <Group className={styles.home_grid}>
+                            {libraryQuery.data.map((book) => (
+                                <StudentOwnedBook
+                                    key={book.bookId}
+                                    book_id={book.bookId}
+                                    fav={book.fav}
+                                    tags={book.tags}
+                                    title={book.title}
+                                    description={book.bookAbstract}
+                                    image={RESOURCE_URL(book.bookCoverPath)}
+                                />
+                            ))}
+                        </Group>
+                        <Divider my="xs" />
+                        <Title order={2} fw={500}>
+                            Favourites
+                        </Title>
+                        <Group className={styles.home_grid}>
+                            {favouritesQuery.data.map((fav_book) => (
+                                <StudentOwnedBook
+                                    fav={true}
+                                    key={fav_book.bookId}
+                                    book_id={fav_book.bookId}
+                                    tags={fav_book.tags}
+                                    title={fav_book.title}
+                                    description={fav_book.bookAbstract}
+                                    image={RESOURCE_URL(fav_book.bookCoverPath)}
+                                />
+                            ))}
+                        </Group>
+                    </Stack>
                 }
             </AppShell>
         </>

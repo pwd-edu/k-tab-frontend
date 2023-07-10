@@ -50,8 +50,6 @@ export function BookInfoForm(props: PaperProps) {
             const base64String = document.replace("data:", "").replace(/^.+,/, "") as string
             form.setFieldValue("coverImage", base64String)
             console.log("onload base64String " + base64String)
-            // console.log("onload base64String " + {form.values.coverImage})
-            // setProfilePhotoBase64(base64String);
         }
         reader.onerror = function (error) {
             console.log("Error: ", error)

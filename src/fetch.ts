@@ -125,6 +125,17 @@ export const StudentClient = (): StudentCLientType => ({
         const response = await axios_instance.get(`/payment/fav/`)
         return response.data
     },
+    removeFavourite: async (book_id: string) => {
+        const response = await axios_instance.delete("/payment/remove-from-fav/", {
+            params: { bookId: book_id },
+        })
+        return response.data
+    },
+    addFavourite: async (book_id: string) => {
+        const response = await axios_instance.post(`/payment/add-to-fav/?bookId=${book_id}`)
+
+        return response.data
+    },
 })
 export const RESOURCE_URL = (resource_path: string) =>
     `${API_URL}/s3/resources/?resourcePath=${resource_path}`
