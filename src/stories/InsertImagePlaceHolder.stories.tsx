@@ -1,6 +1,6 @@
-import { ComponentStory, ComponentMeta } from "@storybook/react"
+import { ComponentMeta, ComponentStory } from "@storybook/react"
 
-import { InsertImagePlaceHolder } from "../editor/ImagePlaceHolder"
+import { InsertImagePlaceHolder } from "../views/author/editor/ImagePlaceHolder"
 
 export default {
     title: "Example/InsertImagePlaceHolder",
