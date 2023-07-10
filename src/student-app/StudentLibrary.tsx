@@ -1,10 +1,9 @@
 import { AppNavbar } from "../Navbar"
-import { Group, createStyles, AppShell } from "@mantine/core"
+import { Group, createStyles, AppShell, Stack, Text, Divider } from "@mantine/core"
 import { StudentOwnedBook } from "./StudentOwnedBook"
-import { useQuery } from "@tanstack/react-query"
-import { RESOURCE_URL, S3Client, StudentClient } from "../fetch"
+import { useQueries } from "@tanstack/react-query"
+import { RESOURCE_URL, StudentClient } from "../fetch"
 import { CenteredLoading, ErrorPage } from "../shared"
-import { DndList } from "./FavouritesGrid"
 
 const useStyles = createStyles((theme) => ({
     grid: {
@@ -25,37 +24,58 @@ const Library = () => {
     console.log("Library")
 
     const student_client = StudentClient()
-    const s3_client = S3Client()
 
-    const { isLoading, data, isError } = useQuery({
-        queryKey: ["student-library"],
-        queryFn: () => student_client.getLibrary(),
+    const [libraryQuery, favouritesQuery] = useQueries({
+        queries: [
+            {
+                queryKey: ["student-library"],
+                queryFn: () => student_client.getLibrary(),
+            },
+            {
+                queryKey: [`favourites`],
+                queryFn: () => student_client.getFavourites(),
+            },
+        ],
     })
 
-    if (isLoading) return <CenteredLoading />
-    if (isError) return <ErrorPage />
-    console.log(data)
-
-    // const favourites = useQuery({
-    //     queryKey: ["student-favourites"],
-    //     queryFn: () => student_client.getFavourites(),
-    // })
+    if (libraryQuery.isLoading || favouritesQuery.isLoading) return <CenteredLoading />
+    if (libraryQuery.isError || favouritesQuery.isError) return <ErrorPage />
 
     return (
         <>
             <AppShell navbar={<AppNavbar />}>
                 {
-                    <Group className={styles.home_grid}>
-                        {data.map((book) => (
-                            // eslint-disable-next-line react/jsx-key
-                            <StudentOwnedBook
-                                tags={book.tags}
-                                title={book.title}
-                                description={book.bookAbstract}
-                                image={RESOURCE_URL(book.bookCoverPath)}
-                            />
-                        ))}
-                    </Group>
+                    <Stack>
+                        <Text fz="lg" fw={500}>
+                            Library
+                        </Text>
+                        <Group className={styles.home_grid}>
+                            {libraryQuery.data.map((book) => (
+                                <StudentOwnedBook
+                                    key={book.bookId}
+                                    tags={book.tags}
+                                    title={book.title}
+                                    description={book.bookAbstract}
+                                    image={RESOURCE_URL(book.bookCoverPath)}
+                                />
+                            ))}
+                        </Group>
+                        <Divider my="xs" />
+                        <Text fz="lg" fw={500}>
+                            Favourites
+                        </Text>
+                        <Group className={styles.home_grid}>
+                            {favouritesQuery.data.map((fav_book) => (
+                                <StudentOwnedBook
+                                    key={fav_book.bookId}
+                                    tags={fav_book.tags}
+                                    title={fav_book.title}
+                                    description={fav_book.bookAbstract}
+                                    image={RESOURCE_URL(fav_book.bookCoverPath)}
+                                />
+                            ))}
+                        </Group>
+                    </Stack>
                 }
             </AppShell>
         </>
