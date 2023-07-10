@@ -1,9 +1,10 @@
 import { AppNavbar } from "../Navbar"
-import { Group, createStyles, AppShell, Stack, Text, Divider } from "@mantine/core"
+import { Group, createStyles, AppShell, Stack, Divider, Title } from "@mantine/core"
 import { StudentOwnedBook } from "./StudentOwnedBook"
 import { useQueries } from "@tanstack/react-query"
 import { RESOURCE_URL, StudentClient } from "../fetch"
 import { CenteredLoading, ErrorPage } from "../shared"
+import { BookReader } from "./BookReader"
 
 const useStyles = createStyles((theme) => ({
     grid: {
@@ -46,12 +47,13 @@ const Library = () => {
             <AppShell navbar={<AppNavbar />}>
                 {
                     <Stack>
-                        <Text fz="lg" fw={500}>
+                        <Title order={2} weight={100} fw={500}>
                             Library
-                        </Text>
+                        </Title>
                         <Group className={styles.home_grid}>
                             {libraryQuery.data.map((book) => (
                                 <StudentOwnedBook
+                                    fav={book.fav}
                                     key={book.bookId}
                                     tags={book.tags}
                                     title={book.title}
@@ -61,12 +63,13 @@ const Library = () => {
                             ))}
                         </Group>
                         <Divider my="xs" />
-                        <Text fz="lg" fw={500}>
+                        <Title order={2} fw={500}>
                             Favourites
-                        </Text>
+                        </Title>
                         <Group className={styles.home_grid}>
                             {favouritesQuery.data.map((fav_book) => (
                                 <StudentOwnedBook
+                                    fav={true}
                                     key={fav_book.bookId}
                                     tags={fav_book.tags}
                                     title={fav_book.title}

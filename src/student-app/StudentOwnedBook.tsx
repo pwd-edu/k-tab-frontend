@@ -1,4 +1,4 @@
-import { IconHeart } from "@tabler/icons-react"
+import { IconHeart, IconHeartFilled } from "@tabler/icons-react"
 import {
     Card,
     Image,
@@ -10,6 +10,7 @@ import {
     createStyles,
     rem,
 } from "@mantine/core"
+import { useState } from "react"
 
 export const useStylesCard = createStyles((theme) => ({
     card: {
@@ -49,11 +50,13 @@ interface StudentBookProps {
     title: string
     description: string
     tags: string[]
+    fav: boolean
 }
 
 export function StudentOwnedBook({
     className,
     image,
+    fav,
     link,
     title,
     tags,
@@ -68,6 +71,14 @@ export function StudentOwnedBook({
             {tag}
         </Badge>
     ))
+
+    const [favourite, setFavourite] = useState<boolean>(fav)
+
+    const toggleFavourites = () => {
+        console.log("fav intial state: " + favourite)
+        setFavourite(!favourite)
+    }
+    console.log("fav final state: " + favourite)
 
     return (
         <Card withBorder radius="md" className={cx(classes.card, className)} {...others}>
@@ -87,8 +98,17 @@ export function StudentOwnedBook({
                 </Center>
 
                 <Group spacing={8} mr={0}>
-                    <ActionIcon className={classes.action}>
-                        <IconHeart size="1rem" color={theme.colors.red[6]} />
+                    <ActionIcon
+                        className={classes.action}
+                        title="Favourites"
+                        component="button"
+                        onClick={() => toggleFavourites()}
+                    >
+                        {favourite ? (
+                            <IconHeartFilled size="1rem" color={theme.colors.red[6]} />
+                        ) : (
+                            <IconHeart size="1rem" color={theme.colors.red[6]} />
+                        )}
                     </ActionIcon>
                 </Group>
             </Group>
