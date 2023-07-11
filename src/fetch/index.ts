@@ -163,6 +163,26 @@ export const StudentClient = (): StudentCLientType => ({
         const response = await axios_instance.get("/student/profile/", { params: { studentId } })
         return response.data
     },
+    getBookstore: async (
+        op: string,
+        nxt?: string,
+        pre?: string,
+        ti?: string,
+        tgs?: string,
+        filtr?: string
+    ) => {
+        const response = await axios_instance.get(`/student/home/`, {
+            params: {
+                operation: op, //operation: this.operation
+                ...(nxt ? { next: nxt } : {}),
+                ...(pre && { prev: pre }),
+                ...(ti && { title: ti }),
+                ...(tgs && { tags: tgs }),
+                ...(filtr && { filter: filtr }),
+            },
+        })
+        return response.data
+    },
 })
 
 export const RESOURCE_URL = (resource_path: string) =>

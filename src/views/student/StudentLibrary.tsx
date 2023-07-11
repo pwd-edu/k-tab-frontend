@@ -31,12 +31,10 @@ const Library = () => {
             {
                 queryKey: ["student-library"],
                 queryFn: () => student_client.getLibrary(),
-                refetchInterval: 500, //refetch every 500 ms (0.5 s)
             },
             {
                 queryKey: [`favourites`],
                 queryFn: () => student_client.getFavourites(),
-                refetchInterval: 500, //refetch every 500 ms (0.5 s)
             },
         ],
     })

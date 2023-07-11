@@ -1,4 +1,4 @@
-import { Badge, Card, Center, Group, Image, Text, createStyles, rem } from "@mantine/core"
+import { Badge, Card, Center, Group, Image, Rating, Text, createStyles, rem } from "@mantine/core"
 import { IconUser } from "@tabler/icons-react"
 
 const useStyles = createStyles((theme) => ({
@@ -13,7 +13,8 @@ const useStyles = createStyles((theme) => ({
 
     title: {
         display: "inline",
-        width: 100,
+        maxWidth: 200,
+        width: "60%",
         // marginBottom: rem(5),
     },
 
@@ -72,10 +73,16 @@ export function StudentBook({
     ))
 
     return (
-        <Card withBorder radius="md" className={cx(classes.card, className)} {...others}>
+        <Card
+            withBorder
+            shadow="md"
+            radius="md"
+            className={cx(classes.card, className)}
+            {...others}
+        >
             <Card.Section>
                 <a {...linkProps}>
-                    <Image src={image} height={180} />
+                    <Image src={image} height={180} alt="book cover" />
                 </a>
             </Card.Section>
 
@@ -106,10 +113,13 @@ export function StudentBook({
                     <Badge color={theme.colorScheme === "dark" ? "dark" : "gray"}>{price}$</Badge>
                 </Group>
             </Group>
+            <Rating defaultValue={2} fractions={2} readOnly />
 
-            <Text fz="sm" color="dimmed" lineClamp={3}>
-                {description}
-            </Text>
+            <Center>
+                <Text fz="sm" color="dimmed" lineClamp={2}>
+                    {description}
+                </Text>
+            </Center>
         </Card>
     )
 }

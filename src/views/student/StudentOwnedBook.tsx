@@ -11,7 +11,7 @@ import {
     rem,
 } from "@mantine/core"
 import { IconHeart, IconHeartFilled } from "@tabler/icons-react"
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useState } from "react"
 import { Link } from "react-router-dom"
 
@@ -21,7 +21,7 @@ export const useStylesCard = createStyles((theme) => ({
         backgroundColor: theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
         width: 280,
         maxWidth: 320,
-        height: 302,
+        height: 325,
         maxHeight: 355,
     },
 
@@ -79,8 +79,19 @@ export function StudentOwnedBook({
 
     const [favourite, setFavourite] = useState<boolean>(fav)
 
-    const removeFromFavourites = useMutation(() => student_client.removeFavourite(book_id))
-    const addtoFavourites = useMutation(() => student_client.addFavourite(book_id))
+    const queryClient = useQueryClient()
+    const removeFromFavourites = useMutation(() => student_client.removeFavourite(book_id), {
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["student-library"] })
+            queryClient.invalidateQueries({ queryKey: ["favourites"] })
+        },
+    })
+    const addtoFavourites = useMutation(() => student_client.addFavourite(book_id), {
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["student-library"] })
+            queryClient.invalidateQueries({ queryKey: ["favourites"] })
+        },
+    })
 
     const toggleFavourites = () => {
         favourite ? removeFromFavourites.mutate() : addtoFavourites.mutate()
