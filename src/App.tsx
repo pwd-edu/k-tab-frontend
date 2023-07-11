@@ -8,6 +8,7 @@ import PrivateRoute from "./auth/PrivateRoute"
 import { BookEditor } from "./views/author/BookEditor"
 import Dashboard from "./views/author/Dashboard"
 import { AuthorHome } from "./views/author/Home"
+import { BookReader } from "./views/student/BookReader"
 import { BookStore } from "./views/student/StudentBookStore"
 import Library from "./views/student/StudentLibrary"
 import { LoginPage } from "./views/user/login"
@@ -51,7 +52,7 @@ const SharedBookView = (
     <CommonRouteMapper
         map={[
             { roles: ["AUTHOR", "ADMIN"], element: <BookEditor /> },
-            { roles: ["STUDENT"], element: <BookStore /> },
+            { roles: ["STUDENT"], element: <BookReader /> },
         ]}
     />
 )

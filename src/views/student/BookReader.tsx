@@ -13,4 +13,10 @@ export const BookReader = () => {
     const { data: book } = useQuery(["book", book_id], () => book_client.get(book_id || ""))
     const chapter_id = getChapterId(chapter_num, book)
     const { chapter, chapter_content } = useChapterQuery(book_id, chapter_id)
+    return (
+        <div>
+            <pre>{JSON.stringify(chapter, null, 2)}</pre>
+            <pre>{JSON.stringify(chapter_content, null, 2)}</pre>
+        </div>
+    )
 }
