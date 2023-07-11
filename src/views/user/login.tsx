@@ -30,15 +30,14 @@ const LoginSchema = z.object({
 
 type LoginFormInputs = z.infer<typeof LoginSchema>
 export function LoginPage() {
-    const { status, user } = useAuthSession()
+    const { status } = useAuthSession()
 
     if (status === AuthStatus.LOADING) {
         return <CenteredLoading />
     }
 
     if (status === AuthStatus.AUTHENTICATED) {
-        const home = user?.userType === "STUDENT" ? "/library" : "/"
-        return <Navigate to={home} replace />
+        return <Navigate to="/" replace />
     }
 
     return (
