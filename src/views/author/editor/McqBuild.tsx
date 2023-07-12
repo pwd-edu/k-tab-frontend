@@ -72,14 +72,14 @@ export const McqBuild = (props: NodeViewProps) => {
 
     return (
         <NodeViewWrapper>
-            <Card className="my-2 w-full p-2" withBorder={true} data-drag-handle>
+            <Card className="my-2 w-full p-2" withBorder data-drag-handle>
                 <Group className="mb-2">
                     <McqText
                         className="grow font-semibold"
                         placeholder="Write your question"
                         rightSection={
                             <ActionIcon onClick={handleToggleEdit}>
-                                <IconEdit size="1.125rem" />
+                                <IconEdit size="1rem" />
                             </ActionIcon>
                         }
                         disabled={disabled}

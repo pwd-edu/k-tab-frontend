@@ -11,10 +11,12 @@ sw.addEventListener("fetch", (event: FetchEvent) => {
 
     // Intercept GET requests for image files
     if (
-        (request.method === "GET" && request.url.endsWith(".jpg")) ||
-        request.url.endsWith(".jpeg") ||
-        request.url.endsWith(".png") ||
-        request.url.endsWith(".gif")
+        !request.url.includes("assets") &&
+        request.method === "GET" &&
+        (request.url.endsWith(".jpg") ||
+            request.url.endsWith(".jpeg") ||
+            request.url.endsWith(".png") ||
+            request.url.endsWith(".gif"))
     ) {
         const out = sw.idbKeyval.get("jwt_token").then((token) => {
             return getProtectedImage(request, token)
@@ -37,20 +39,15 @@ async function getProtectedImage(request: Request, token: string) {
         redirect: "follow",
     })
 
-    // SECURITY ISSUE: JWT TOKEN IS FORWARDED TO THE REDIRECTED URL (S3)
-    // Browser still follows the redirect, but we can ignore the output
-    const empty_headers = new Headers()
-    if (res.redirected) {
-        // ignore the redirect output and run it again
-        const new_redirect = new Request(res.url, {
-            method: "GET",
-            headers: empty_headers,
-            mode: "cors",
-            redirect: "follow",
-        })
-        return getImageOrPlaceholder(new_redirect)
-    }
-    return res
+    const res_json = await res.json()
+    const presigned_url = res_json["resourceUrl"]
+
+    const new_redirect = new Request(presigned_url, {
+        method: "GET",
+        headers: new Headers(),
+        mode: "cors",
+    })
+    return getImageOrPlaceholder(new_redirect)
 }
 
 async function getImageOrPlaceholder(request: Request) {

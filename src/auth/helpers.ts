@@ -7,11 +7,11 @@ const PRODUCTION = import.meta.env.PROD
 export const initJwtToken = async () => {
     if (!PRODUCTION && USE_STATIC_JWT) {
         if (USE_STATIC_JWT === "STUDENT" && STUDENT_JWT) {
-            await setUserType("STUDENT")
+            setUserType("STUDENT")
             return await setJwtToken(STUDENT_JWT)
         }
         if (USE_STATIC_JWT === "AUTHOR" && AUTHOR_JWT) {
-            await setUserType("AUTHOR")
+            setUserType("AUTHOR")
             return await setJwtToken(AUTHOR_JWT)
         }
     }
@@ -22,15 +22,15 @@ export const getJwtToken = async () => {
     return await idbKeyval.get(JWT_TOKEN)
 }
 
-export const setUserType = async (userType: string) => {
+export const setUserType = (userType: string) => {
     localStorage.setItem(TYPE, userType)
 }
 
-export const getUserType = async () => {
+export const getUserType = () => {
     return localStorage.getItem(TYPE)
 }
 
-export const removeUserType = async () => {
+export const removeUserType = () => {
     localStorage.removeItem(TYPE)
 }
 

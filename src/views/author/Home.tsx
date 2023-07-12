@@ -24,7 +24,7 @@ const buildStyles = () => {
 
 const author_client = AuthorClient()
 
-export const Home = () => {
+export const AuthorHome = () => {
     const { styles } = buildStyles()
     const { isLoading, data, isError } = useQuery(["home-books"], () => author_client.getBooks())
 

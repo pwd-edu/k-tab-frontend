@@ -1,4 +1,3 @@
-import Cover from "@assets/login-cover.png"
 import { useAuth } from "@auth/useAuth"
 import { AuthStatus, useAuthSession } from "@auth/useAuthSession"
 import { CenteredLoading, KtabLogo } from "@components/shared"
@@ -23,6 +22,8 @@ import { ToastContainer, toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import { z } from "zod"
 
+import Cover from "../../assets/login-cover.png"
+
 const LoginSchema = z.object({
     email: z.string().email("Invalid email address").nonempty("Email is required"),
     password: z.string().nonempty("Password is required"),
@@ -30,15 +31,14 @@ const LoginSchema = z.object({
 
 type LoginFormInputs = z.infer<typeof LoginSchema>
 export function LoginPage() {
-    const { status, user } = useAuthSession()
+    const { status } = useAuthSession()
 
     if (status === AuthStatus.LOADING) {
         return <CenteredLoading />
     }
 
     if (status === AuthStatus.AUTHENTICATED) {
-        const home = user?.userType === "STUDENT" ? "/library" : "/"
-        return <Navigate to={home} replace />
+        return <Navigate to="/" replace />
     }
 
     return (

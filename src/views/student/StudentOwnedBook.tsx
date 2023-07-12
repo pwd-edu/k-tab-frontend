@@ -13,6 +13,7 @@ import {
 import { IconHeart, IconHeartFilled } from "@tabler/icons-react"
 import { useMutation } from "@tanstack/react-query"
 import { useState } from "react"
+import { Link } from "react-router-dom"
 
 export const useStylesCard = createStyles((theme) => ({
     card: {
@@ -68,7 +69,6 @@ export function StudentOwnedBook({
     ...others
 }: StudentBookProps & Omit<React.ComponentPropsWithoutRef<"div">, keyof StudentBookProps>) {
     const { classes, cx, theme } = useStylesCard()
-    const linkProps = { href: link, target: "_blank", rel: "noopener noreferrer" }
 
     const bookTags = tags.map((tag) => (
         <Badge className={classes.tags} color="blue" variant="light" key={tag}>
@@ -92,16 +92,16 @@ export function StudentOwnedBook({
     return (
         <Card withBorder radius="md" className={cx(classes.card, className)} {...others}>
             <Card.Section>
-                <a {...linkProps}>
+                <Link to={`/book/${book_id}/1`}>
                     <Image src={image} height={180} />
-                </a>
+                </Link>
             </Card.Section>
 
             {bookTags}
 
             <Group position="apart" className={classes.footer}>
                 <Center>
-                    <Text truncate className={classes.title} fw={500} component="a" {...linkProps}>
+                    <Text truncate className={classes.title} fw={500}>
                         {title}
                     </Text>
                 </Center>
