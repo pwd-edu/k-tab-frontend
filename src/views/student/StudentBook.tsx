@@ -5,9 +5,9 @@ const useStyles = createStyles((theme) => ({
     card: {
         position: "relative",
         backgroundColor: theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
-        width: 310,
+        width: rem(320),
         maxWidth: 340,
-        height: 320,
+        height: rem(374),
         maxHeight: 355,
     },
 
@@ -47,7 +47,7 @@ interface StudentBookProps {
     title: string
     description: string
     price: number
-    authorName: string
+    authorName?: string
     tags: string[]
 }
 
@@ -94,14 +94,14 @@ export function StudentBook({
                         {title}
                     </Text>
                 </Center>
-
-                <Center>
-                    <IconUser size="1.05rem" className={classes.icon} stroke={1.5} />
-                    <Text color={theme.colorScheme === "dark" ? "dark" : "gray"} size="xs">
-                        {authorName}
-                    </Text>
-                </Center>
-
+                {authorName && (
+                    <Center>
+                        <IconUser size="1.05rem" className={classes.icon} stroke={1.5} />
+                        <Text color={theme.colorScheme === "dark" ? "dark" : "gray"} size="xs">
+                            {authorName}
+                        </Text>
+                    </Center>
+                )}{" "}
                 <Group spacing={8} mr={0}>
                     <Badge color={theme.colorScheme === "dark" ? "dark" : "gray"}>{price}$</Badge>
                 </Group>

@@ -67,6 +67,7 @@ export const StudentBookSchema = z.object({
     fav: z.boolean(),
     bookAbstract: z.string(),
     tags: z.array(z.string()),
+    price: z.number(),
     authorId: z.string(),
     bookCoverPath: z.string(),
     lastEditDate: z.string(),
@@ -76,7 +77,6 @@ export const StudentBookSchema = z.object({
 })
 
 export type StudentBookHeader = z.infer<typeof StudentBookHeaderSchema>
-
 export type CreateBookRequest = Omit<Book, "bookId" | "lastEditDate" | "avgRate" | "chaptersTitles">
 
 export const AuthorSchema = z.object({
@@ -104,6 +104,14 @@ export const StudentSchema = z.object({
     ),
 })
 
+export const StudentProfileSchema = StudentSchema.pick({
+    studentId: true,
+    studentName: true,
+    studentEmail: true,
+    profilePhotoPath: true,
+    educationLevel: true,
+})
+
 export const AuthorSignUpSchema = AuthorSchema.extend({
     token: z.string(),
 })
@@ -127,6 +135,11 @@ export const StudentBookHeaderSchema = StudentBookSchema.pick({
     tags: true,
     bookAbstract: true,
     authorId: true,
+    price: true,
+})
+
+const AuthorProfileSchema = AuthorSchema.extend({
+    bookHeaders: z.array(StudentBookHeaderSchema),
 })
 
 const UserSchema = z.object({
@@ -143,10 +156,23 @@ const LoginResponseSchema = z.object({
     userType: z.enum(["ADMIN", "AUTHOR", "STUDENT"]),
 })
 
+const CommentSchema = z.object({
+    commentId: z.string(),
+    commenterId: z.string(),
+    content: z.string(),
+    hasMentions: z.boolean(),
+    mentionedUsers: z.string().array(),
+    date: z.string().datetime(), //z.date() => new Date()
+    commenterType: z.string(),
+})
+
 export type User = z.infer<typeof UserSchema>
 export type Author = z.infer<typeof AuthorSchema>
 export type Student = z.infer<typeof StudentSchema>
 export type Chapter = z.infer<typeof ChapterSchema>
+export type Comment = z.infer<typeof CommentSchema>
+export type AuthorProfile = z.infer<typeof AuthorProfileSchema>
+export type StudentProfile = z.infer<typeof StudentProfileSchema>
 
 export type AuthorSignUp = z.infer<typeof AuthorSignUpSchema>
 export type CreateChapterRequest = Omit<
@@ -167,10 +193,12 @@ export interface UserClientType {
 export interface AuthorCLientType {
     get: (authorId?: string) => Promise<Author>
     getBooks: () => Promise<BookHeader[]>
+    getProfile: (authorId: string) => Promise<AuthorProfile>
 }
 
 export interface StudentCLientType {
     get: (studentId?: string) => Promise<Student>
+    getProfile: (studentId: string) => Promise<StudentProfile>
     getLibrary: () => Promise<StudentBookHeader[]>
     getFavourites: () => Promise<StudentBookHeader[]>
     removeFavourite: (book_id: string) => Promise<void>
@@ -185,6 +213,7 @@ export interface BookClientType {
 export interface ChapterClientType {
     post: (chapter: CreateChapterRequest) => Promise<Chapter>
     get: (chapterId: string) => Promise<Chapter>
+    getChapterComments: (chapterId: string) => Promise<Comment[]>
 }
 
 export interface AiClientType {
