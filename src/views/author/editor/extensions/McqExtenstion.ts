@@ -1,7 +1,7 @@
 import { Node, mergeAttributes } from "@tiptap/core"
 import { ReactNodeViewRenderer } from "@tiptap/react"
 
-import { McqBuild } from "./McqBuild"
+import { McqBuild } from "../McqBuild"
 
 export interface McqOptions {
     initial_count: number
