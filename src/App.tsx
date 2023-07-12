@@ -52,7 +52,7 @@ const SharedBookView = (
     <CommonRouteMapper
         map={[
             { roles: ["AUTHOR", "ADMIN"], element: <BookEditor /> },
-            { roles: ["STUDENT"], element: <BookReader enableLineFocus /> },
+            { roles: ["STUDENT"], element: <BookReader /> },
         ]}
     />
 )
