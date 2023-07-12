@@ -1,4 +1,3 @@
-import Cover from "@assets/login-cover.png"
 import { useAuth } from "@auth/useAuth"
 import { AuthStatus, useAuthSession } from "@auth/useAuthSession"
 import { CenteredLoading, KtabLogo } from "@components/shared"
@@ -22,6 +21,8 @@ import { Link, Navigate } from "react-router-dom"
 import { ToastContainer, toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import { z } from "zod"
+
+import Cover from "../../assets/login-cover.png"
 
 const LoginSchema = z.object({
     email: z.string().email("Invalid email address").nonempty("Email is required"),

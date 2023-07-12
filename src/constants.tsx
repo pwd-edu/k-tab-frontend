@@ -1,3 +1,23 @@
+import Blockquote from "@tiptap/extension-blockquote"
+import Bold from "@tiptap/extension-bold"
+import BulletList from "@tiptap/extension-bullet-list"
+import { Color } from "@tiptap/extension-color"
+import Document from "@tiptap/extension-document"
+import Gapcursor from "@tiptap/extension-gapcursor"
+import { Heading } from "@tiptap/extension-heading"
+import History from "@tiptap/extension-history"
+import Image from "@tiptap/extension-image"
+import Italic from "@tiptap/extension-italic"
+import ListItem from "@tiptap/extension-list-item"
+import OrderedList from "@tiptap/extension-ordered-list"
+import Paragraph from "@tiptap/extension-paragraph"
+import TextExtension from "@tiptap/extension-text"
+import TextStyle from "@tiptap/extension-text-style"
+import Underline from "@tiptap/extension-underline"
+
+import { LineFocusExtension } from "./views/author/editor/LineFocusExtension"
+import { McqExtension } from "./views/author/editor/McqExtenstion"
+
 export const PORT = 8080
 export const URL = `http://localhost:${PORT}/`
 
@@ -71,3 +91,24 @@ export const AUTHOR_JWT = import.meta.env.VITE_AUTHOR_JWT
 export const STUDENT_JWT = import.meta.env.VITE_STUDENT_JWT
 export const SAMPLE_BOOK_ID = import.meta.env.VITE_SAMPLE_BOOK_ID
 export const SAMPLE_CHAPTER_ID = import.meta.env.VITE_SAMPLE_CHAPTER_ID
+
+export const BASE_EDITOR_EXTENSIONS = [
+    Document,
+    Paragraph,
+    TextExtension,
+    Bold,
+    Heading,
+    Italic,
+    Underline,
+    History,
+    BulletList,
+    ListItem,
+    OrderedList,
+    Blockquote,
+    Gapcursor,
+    Color,
+    TextStyle,
+    Image,
+    McqExtension,
+    LineFocusExtension,
+]

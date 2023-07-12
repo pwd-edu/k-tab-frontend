@@ -5,6 +5,7 @@ import { getChapterId } from "@utils/chapter-id-idx"
 import { useParams } from "react-router-dom"
 import { shallow } from "zustand/shallow"
 
+import { BookEditorParams } from "../../types"
 import { ChapterEditor } from "./editor/Editor"
 import { useEditorStore } from "./editor/editor-store"
 

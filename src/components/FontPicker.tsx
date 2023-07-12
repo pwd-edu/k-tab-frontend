@@ -1,4 +1,4 @@
-import { Group, Image, Menu, UnstyledButton, createStyles, rem } from "@mantine/core"
+import { Group, Menu, UnstyledButton, createStyles, rem } from "@mantine/core"
 import { IconChevronDown } from "@tabler/icons-react"
 import { useState } from "react"
 
@@ -63,7 +63,7 @@ export function FontPicker({ defaultValue }: any) {
                     <Group spacing="xs">
                         <span className={classes.label}>{selected}</span>
                     </Group>
-                    <IconChevronDown size="1rem" className={classes.icon} stroke={1.5} />
+                    <IconChevronDown size={"sm"} className={classes.icon} stroke={1.5} />
                 </UnstyledButton>
             </Menu.Target>
             <Menu.Dropdown>{items}</Menu.Dropdown>

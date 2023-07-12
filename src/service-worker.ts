@@ -11,10 +11,12 @@ sw.addEventListener("fetch", (event: FetchEvent) => {
 
     // Intercept GET requests for image files
     if (
-        (request.method === "GET" && request.url.endsWith(".jpg")) ||
-        request.url.endsWith(".jpeg") ||
-        request.url.endsWith(".png") ||
-        request.url.endsWith(".gif")
+        !request.url.includes("assets") &&
+        request.method === "GET" &&
+        (request.url.endsWith(".jpg") ||
+            request.url.endsWith(".jpeg") ||
+            request.url.endsWith(".png") ||
+            request.url.endsWith(".gif"))
     ) {
         const out = sw.idbKeyval.get("jwt_token").then((token) => {
             return getProtectedImage(request, token)
