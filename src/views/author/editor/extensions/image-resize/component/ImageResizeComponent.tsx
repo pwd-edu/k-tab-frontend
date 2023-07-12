@@ -1,47 +1,43 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
-
 /* eslint-disable jsx-a11y/alt-text */
-
-/* eslint-disable jsx-a11y/no-static-element-interactions */
 import { NodeViewProps, NodeViewWrapper } from "@tiptap/react"
-import * as React from "react"
+import { Enable, Resizable } from "re-resizable"
 
 function ImageResizer(props: NodeViewProps) {
-    const handler = (mouseDownEvent: React.MouseEvent<HTMLImageElement>) => {
-        const parent = (mouseDownEvent.target as HTMLElement).closest(".image-resizer")
-        const image = parent?.querySelector("img.postimage") ?? null
-        if (image === null) return
+    const align = props.node.attrs.align || "justify-center"
 
-        const start_size = { x: image.clientWidth, y: image.clientHeight }
-        const start_position = { x: mouseDownEvent.pageX, y: mouseDownEvent.pageY }
+    const enable: Enable | undefined = props.editor.isEditable
+        ? undefined
+        : {
+              top: false,
+              right: false,
+              bottom: false,
+              left: false,
+              topRight: false,
+              bottomRight: false,
+              bottomLeft: false,
+              topLeft: false,
+          }
 
-        function onMouseMove(mouseMoveEvent: MouseEvent) {
-            props.updateAttributes({
-                width: start_size.x - start_position.x + mouseMoveEvent.pageX,
-                height: start_size.y - start_position.y + mouseMoveEvent.pageY,
-            })
-        }
-
-        function onMouseUp() {
-            document.body.removeEventListener("mousemove", onMouseMove)
-        }
-
-        document.body.addEventListener("mousemove", onMouseMove)
-        document.body.addEventListener("mouseup", onMouseUp, { once: true })
+    const updateImgAttrs = (e: MouseEvent | TouchEvent) => {
+        const image = e.target as HTMLElement
+        if (image.parentElement === null) return
+        props.updateAttributes({
+            width: image.parentElement.clientWidth,
+            height: image.parentElement.clientHeight,
+        })
     }
 
     return (
-        <NodeViewWrapper className="image-resizer">
-            {props.extension.options.useFigure ? (
-                <figure>
-                    <img {...props.node.attrs} className="postimage" />
-                </figure>
-            ) : (
-                <img {...props.node.attrs} className="postimage" />
-            )}
-            <div className="resize-trigger" onMouseDown={handler}>
-                {props.extension.options.resizeIcon}
-            </div>
+        <NodeViewWrapper className={`flex ${align}`}>
+            <Resizable
+                lockAspectRatio
+                className=""
+                onResizeStop={updateImgAttrs}
+                defaultSize={{ width: props.node.attrs.width, height: props.node.attrs.height }}
+                enable={enable}
+            >
+                <img {...props.node.attrs} className="m-0 w-full" />
+            </Resizable>
         </NodeViewWrapper>
     )
 }
