@@ -1,29 +1,8 @@
 /*font for forms*/
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;1,400;1,500&display=swap");
+@import url("https://fonts.cdnfonts.com/css/opendyslexic");
 
 /* eslint-disable */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-.image-resizer {
-    display: inline-flex;
-    position: relative;
-    flex-grow: 0;
-}
-
-.image-resizer .resize-trigger {
-    position: absolute;
-    right: -6px;
-    bottom: -9px;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    color: #3259a5;
-}
-
-.image-resizer:hover .resize-trigger {
-    opacity: 1;
-}
-
-.postimage {
-}

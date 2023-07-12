@@ -3,6 +3,7 @@ import Bold from "@tiptap/extension-bold"
 import BulletList from "@tiptap/extension-bullet-list"
 import { Color } from "@tiptap/extension-color"
 import Document from "@tiptap/extension-document"
+import FontFamily from "@tiptap/extension-font-family"
 import Gapcursor from "@tiptap/extension-gapcursor"
 import { Heading } from "@tiptap/extension-heading"
 import History from "@tiptap/extension-history"
@@ -12,6 +13,7 @@ import ListItem from "@tiptap/extension-list-item"
 import OrderedList from "@tiptap/extension-ordered-list"
 import Paragraph from "@tiptap/extension-paragraph"
 import TextExtension from "@tiptap/extension-text"
+import TextAlign from "@tiptap/extension-text-align"
 import TextStyle from "@tiptap/extension-text-style"
 import Underline from "@tiptap/extension-underline"
 
@@ -92,6 +94,7 @@ export const AUTHOR_JWT = import.meta.env.VITE_AUTHOR_JWT
 export const STUDENT_JWT = import.meta.env.VITE_STUDENT_JWT
 export const SAMPLE_BOOK_ID = import.meta.env.VITE_SAMPLE_BOOK_ID
 export const SAMPLE_CHAPTER_ID = import.meta.env.VITE_SAMPLE_CHAPTER_ID
+export const DEFAULT_FONT = "Roboto"
 
 export const BASE_EDITOR_EXTENSIONS = [
     Document,
@@ -113,4 +116,6 @@ export const BASE_EDITOR_EXTENSIONS = [
     Image,
     LineFocusExtension,
     ImageResizeExtension,
+    TextAlign.configure({ types: ["heading", "paragraph"] }),
+    FontFamily,
 ]

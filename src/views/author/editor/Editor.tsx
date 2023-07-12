@@ -5,6 +5,7 @@ import { Chapter } from "@fetch/types"
 import { Stack, clsx, createStyles } from "@mantine/core"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { EditorContent, JSONContent, useEditor } from "@tiptap/react"
+import { toast } from "react-toastify"
 import { shallow } from "zustand/shallow"
 
 import { EditorMenu } from "./EditorMenu"
@@ -33,6 +34,8 @@ export const ChapterEditor = ({ content }: ChapterEditorProp) => {
         (state) => [state.modal_opened, state.setModalOpened],
         shallow
     )
+    const [setCurrentFamily] = useEditorStore((state) => [state.setCurrentFamily], shallow)
+    const [setCurrentColor] = useEditorStore((state) => [state.setCurrentColor], shallow)
     const [modal_content] = useEditorStore((state) => [state.modal_content], shallow)
 
     const editor = useEditor(
@@ -46,6 +49,12 @@ export const ChapterEditor = ({ content }: ChapterEditorProp) => {
                         "focus:outline-none prose-headings:m-0 [&_p]:m-0",
                     ]),
                 },
+            },
+            onSelectionUpdate: ({ editor }) => {
+                const font_family = editor?.getAttributes("textStyle").fontFamily ?? ""
+                const color = editor?.getAttributes("textStyle").color ?? ""
+                setCurrentFamily(font_family)
+                setCurrentColor(color)
             },
         },
         [content]
@@ -66,6 +75,16 @@ export const ChapterEditor = ({ content }: ChapterEditorProp) => {
         const presigned_upload = await s3_client.getChapterPresignedUpload(chapter_info.contentPath)
         const chapter_content = editor?.getJSON() || {}
         await s3_client.uploadChapterContent(presigned_upload, chapter_content)
+        toast.success("Chapter saved!", {
+            position: "bottom-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+        })
     }, {})
 
     const handleSaveChapter = async () => {

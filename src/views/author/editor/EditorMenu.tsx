@@ -1,7 +1,12 @@
+import { FontPicker } from "@components/FontPicker"
 import { RESOURCE_URL } from "@fetch/index"
 import { ImageDescription } from "@fetch/types"
 import { ActionIcon, Button, Group, clsx } from "@mantine/core"
 import {
+    IconAlignCenter,
+    IconAlignJustified,
+    IconAlignLeft,
+    IconAlignRight,
     IconArrowBackUp,
     IconArrowForwardUp,
     IconBlockquote,
@@ -97,6 +102,22 @@ export const EditorMenu = ({ editor, onSaveClick }: EditorMenuProps) => {
             action: () => addMcq(),
             EditorActionIcon: IconBoxMultiple,
         },
+        {
+            action: () => editor.chain().focus().setTextAlign("left").run(),
+            EditorActionIcon: IconAlignLeft,
+        },
+        {
+            action: () => editor.chain().focus().setTextAlign("center").run(),
+            EditorActionIcon: IconAlignCenter,
+        },
+        {
+            action: () => editor.chain().focus().setTextAlign("right").run(),
+            EditorActionIcon: IconAlignRight,
+        },
+        {
+            action: () => editor.chain().focus().setTextAlign("justify").run(),
+            EditorActionIcon: IconAlignJustified,
+        },
     ]
 
     return (
@@ -121,6 +142,9 @@ export const EditorMenu = ({ editor, onSaveClick }: EditorMenuProps) => {
                     )
                 })}
                 <FontColorMenu editor={editor} />
+                <FontPicker
+                    onSelected={(font) => editor.chain().focus().setFontFamily(font).run()}
+                />
             </Group>
             <Group className="p-0 py-1">
                 <SaveButton onClick={() => onSaveClick()} />
@@ -135,7 +159,7 @@ const SaveButton = ({ onClick }: { onClick?: () => void }) => {
             variant="outline"
             onClick={onClick}
             classNames={{
-                root: "h-auto ",
+                root: "h-auto border-slate-800 text-slate-800 hover:bg-slate-800 hover:text-white",
                 label: "gap-2 py-1",
             }}
         >
