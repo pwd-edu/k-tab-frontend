@@ -1,4 +1,4 @@
-import { Button, Menu, createStyles, rem } from "@mantine/core"
+import { Button, ButtonProps, Menu, createStyles, rem } from "@mantine/core"
 import { IconChevronDown } from "@tabler/icons-react"
 import { useState } from "react"
 import { shallow } from "zustand/shallow"
@@ -43,20 +43,16 @@ const useStyles = createStyles((theme, { opened }: { opened: boolean }) => ({
 }))
 
 export interface FontPickerProps {
+    value?: string
     onSelected: (value: string) => void
+    btnClasNames?: ButtonProps["classNames"]
 }
 
-export function FontPicker({ onSelected }: FontPickerProps) {
+export function FontPicker({ value, btnClasNames, onSelected }: FontPickerProps) {
     const [opened, setOpened] = useState(false)
-    const [current_family, setCurrentFamily] = useEditorStore(
-        (state) => [state.current_family, state.setCurrentFamily],
-        shallow
-    )
-
     const { classes, cx } = useStyles({ opened })
 
     const updateSelected = (value: string) => {
-        setCurrentFamily(value)
         if (onSelected) {
             onSelected(value)
         }
@@ -74,12 +70,14 @@ export function FontPicker({ onSelected }: FontPickerProps) {
                 <Button
                     variant="subtle"
                     color="gray"
-                    classNames={{
-                        root: cx("h-auto px-4 text-slate-800"),
-                        label: "gap-2 py-1",
-                    }}
+                    classNames={
+                        btnClasNames || {
+                            root: cx("h-auto px-4 text-slate-800"),
+                            label: "gap-2 py-1",
+                        }
+                    }
                 >
-                    {current_family}
+                    {value}
                     <IconChevronDown className={cx("text-slate-800", classes.icon)} size="18" />
                 </Button>
             </Menu.Target>

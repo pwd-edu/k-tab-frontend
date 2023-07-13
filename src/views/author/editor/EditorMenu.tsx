@@ -39,6 +39,11 @@ export const EditorMenu = ({ editor, onSaveClick }: EditorMenuProps) => {
     const [setModalOpened] = useEditorStore((state) => [state.setModalOpened], shallow)
     const [setModalContent] = useEditorStore((state) => [state.setModalContent], shallow)
 
+    const [current_family, setCurrentFamily] = useEditorStore(
+        (state) => [state.current_family, state.setCurrentFamily],
+        shallow
+    )
+
     const addImage = () => {
         setModalContent(
             <ImageInserter
@@ -143,7 +148,11 @@ export const EditorMenu = ({ editor, onSaveClick }: EditorMenuProps) => {
                 })}
                 <FontColorMenu editor={editor} />
                 <FontPicker
-                    onSelected={(font) => editor.chain().focus().setFontFamily(font).run()}
+                    value={current_family}
+                    onSelected={(font) => {
+                        setCurrentFamily(font)
+                        editor.chain().focus().setFontFamily(font).run()
+                    }}
                 />
             </Group>
             <Group className="p-0 py-1">
