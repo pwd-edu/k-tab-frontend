@@ -55,6 +55,12 @@ export const ChapterClient = (): ChapterClientType => ({
         const response = await axios_instance.get(`/chapter/`, { params: { chapterId } })
         return response.data
     },
+    getChapterComments: async (chapterId: string) => {
+        const response = await axios_instance.get(`/chapter/all-comments/`, {
+            params: { chapterId },
+        })
+        return response.data
+    },
 })
 
 export const S3Client = (): S3ClientType => ({
@@ -104,8 +110,10 @@ export const AiClient = (): AiClientType => ({
 })
 
 export const UserClient = (): UserClientType => ({
-    get: async () => {
-        const response = await axios_instance.get(`/user/`)
+    get: async (user_id?: string) => {
+        const response = await axios_instance.get(`/user/`, {
+            params: { ...(user_id && { userId: user_id }) },
+        })
         return response.data
     },
     login: async (email: string, password: string) => {
@@ -121,6 +129,10 @@ export const AuthorClient = (): AuthorCLientType => ({
     },
     getBooks: async () => {
         const response = await axios_instance.get(`/author/home/`)
+        return response.data
+    },
+    getProfile: async (authorId: string) => {
+        const response = await axios_instance.get("/author/profile/", { params: { authorId } })
         return response.data
     },
 })
@@ -146,9 +158,13 @@ export const StudentClient = (): StudentCLientType => ({
     },
     addFavourite: async (book_id: string) => {
         const response = await axios_instance.post(`/payment/add-to-fav/?bookId=${book_id}`)
-
+        return response.data
+    },
+    getProfile: async (studentId: string) => {
+        const response = await axios_instance.get("/student/profile/", { params: { studentId } })
         return response.data
     },
 })
+
 export const RESOURCE_URL = (resource_path: string) =>
     `${API_URL}/s3/resources/?resourcePath=${resource_path}`

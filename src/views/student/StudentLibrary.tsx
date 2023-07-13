@@ -1,12 +1,9 @@
 import { CenteredLoading, ErrorPage } from "@components/shared"
-import { RESOURCE_URL, S3Client, StudentClient } from "@fetch/index"
+import { RESOURCE_URL, StudentClient } from "@fetch/index"
 import { AppNavbar } from "@layout/Navbar"
 import { AppShell, Divider, Group, Stack, Title, createStyles } from "@mantine/core"
 import { useQueries } from "@tanstack/react-query"
-import { useQuery } from "@tanstack/react-query"
 
-import { BookReader } from "./BookReader"
-import { DndList } from "./FavouritesGrid"
 import { StudentOwnedBook } from "./StudentOwnedBook"
 
 const useStyles = createStyles((theme) => ({

@@ -11,6 +11,8 @@ import { AuthorHome } from "./views/author/Home"
 import { BookReader } from "./views/student/BookReader"
 import { BookStore } from "./views/student/StudentBookStore"
 import Library from "./views/student/StudentLibrary"
+import { ChapterComments } from "./views/user/ChapterComments"
+import { UserProfile } from "./views/user/UserProfile"
 import { LoginPage } from "./views/user/login"
 
 const queryClient = new QueryClient()
@@ -31,6 +33,17 @@ function App() {
                         <Route path="/dashboard" element={<Dashboard />} />
                     </Route>
                     <Route path="*" element={<NotFound />} />
+                    {/* for test  this will in be the reader */}
+                    <Route
+                        path="/comments"
+                        element={
+                            <ChapterComments chapter_id={"434e6d59-cf47-47ef-827f-826563baa061"} />
+                        }
+                    />
+                    <Route
+                        path="/user"
+                        element={<UserProfile user_id={"4234e865-234f-42b3-bb60-7004d1e755a3"} />}
+                    />
                 </Routes>
             </BrowserRouter>
 
