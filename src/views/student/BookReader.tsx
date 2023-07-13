@@ -4,16 +4,12 @@ import { BookClient } from "@fetch/index"
 import { useChapterQuery } from "@fetch/useChapterQuery"
 import {
     Box,
-    Button,
     Container,
     Drawer,
     Group,
-    Header,
-    Input,
     Slider,
     Stack,
     Switch,
-    Text,
     ThemeIcon,
     Title,
     UnstyledButton,
@@ -21,8 +17,19 @@ import {
     createStyles,
 } from "@mantine/core"
 import { useDisclosure } from "@mantine/hooks"
-import { IconFocusCentered, IconSettings, IconSettings2, IconTypography } from "@tabler/icons"
-import { IconFocusAuto } from "@tabler/icons-react"
+import {
+    IconAdjustmentsHorizontal,
+    IconArrowAutofitHeight,
+    IconArrowAutofitWidth,
+    IconCircleHalf2,
+    IconColorFilter,
+    IconContrast,
+    IconLayoutGrid,
+    IconLetterCase,
+    IconSettings2,
+    IconTypography,
+} from "@tabler/icons"
+import { IconFocusAuto, IconPhotoSensor } from "@tabler/icons-react"
 import { useQuery } from "@tanstack/react-query"
 import { EditorContent, useEditor } from "@tiptap/react"
 import { getChapterId } from "@utils/chapter-id-idx"
@@ -45,21 +52,34 @@ const buildStyles = (params?: any) => {
 }
 
 export const BookReader = () => {
-    const [enableLineFocus] = useReaderStore((state) => [state.enableLineFocus], shallow)
-    const [setLineFocusHeight] = useReaderStore((state) => [state.setLineFocusHeight], shallow)
-    const [setEnableLineFocus] = useReaderStore((state) => [state.setEnableLineFocus], shallow)
+    const { book_id, chapter_num } = useParams<BookEditorParams>()
+
+    const [enable_line_focus] = useReaderStore((state) => [state.enableLineFocus], shallow)
     const [line_focus_height] = useReaderStore((state) => [state.lineFocusHeight], shallow)
     const [font_family] = useReaderStore((state) => [state.fontFamlily], shallow)
+    const [enable_gray_scale] = useReaderStore((state) => [state.enableGrayScale], shallow)
+    const [enable_invert_color] = useReaderStore((state) => [state.enableInvertColor], shallow)
+    const [gray_scale_percent] = useReaderStore((state) => [state.grayScalePercent], shallow)
+    const [enable_contrast] = useReaderStore((state) => [state.enableContrast], shallow)
+    const [contrast_percent] = useReaderStore((state) => [state.contrastPercent], shallow)
+    const [wide_view] = useReaderStore((state) => [state.wideView], shallow)
+
+    const [setLineFocusHeight] = useReaderStore((state) => [state.setLineFocusHeight], shallow)
+    const [setEnableLineFocus] = useReaderStore((state) => [state.setEnableLineFocus], shallow)
+    const [setEnableContrast] = useReaderStore((state) => [state.setEnableContrast], shallow)
     const [setFontFamily] = useReaderStore((state) => [state.setFontFamily], shallow)
-    const { book_id, chapter_num } = useParams<BookEditorParams>()
+    const [setEnableGrayScale] = useReaderStore((state) => [state.setEnableGrayScale], shallow)
+    const [setGrayScalePercent] = useReaderStore((state) => [state.setGrayScalePercent], shallow)
+    const [setEnableInvertColor] = useReaderStore((state) => [state.setEnableInvertColor], shallow)
+    const [setContrastPercent] = useReaderStore((state) => [state.setContrastPercent], shallow)
+    const [setWideView] = useReaderStore((state) => [state.setWideView], shallow)
 
     const { data: book } = useQuery(["book", book_id], () => book_client.get(book_id || ""))
     const chapter_id = getChapterId(chapter_num, book)
 
     const { chapter_content } = useChapterQuery(book_id, chapter_id)
 
-    const { theme, styles } = buildStyles({ enableLineFocus })
-    const enable_line_focus = enableLineFocus || false
+    const { theme, styles } = buildStyles({ enableLineFocus: enable_line_focus })
     const [opened, { open, close }] = useDisclosure(false)
 
     const editor = useEditor(
@@ -80,11 +100,12 @@ export const BookReader = () => {
     )
 
     return (
-        <Container className={styles.reader_container} size="xl">
+        <Container className={styles.reader_container} size={wide_view ? "lg" : "md"}>
             <Drawer
                 opened={opened}
                 position="right"
                 onClose={close}
+                shadow="xl"
                 title={
                     <Group position="apart">
                         <ThemeIcon variant="light" size="l">
@@ -107,7 +128,10 @@ export const BookReader = () => {
                         <hr className="my-2 border-gray-200" />
 
                         <Group position="apart">
-                            <Title order={5}>Enable Line Focus</Title>
+                            <Box className="flex items-center gap-2">
+                                <IconPhotoSensor size={18} color={theme.colors.gray[6]} />
+                                <Title order={5}>Enable Line Focus</Title>
+                            </Box>
                             <Switch
                                 checked={enable_line_focus}
                                 onChange={() => setEnableLineFocus(!enable_line_focus)}
@@ -115,7 +139,10 @@ export const BookReader = () => {
                         </Group>
 
                         <Group position="apart">
-                            <Title order={5}>Line Focus Height</Title>
+                            <Box className="flex items-center gap-2">
+                                <IconArrowAutofitHeight size={18} color={theme.colors.gray[6]} />
+                                <Title order={5}>Line Focus Height</Title>
+                            </Box>
                             <Slider
                                 value={line_focus_height}
                                 step={0.1}
@@ -139,7 +166,11 @@ export const BookReader = () => {
                         <hr className="my-2 border-gray-200" />
 
                         <Group position="apart">
-                            <Title order={5}>Font Family</Title>
+                            <Box className="flex items-center gap-2">
+                                <IconLetterCase size={18} color={theme.colors.gray[6]} />
+                                <Title order={5}>Font Family</Title>
+                            </Box>
+
                             <FontPicker
                                 value={font_family}
                                 onSelected={(font) => {
@@ -149,6 +180,111 @@ export const BookReader = () => {
                                 btnClasNames={{
                                     root: "h-auto px-4 text-slate-800 bg-slate-100 hover:bg-slate-200",
                                     label: "gap-2 py-1",
+                                }}
+                            />
+                        </Group>
+                    </Box>
+                    <Box>
+                        <Group position="apart">
+                            <Title order={5} color="blue">
+                                Color
+                            </Title>
+                            <IconContrast size={28} color={theme.colors.blue[6]} />
+                        </Group>
+                        <hr className="my-2 border-gray-200" />
+
+                        <Group position="apart">
+                            <Box className="flex items-center gap-2">
+                                <IconColorFilter size={18} color={theme.colors.gray[6]} />
+                                <Title order={5}>Enable Gray Scale</Title>
+                            </Box>
+                            <Switch
+                                checked={enable_gray_scale}
+                                onChange={() => {
+                                    setEnableGrayScale(!enable_gray_scale)
+                                    setEnableInvertColor(false)
+                                }}
+                            />
+                        </Group>
+
+                        <Group position="apart">
+                            <Box className="flex items-center gap-2">
+                                <IconAdjustmentsHorizontal size={18} color={theme.colors.gray[6]} />
+                                <Title order={5}>Gray Scale Percent</Title>
+                            </Box>
+                            <Slider
+                                value={gray_scale_percent}
+                                step={0.1}
+                                min={0}
+                                max={100}
+                                label={(value) => Math.ceil(value)}
+                                onChange={(value) => setGrayScalePercent(value)}
+                                color="blue"
+                                className="w-1/2"
+                            />
+                        </Group>
+                        <Group position="apart" className="mt-4">
+                            <Box className="flex items-center gap-2">
+                                <IconCircleHalf2 size={18} color={theme.colors.gray[6]} />
+                                <Title order={5}>Invert Color</Title>
+                            </Box>
+
+                            <Switch
+                                checked={enable_invert_color}
+                                onChange={() => {
+                                    setEnableInvertColor(!enable_invert_color)
+                                    setEnableGrayScale(false)
+                                }}
+                            />
+                        </Group>
+
+                        <Group position="apart" className="mt-4">
+                            <Box className="flex items-center gap-2">
+                                <IconContrast size={18} color={theme.colors.gray[6]} />
+                                <Title order={5}>Enable Contrast</Title>
+                            </Box>
+                            <Switch
+                                checked={enable_contrast}
+                                onChange={() => {
+                                    setEnableContrast(!enable_contrast)
+                                }}
+                            />
+                        </Group>
+                        <Group position="apart">
+                            <Box className="flex items-center gap-2">
+                                <IconAdjustmentsHorizontal size={18} color={theme.colors.gray[6]} />
+                                <Title order={5}>Contrast Percent</Title>
+                            </Box>
+                            <Slider
+                                value={contrast_percent}
+                                step={0.1}
+                                min={5}
+                                max={200}
+                                label={(value) => Math.ceil(value)}
+                                onChange={(value) => setContrastPercent(value)}
+                                color="blue"
+                                className="w-1/2"
+                            />
+                        </Group>
+                    </Box>
+                    <Box>
+                        <Group position="apart">
+                            <Title order={5} color="blue">
+                                View Mode
+                            </Title>
+                            <IconLayoutGrid size={28} color={theme.colors.blue[6]} />
+                        </Group>
+                        <hr className="my-2 border-gray-200" />
+
+                        <Group position="apart">
+                            <Box className="flex items-center gap-2">
+                                <IconArrowAutofitWidth size={18} color={theme.colors.gray[6]} />
+                                <Title order={5}>Wide View</Title>
+                            </Box>
+                            <Switch
+                                checked={wide_view}
+                                onChange={() => {
+                                    setWideView(!wide_view)
                                 }}
                             />
                         </Group>

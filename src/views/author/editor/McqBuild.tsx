@@ -71,8 +71,8 @@ export const McqBuild = (props: NodeViewProps) => {
     }, 0)
 
     return (
-        <NodeViewWrapper>
-            <Card className="my-2 w-full p-2" withBorder data-drag-handle>
+        <NodeViewWrapper className="flex justify-center">
+            <Card className="my-2 w-3/4 p-2" withBorder data-drag-handle>
                 <Group className="mb-2">
                     <McqText
                         className="grow font-semibold"
