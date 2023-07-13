@@ -80,7 +80,6 @@ export const S3Client = (): S3ClientType => ({
     },
     uploadChapterContent: async (presigned_url, chapter_content): Promise<void> => {
         const chapter_blob = new Blob([JSON.stringify(chapter_content)], { type: "text/json" })
-        console.log(chapter_blob)
         await axios.put(presigned_url, chapter_blob)
     },
     getImgResourceRedirect: async (resource_path: string): Promise<string> => {

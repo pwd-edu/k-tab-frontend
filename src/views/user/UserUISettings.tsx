@@ -143,10 +143,7 @@ export function UIsettings({ data }: SwitchesCardProps) {
                         <div>
                             <Text>{camelCaseToWord(item.name)}</Text>
                         </div>
-                        <FontPicker
-                            defaultValue={item.value}
-                            onChange={(e: any) => (item.value = e)}
-                        />
+                        <FontPicker value={item.value} onSelected={(e: any) => (item.value = e)} />
                     </Group>
                 )
             } else {

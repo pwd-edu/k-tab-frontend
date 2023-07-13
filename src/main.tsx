@@ -9,6 +9,8 @@ import { MyGlobalStyles } from "./GlobalStyles"
 import "./index.css"
 import "./preflight.css"
 
+// Specify weight and style
+
 const APP_THEME: MantineTheme = {
     ...DEFAULT_THEME,
     fontFamily: "Roboto, Noto Sans JP, sans-serif, Helvetica, sans-serif",
@@ -16,7 +18,7 @@ const APP_THEME: MantineTheme = {
         ...DEFAULT_THEME.headings,
         fontFamily: "Roboto, Noto Sans JP, sans-serif, Helvetica, sans-serif",
     },
-    primaryColor: "indigo",
+    primaryColor: "blue",
     spacing: {
         ...DEFAULT_THEME.spacing,
         xxs: "8px",

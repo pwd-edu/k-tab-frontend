@@ -1,7 +1,12 @@
+import { FontPicker } from "@components/FontPicker"
 import { RESOURCE_URL } from "@fetch/index"
 import { ImageDescription } from "@fetch/types"
 import { ActionIcon, Button, Group, clsx } from "@mantine/core"
 import {
+    IconAlignCenter,
+    IconAlignJustified,
+    IconAlignLeft,
+    IconAlignRight,
     IconArrowBackUp,
     IconArrowForwardUp,
     IconBlockquote,
@@ -33,6 +38,11 @@ interface EditorMenuProps {
 export const EditorMenu = ({ editor, onSaveClick }: EditorMenuProps) => {
     const [setModalOpened] = useEditorStore((state) => [state.setModalOpened], shallow)
     const [setModalContent] = useEditorStore((state) => [state.setModalContent], shallow)
+
+    const [current_family, setCurrentFamily] = useEditorStore(
+        (state) => [state.current_family, state.setCurrentFamily],
+        shallow
+    )
 
     const addImage = () => {
         setModalContent(
@@ -97,6 +107,22 @@ export const EditorMenu = ({ editor, onSaveClick }: EditorMenuProps) => {
             action: () => addMcq(),
             EditorActionIcon: IconBoxMultiple,
         },
+        {
+            action: () => editor.chain().focus().setTextAlign("left").run(),
+            EditorActionIcon: IconAlignLeft,
+        },
+        {
+            action: () => editor.chain().focus().setTextAlign("center").run(),
+            EditorActionIcon: IconAlignCenter,
+        },
+        {
+            action: () => editor.chain().focus().setTextAlign("right").run(),
+            EditorActionIcon: IconAlignRight,
+        },
+        {
+            action: () => editor.chain().focus().setTextAlign("justify").run(),
+            EditorActionIcon: IconAlignJustified,
+        },
     ]
 
     return (
@@ -121,6 +147,13 @@ export const EditorMenu = ({ editor, onSaveClick }: EditorMenuProps) => {
                     )
                 })}
                 <FontColorMenu editor={editor} />
+                <FontPicker
+                    value={current_family}
+                    onSelected={(font) => {
+                        setCurrentFamily(font)
+                        editor.chain().focus().setFontFamily(font).run()
+                    }}
+                />
             </Group>
             <Group className="p-0 py-1">
                 <SaveButton onClick={() => onSaveClick()} />
@@ -135,7 +168,7 @@ const SaveButton = ({ onClick }: { onClick?: () => void }) => {
             variant="outline"
             onClick={onClick}
             classNames={{
-                root: "h-auto ",
+                root: "h-auto border-slate-800 text-slate-800 hover:bg-slate-800 hover:text-white",
                 label: "gap-2 py-1",
             }}
         >
