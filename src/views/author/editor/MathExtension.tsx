@@ -1,41 +1,39 @@
 import { Node, mergeAttributes } from "@tiptap/core"
 import { ReactNodeViewRenderer } from "@tiptap/react"
 
-import { McqBuild } from "../McqBuild"
+import { MathEdit } from "./MathEdit"
 
-export interface McqOptions {
+export interface MathEditOptions {
     initial_count: number
 }
 
-export interface NewMcqAttrs {
+export interface NewMathEditAttrs {
     id: string
-    question?: string
-    options?: string[]
-    answer?: string
+    latex: string
 }
 
 declare module "@tiptap/core" {
     interface Commands<ReturnType> {
-        mcq: {
+        math_edit: {
             /**
-             * Add a new mcq interactive block
+             * Add a new math edit node
              */
-            setMcq: (attributes: NewMcqAttrs) => ReturnType
+            setMathEdit: (attributes: NewMathEditAttrs) => ReturnType
         }
     }
 }
 
-export const McqExtension = Node.create<McqOptions>({
-    name: "mcq-interactive",
+export const MathExtension = Node.create<MathEditOptions>({
+    name: "math-edit",
     group: "block",
-    draggable: true,
-    allowGapCursor: true,
+    draggable: false,
+    content: "inline*",
     isolating: true,
-    atom: true,
+    allowGapCursor: true,
 
     addCommands() {
         return {
-            setMcq:
+            setMathEdit:
                 (attributes) =>
                 ({ commands }) => {
                     return commands.insertContent({
@@ -50,36 +48,25 @@ export const McqExtension = Node.create<McqOptions>({
         return {
             id: {
                 default: "",
-                rendered: false,
             },
-            question: {
+            latex: {
                 default: "",
-                rendered: false,
-            },
-            options: {
-                default: [],
-                rendered: false,
-            },
-            answer: {
-                default: "",
-                rendered: false,
             },
         }
     },
-
     parseHTML() {
         return [
             {
-                tag: "mcq-intreactive",
+                tag: "math-edit",
             },
         ]
     },
 
     renderHTML({ HTMLAttributes }) {
-        return ["mcq-intreactive", mergeAttributes(HTMLAttributes)]
+        return ["math-edit", mergeAttributes(HTMLAttributes)]
     },
 
     addNodeView() {
-        return ReactNodeViewRenderer(McqBuild)
+        return ReactNodeViewRenderer(MathEdit)
     },
 })

@@ -18,6 +18,7 @@ import {
     IconItalic,
     IconList,
     IconListNumbers,
+    IconMath,
     IconPhoto,
     IconUnderline,
 } from "@tabler/icons"
@@ -73,6 +74,14 @@ export const EditorMenu = ({ editor, onSaveClick }: EditorMenuProps) => {
             .run()
     }
 
+    const addMathEdit = () => {
+        editor
+            .chain()
+            .focus()
+            .setMathEdit({ id: nanoid(16), latex: "" })
+            .run()
+    }
+
     const MENU_ACTIONS = (editor: Editor) => [
         { action: () => editor.chain().focus().toggleBold().run(), EditorActionIcon: IconBold },
         { action: () => editor.chain().focus().toggleItalic().run(), EditorActionIcon: IconItalic },
@@ -122,6 +131,10 @@ export const EditorMenu = ({ editor, onSaveClick }: EditorMenuProps) => {
         {
             action: () => editor.chain().focus().setTextAlign("justify").run(),
             EditorActionIcon: IconAlignJustified,
+        },
+        {
+            action: () => addMathEdit(),
+            EditorActionIcon: IconMath,
         },
     ]
 
