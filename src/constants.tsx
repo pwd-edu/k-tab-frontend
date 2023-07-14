@@ -18,6 +18,7 @@ import TextStyle from "@tiptap/extension-text-style"
 import Underline from "@tiptap/extension-underline"
 
 import { LineFocusExtension } from "./views/author/editor/LineFocusExtension"
+import { MathExtension } from "./views/author/editor/MathExtension"
 import { McqExtension } from "./views/author/editor/extensions/McqExtenstion"
 import { ImageResizeExtension } from "./views/author/editor/extensions/image-resize"
 
@@ -113,9 +114,25 @@ export const BASE_EDITOR_EXTENSIONS = [
     Color,
     TextStyle,
     McqExtension,
+    MathExtension,
     Image,
     LineFocusExtension,
     ImageResizeExtension,
     TextAlign.configure({ types: ["heading", "paragraph"] }),
     FontFamily,
 ]
+
+export const MJAX_CONFIG = {
+    loader: { load: ["[tex]/html"] },
+    tex: {
+        packages: { "[+]": ["html"] },
+        inlineMath: [
+            ["$", "$"],
+            ["\\(", "\\)"],
+        ],
+        displayMath: [
+            ["$$", "$$"],
+            ["\\[", "\\]"],
+        ],
+    },
+}
