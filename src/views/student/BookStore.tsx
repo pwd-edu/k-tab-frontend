@@ -1,13 +1,20 @@
 import { CenteredLoading, ErrorPage } from "@components/shared"
-import { RESOURCE_URL, StudentClient } from "@fetch/index"
+import { BookClient, RESOURCE_URL, StudentClient } from "@fetch/index"
 import { AppNavbar } from "@layout/Navbar"
-import { ActionIcon, AppShell, Group, createStyles } from "@mantine/core"
+import { ActionIcon, AppShell, Group, Select, TextInput, createStyles } from "@mantine/core"
 import { useToggle } from "@mantine/hooks"
-import { IconChevronLeft, IconChevronRight, IconChevronsLeft } from "@tabler/icons-react"
-import { IconChevronsRight } from "@tabler/icons-react"
-import { useQuery, useQueryClient } from "@tanstack/react-query"
-import { useEffect, useState } from "react"
-import { string } from "zod"
+import {
+    IconChevronLeft,
+    IconChevronRight,
+    IconChevronsLeft,
+    IconHash,
+    IconLogicAnd,
+    IconLogicOr,
+    IconSearch,
+} from "@tabler/icons-react"
+import { useQuery } from "@tanstack/react-query"
+import { SetStateAction, useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 import { StudentBook } from "./StudentBook"
 
@@ -32,17 +39,25 @@ export function BookStore() {
     const [next, setNext] = useState<string>() //or undefined
     const [prev, setPrev] = useState<string>()
     const [filter, toggleFilter] = useToggle(["AND", "OR"])
-    const [title, setTitle] = useState<string | undefined>()
-    const [tag, setTag] = useState<string | undefined>()
+    const [title, setTitle] = useState<string>()
+    const [tag, setTag] = useState<string>()
+
+    const navigatePath = useNavigate()
 
     const student_client = StudentClient()
     const bookStoreQuery = useQuery({
-        queryKey: ["bookstore", prev, next],
+        queryKey: ["bookstore", prev, next, tag, title],
         queryFn: () => student_client.getBookstore(operation, next, prev, title, tag, filter),
     })
 
-    if (bookStoreQuery.isLoading) return <CenteredLoading />
-    if (bookStoreQuery.isError) return <ErrorPage />
+    const book_client = BookClient()
+    const tagsQuery = useQuery({
+        queryKey: ["tags", prev, next],
+        queryFn: () => book_client.getAllBooksTags(),
+    })
+
+    if (bookStoreQuery.isLoading || tagsQuery.isLoading) return <CenteredLoading />
+    if (bookStoreQuery.isError || tagsQuery.isError) return <ErrorPage />
 
     const nxtPtr = bookStoreQuery.data.next
     const prevPtr = bookStoreQuery.data.prev
@@ -65,33 +80,73 @@ export function BookStore() {
         setPrev(bookStoreQuery.data.prev)
     }
 
+    const getSearchResultsWithTitle = (event: {
+        currentTarget: { value: SetStateAction<string | undefined> }
+    }) => {
+        setTitle(event.currentTarget.value)
+        setOperation("next")
+        setNext("")
+        setPrev("")
+    }
+
+    const getSearchResultsWithTags = (value: string) => {
+        setTag(value)
+        setOperation("next")
+        setNext("")
+        setPrev("")
+    }
+
     return (
         <>
             <AppShell navbar={<AppNavbar />}>
+                <Group spacing={"md"}>
+                    <TextInput
+                        icon={<IconSearch />}
+                        placeholder="Search with book title"
+                        onChange={(event) => getSearchResultsWithTitle(event)}
+                    />
+                    <ActionIcon onClick={() => toggleFilter()}>
+                        {filter === "AND" ? (
+                            <IconLogicAnd size="1.125rem" />
+                        ) : (
+                            <IconLogicOr size="1.125rem" />
+                        )}
+                    </ActionIcon>
+                    <Select
+                        icon={<IconHash />}
+                        placeholder="Pick one tag"
+                        data={tagsQuery.data ? tagsQuery.data : [""]}
+                        value={tag}
+                        onChange={getSearchResultsWithTags}
+                    />
+                </Group>
+
                 <Group className={styles.home_grid}>
                     {bookStoreQuery.data.bookHeaders.map((book) => (
                         <StudentBook
                             key={book.bookId}
                             image={RESOURCE_URL(book.bookCoverPath)}
-                            link={"https://mantine.dev/"}
                             price={book.price}
                             tags={book.tags}
                             title={book.title}
                             description={book.bookAbstract}
                             authorName={book.authorName}
+                            onClick={() => navigatePath(`/bookinfo/${book.bookId}`)}
                         />
                     ))}
                 </Group>
                 <Group>
-                    <ActionIcon variant="light" onClick={() => getFirstPage()}>
-                        <IconChevronsLeft size="1rem" />
-                    </ActionIcon>
-                    {prev != "" && (
+                    {prevPtr && (
+                        <ActionIcon variant="light" onClick={() => getFirstPage()}>
+                            <IconChevronsLeft size="1rem" />
+                        </ActionIcon>
+                    )}
+                    {prevPtr && (
                         <ActionIcon variant="light" onClick={() => getPrevPage()}>
                             <IconChevronLeft size="1rem" />
                         </ActionIcon>
                     )}
-                    {next != "" && (
+                    {nxtPtr && (
                         <ActionIcon variant="light" onClick={() => getNextPage()}>
                             <IconChevronRight size="1rem" />
                         </ActionIcon>

@@ -53,11 +53,17 @@ export const BookSchema = z.object({
     title: z.string(),
     bookAbstract: z.string(),
     tags: z.array(z.string()),
+    price: z.number(),
     authorId: z.string(),
     bookCoverPath: z.string(),
     lastEditDate: z.string(),
     avgRate: z.number(),
-    contributors: z.array(z.string()),
+    contributions: z.array(
+        z.object({
+            chapterIds: z.string(),
+            contributorId: z.string(),
+        })
+    ),
     chapterHeaders: chaptersHeadersSchema,
 })
 
@@ -70,9 +76,25 @@ export const StudentBookSchema = BookSchema.extend({
     bookCoverPath: z.string(),
     lastEditDate: z.string(),
     avgRate: z.number(),
-    contributors: z.array(z.string()),
+    contributions: z.array(
+        z.object({
+            chapterIds: z.string(),
+            contributorId: z.string(),
+        })
+    ),
     chapterHeaders: chaptersHeadersSchema,
     authorName: z.string(),
+})
+
+export const BookPaymentSchema = z.object({
+    paymentId: z.string(),
+    bookTitle: z.string(),
+    bookId: z.string(),
+    studentEmail: z.string(),
+    studentId: z.string(),
+    paymentInfo: z.string(),
+    recentOpenedDate: z.date(),
+    ratingValue: z.number(),
 })
 
 export const StorePageSchema = z.object({
@@ -178,6 +200,8 @@ export const PageSchema = z.object({
     bookHeaders: StudentBookHeaderSchema.array(),
 })
 
+export const TagsSchema = z.array(z.string())
+
 export type User = z.infer<typeof UserSchema>
 export type Author = z.infer<typeof AuthorSchema>
 export type Student = z.infer<typeof StudentSchema>
@@ -186,6 +210,7 @@ export type Comment = z.infer<typeof CommentSchema>
 export type AuthorProfile = z.infer<typeof AuthorProfileSchema>
 export type StudentProfile = z.infer<typeof StudentProfileSchema>
 export type Page = z.infer<typeof PageSchema>
+export type Tags = z.infer<typeof TagsSchema>
 
 export type AuthorSignUp = z.infer<typeof AuthorSignUpSchema>
 export type CreateChapterRequest = Omit<
@@ -195,6 +220,7 @@ export type CreateChapterRequest = Omit<
 
 export type Book = z.infer<typeof BookSchema>
 export type BookHeader = z.infer<typeof BookHeaderSchema>
+export type BookPayment = z.infer<typeof BookPaymentSchema>
 
 export type LoginResponse = z.infer<typeof LoginResponseSchema>
 
@@ -224,11 +250,13 @@ export interface StudentCLientType {
         tgs?: string,
         filtr?: string
     ) => Promise<Page>
+    postBookPayment: (book_id: string) => Promise<BookPayment>
 }
 
 export interface BookClientType {
     post: (book: CreateBookRequest) => Promise<Book>
     get: (book_id: string) => Promise<Book>
+    getAllBooksTags: () => Promise<Tags>
 }
 
 export interface ChapterClientType {
