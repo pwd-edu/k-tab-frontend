@@ -15,6 +15,7 @@ export function useAuthSession() {
         queryFn: () => user_client.get(),
         retry: false,
         staleTime: 1000 * 5 * 60, // 5min
+        refetchOnWindowFocus: false,
     })
 
     return {
