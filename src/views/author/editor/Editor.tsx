@@ -14,6 +14,7 @@ import { useEditorStore } from "./editor-store"
 
 type ChapterEditorProp = {
     content?: JSONContent
+    chapterId?: string
 }
 
 const useStyles = createStyles(() => ({}))
@@ -28,7 +29,7 @@ const buildStyles = (params?: any) => {
     return { styles, classes, cx, theme }
 }
 
-export const ChapterEditor = ({ content }: ChapterEditorProp) => {
+export const ChapterEditor = ({ content, chapterId }: ChapterEditorProp) => {
     const { styles } = buildStyles()
     const [opened, setModalOpened] = useEditorStore(
         (state) => [state.modal_opened, state.setModalOpened],
@@ -60,10 +61,9 @@ export const ChapterEditor = ({ content }: ChapterEditorProp) => {
         [content]
     )
 
-    // TODO: remove save chapter to book editor
     const chapter_client = ChapterClient()
     const s3_client = S3Client()
-    const chapter_id = constants.SAMPLE_CHAPTER_ID
+    const chapter_id = chapterId || ""
 
     const { refetch: fetchChapterInfo } = useQuery({
         queryKey: ["chapter", chapter_id],
