@@ -45,7 +45,7 @@ export const ChapterEditor = ({ content }: ChapterEditorProp) => {
             editorProps: {
                 attributes: {
                     class: clsx([
-                        "prose prose-sm max-w-none flex-1 justify-center p-6",
+                        "prose prose-lg max-w-none flex-1 justify-center p-6",
                         "focus:outline-none prose-headings:m-0 [&_p]:m-0",
                     ]),
                 },

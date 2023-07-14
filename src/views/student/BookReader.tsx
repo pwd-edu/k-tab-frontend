@@ -3,6 +3,7 @@ import { BASE_EDITOR_EXTENSIONS } from "@constants"
 import { BookClient } from "@fetch/index"
 import { useChapterQuery } from "@fetch/useChapterQuery"
 import {
+    Affix,
     Box,
     Container,
     Drawer,
@@ -15,6 +16,7 @@ import {
     UnstyledButton,
     clsx,
     createStyles,
+    rem,
 } from "@mantine/core"
 import { useDisclosure } from "@mantine/hooks"
 import {
@@ -88,7 +90,13 @@ export const BookReader = () => {
             content: chapter_content,
             editorProps: {
                 attributes: {
-                    class: clsx([enable_line_focus && "relative"]),
+                    class: clsx(
+                        [enable_line_focus && "relative"],
+                        [
+                            "prose prose-lg max-w-none flex-1 justify-center p-6",
+                            "focus:outline-none prose-headings:m-0 [&_p]:m-0",
+                        ]
+                    ),
                 },
             },
             onCreate: ({ editor }) => {
@@ -291,14 +299,16 @@ export const BookReader = () => {
                     </Box>
                 </Stack>
             </Drawer>
-            <UnstyledButton
-                variant="filled"
-                color="blue"
-                className="absolute bottom-5 right-5 rounded-full bg-blue-600 p-1 text-white"
-                onClick={open}
-            >
-                <IconSettings2 size={24} />
-            </UnstyledButton>
+            <Affix position={{ bottom: rem(20), right: rem(20) }}>
+                <UnstyledButton
+                    variant="filled"
+                    color="blue"
+                    className="rounded-full bg-blue-600 p-1 text-white"
+                    onClick={open}
+                >
+                    <IconSettings2 size={24} />
+                </UnstyledButton>
+            </Affix>
             <EditorContent editor={editor} className={styles.editor_content} />
         </Container>
     )

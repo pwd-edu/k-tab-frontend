@@ -16,6 +16,7 @@ import TextExtension from "@tiptap/extension-text"
 import TextAlign from "@tiptap/extension-text-align"
 import TextStyle from "@tiptap/extension-text-style"
 import Underline from "@tiptap/extension-underline"
+import { MathJax3Config } from "better-react-mathjax"
 
 import { LineFocusExtension } from "./views/author/editor/LineFocusExtension"
 import { MathExtension } from "./views/author/editor/MathExtension"
@@ -122,7 +123,7 @@ export const BASE_EDITOR_EXTENSIONS = [
     FontFamily,
 ]
 
-export const MJAX_CONFIG = {
+export const MJAX_CONFIG: MathJax3Config = {
     loader: { load: ["[tex]/html"] },
     tex: {
         packages: { "[+]": ["html"] },

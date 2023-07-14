@@ -28,8 +28,10 @@ declare module "@tiptap/core" {
 export const McqExtension = Node.create<McqOptions>({
     name: "mcq-interactive",
     group: "block",
-    content: "block+",
     draggable: true,
+    allowGapCursor: true,
+    isolating: true,
+    atom: true,
 
     addCommands() {
         return {

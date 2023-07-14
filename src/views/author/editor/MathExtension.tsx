@@ -28,6 +28,8 @@ export const MathExtension = Node.create<MathEditOptions>({
     group: "block",
     draggable: false,
     content: "inline*",
+    isolating: true,
+    allowGapCursor: true,
 
     addCommands() {
         return {
