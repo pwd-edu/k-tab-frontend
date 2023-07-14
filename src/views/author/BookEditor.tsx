@@ -20,5 +20,5 @@ export function BookEditor() {
 
     setChapterId(chapter_id || "")
 
-    return <ChapterEditor content={chapter_content} />
+    return <ChapterEditor content={chapter_content} chapterId={chapter_id} />
 }
