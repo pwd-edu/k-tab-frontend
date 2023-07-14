@@ -61,9 +61,7 @@ export const BookSchema = z.object({
     chapterHeaders: chaptersHeadersSchema,
 })
 
-export const StudentBookSchema = z.object({
-    bookId: z.string(),
-    title: z.string(),
+export const StudentBookSchema = BookSchema.extend({
     fav: z.boolean(),
     bookAbstract: z.string(),
     tags: z.array(z.string()),
@@ -74,6 +72,13 @@ export const StudentBookSchema = z.object({
     avgRate: z.number(),
     contributors: z.array(z.string()),
     chapterHeaders: chaptersHeadersSchema,
+    authorName: z.string(),
+})
+
+export const StorePageSchema = z.object({
+    next: z.string(),
+    prev: z.string(),
+    numOfPages: z.number(),
 })
 
 export type StudentBookHeader = z.infer<typeof StudentBookHeaderSchema>
@@ -131,7 +136,7 @@ export const StudentBookHeaderSchema = StudentBookSchema.pick({
     title: true,
     fav: true,
     bookCoverPath: true,
-    AuthorName: true,
+    authorName: true,
     tags: true,
     bookAbstract: true,
     authorId: true,
@@ -166,6 +171,13 @@ const CommentSchema = z.object({
     commenterType: z.string(),
 })
 
+export const PageSchema = z.object({
+    next: z.string(),
+    prev: z.string(),
+    noOfPages: z.string(),
+    bookHeaders: StudentBookHeaderSchema.array(),
+})
+
 export type User = z.infer<typeof UserSchema>
 export type Author = z.infer<typeof AuthorSchema>
 export type Student = z.infer<typeof StudentSchema>
@@ -173,6 +185,7 @@ export type Chapter = z.infer<typeof ChapterSchema>
 export type Comment = z.infer<typeof CommentSchema>
 export type AuthorProfile = z.infer<typeof AuthorProfileSchema>
 export type StudentProfile = z.infer<typeof StudentProfileSchema>
+export type Page = z.infer<typeof PageSchema>
 
 export type AuthorSignUp = z.infer<typeof AuthorSignUpSchema>
 export type CreateChapterRequest = Omit<
@@ -203,6 +216,14 @@ export interface StudentCLientType {
     getFavourites: () => Promise<StudentBookHeader[]>
     removeFavourite: (book_id: string) => Promise<void>
     addFavourite: (book_id: string) => Promise<StudentBookHeader>
+    getBookstore: (
+        op: string,
+        next?: string,
+        pre?: string,
+        ti?: string,
+        tgs?: string,
+        filtr?: string
+    ) => Promise<Page>
 }
 
 export interface BookClientType {
