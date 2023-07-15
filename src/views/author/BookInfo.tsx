@@ -16,7 +16,6 @@ import { upperFirst, useToggle } from "@mantine/hooks"
 import { useRef, useState } from "react"
 
 import { PORT } from "../../constants"
-import StudentBookInfo from "../student/StudentBookInfo"
 
 export function BookInfoForm(props: PaperProps) {
     const [type, toggle] = useToggle(["edit", "view"])
@@ -161,18 +160,9 @@ export function BookInfoForm(props: PaperProps) {
                 </form>
             )}
 
-            {type == "view" && (
-                <StudentBookInfo
-                    title={form.values.title}
-                    cover_img={form.values.coverImage}
-                    abstract={form.values.abstract}
-                    average_rating={parseInt(form.values.rating)}
-                    price={parseInt(form.values.price)}
-                    edit_date={new Date()}
-                    publish_date={new Date()}
-                    tags={["AI", "Py"]}
-                />
-            )}
+            {/* {type == "view" && (
+            //    student book info
+            )} */}
 
             <Group position="apart" mt="xl">
                 <Anchor

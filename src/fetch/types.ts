@@ -103,8 +103,21 @@ export const StorePageSchema = z.object({
     numOfPages: z.number(),
 })
 
+export const BookPurchasesSchema = z.object({
+    bookId: z.string(),
+    numberOfStudents: z.number(),
+})
+
+export const BookDisabilitiesDistributionSchema = z.object({
+    disabilityName: z.string(),
+    studentsCount: z.number(),
+    studentsPercentage: z.number(),
+})
+
 export type StudentBookHeader = z.infer<typeof StudentBookHeaderSchema>
 export type CreateBookRequest = Omit<Book, "bookId" | "lastEditDate" | "avgRate" | "chaptersTitles">
+export type BookPurchases = z.infer<typeof BookPurchasesSchema>
+export type BookDisabilitiesDistribution = z.infer<typeof BookDisabilitiesDistributionSchema>
 
 export const AuthorSchema = z.object({
     authorId: z.string(),
@@ -233,6 +246,8 @@ export interface AuthorCLientType {
     get: (authorId?: string) => Promise<Author>
     getBooks: () => Promise<BookHeader[]>
     getProfile: (authorId: string) => Promise<AuthorProfile>
+    getTopThreeBookViews: () => Promise<BookPurchases[]>
+    getStudentsDisabilitesDistribution: () => Promise<BookDisabilitiesDistribution[]>
 }
 
 export interface StudentCLientType {

@@ -15,7 +15,12 @@ import {
 } from "@mantine/core"
 import { Navbar, getStylesRef, rem } from "@mantine/core"
 import { IconBook2, IconHome, IconNotification, IconSearch } from "@tabler/icons"
-import { IconBellRinging, IconLogout, IconSettings } from "@tabler/icons-react"
+import {
+    IconBellRinging,
+    IconBrandGoogleAnalytics,
+    IconLogout,
+    IconSettings,
+} from "@tabler/icons-react"
 import { forwardRef } from "react"
 import { useState } from "react"
 import { Link } from "react-router-dom"
@@ -178,7 +183,12 @@ const NavbarLinks = () => {
 
     const authorData = [
         { link: "/", label: "Home", icon: IconHome, color: theme.primaryColor },
-        { link: "/", label: "Notifications", icon: IconBellRinging, color: theme.primaryColor },
+        {
+            link: "/dashboard",
+            label: "Dashboard",
+            icon: IconBrandGoogleAnalytics,
+            color: theme.primaryColor,
+        },
         { link: "/editor", label: "Book Editor", icon: IconBook2, color: theme.primaryColor },
         { link: "/", label: "Settings", icon: IconSettings, color: theme.primaryColor },
     ]

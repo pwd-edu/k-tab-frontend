@@ -5,7 +5,7 @@ import { AUTHOR_JWT, JWT_TOKEN, STUDENT_JWT, TYPE, USE_STATIC_JWT } from "../con
 const PRODUCTION = import.meta.env.PROD
 
 export const initJwtToken = async () => {
-    if (!PRODUCTION && USE_STATIC_JWT) {
+    if (PRODUCTION && USE_STATIC_JWT) {
         if (USE_STATIC_JWT === "STUDENT" && STUDENT_JWT) {
             setUserType("STUDENT")
             return await setJwtToken(STUDENT_JWT)
