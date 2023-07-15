@@ -8,7 +8,7 @@ interface ModalContainerProps {
 
 export function ModalContainer({ content, opened, onClose }: ModalContainerProps) {
     return (
-        <Modal centered opened={opened} onClose={onClose}>
+        <Modal centered opened={opened} onClose={onClose} size="xl">
             {content}
         </Modal>
     )

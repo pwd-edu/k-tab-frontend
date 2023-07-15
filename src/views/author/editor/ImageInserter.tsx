@@ -1,14 +1,50 @@
+import { StreamLanguage } from "@codemirror/language"
+import { stex } from "@codemirror/legacy-modes/mode/stex"
 import { AiClient, RESOURCE_URL, S3Client } from "@fetch/index"
 import { ImageDescription, ImageInserterProps, ImagePreviewProps } from "@fetch/types"
 import { Button, Image, Stack, Text, Textarea } from "@mantine/core"
+import { Box, clsx } from "@mantine/core"
 import { FileWithPath } from "@mantine/dropzone"
+import { NodeViewProps, NodeViewWrapper } from "@tiptap/react"
+import CodeMirror from "@uiw/react-codemirror"
 import axios from "axios"
+import { MathJax } from "better-react-mathjax"
 import { useState } from "react"
 import { toast } from "react-toastify"
 import { shallow } from "zustand/shallow"
 
 import { InsertImagePlaceHolder } from "./ImagePlaceHolder"
 import { useEditorStore } from "./editor-store"
+import { LATEX_SAMPLES } from "./math-test"
+
+interface MathInsertProps {
+    defaultValue: string
+    onMathChange: (latex: string) => void
+}
+
+const MathInsert = ({ defaultValue, onMathChange }: MathInsertProps) => {
+    const [latex, setLatex] = useState(defaultValue)
+    return (
+        <Box className={clsx("rounded-md border-2 border-gray-200 p-2")}>
+            <CodeMirror
+                value={latex}
+                minHeight={"100px"}
+                maxHeight={"500px"}
+                extensions={[StreamLanguage.define(stex)]}
+                className={clsx("border border-gray-200")}
+                basicSetup={{
+                    lineNumbers: false,
+                    foldGutter: false,
+                }}
+                onChange={(value) => {
+                    setLatex(value)
+                    onMathChange(value)
+                }}
+            />
+            <MathJax hideUntilTypeset={"first"}>{latex}</MathJax>
+        </Box>
+    )
+}
 
 const s3_client = S3Client()
 const ai_client = AiClient()
@@ -20,6 +56,14 @@ interface ImageDescriptionBodyProps extends ImageDescription {
 function ImageDescriptionBody({ type, content, onDescriptionChange }: ImageDescriptionBodyProps) {
     return (
         <>
+            {type === "MATH" && (
+                <MathInsert
+                    defaultValue={content}
+                    onMathChange={(latex) => {
+                        onDescriptionChange({ type, content: latex })
+                    }}
+                />
+            )}
             {type !== "MATH" && (
                 <Textarea
                     defaultValue={content}
@@ -28,7 +72,6 @@ function ImageDescriptionBody({ type, content, onDescriptionChange }: ImageDescr
                     }}
                 ></Textarea>
             )}
-            {type === "MATH" && <Text>{content}</Text>}
         </>
     )
 }
@@ -56,7 +99,7 @@ export function ImageInserter({
             const image = files[0]
             await uploadS3(image, image_url)
 
-            const img_description = await ai_client.getImageDescription(image_url)
+            const img_description = await ai_client.getImageDescription(imagePath)
             setDescription(img_description)
             if (onDescriptionChange) {
                 onDescriptionChange(img_description)
