@@ -28,7 +28,8 @@ export function MyGlobalStyles() {
                 html: {
                     filter: to_apply_filter + " " + contrast_filter,
                 },
-                "[__checker_error]": {
+                ".__checker_error": {
+                    color: "red",
                     border: "1px solid red",
                     backgroundColor: "red",
                     boxShadow: "0 0 0 3px rgba(229, 62, 62, 0.5)",

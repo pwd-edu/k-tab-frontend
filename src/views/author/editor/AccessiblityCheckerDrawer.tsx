@@ -38,7 +38,6 @@ const AccessiblityCheckerDrawer = ({
     const enable_prev = err_idx > 0
 
     const curr_err = errors[err_idx]
-    curr_err?.node.setAttribute("__checker_error", "true")
 
     const check = () => {
         const root = editor.options.element
@@ -72,11 +71,8 @@ const AccessiblityCheckerDrawer = ({
     }
 
     const changeError = (idx: number) => {
-        curr_err?.node.removeAttribute("__checker_error")
+        curr_err.node.classList.remove("__checker_error")
         setCurrentErrIndex(idx)
-
-        const err = errors[idx]
-        err.node.scrollIntoView({ behavior: "smooth", block: "center" })
     }
 
     useEffect(() => {
@@ -84,6 +80,15 @@ const AccessiblityCheckerDrawer = ({
             check()
         }
     }, [opened])
+
+    useEffect(() => {
+        if (curr_err) {
+            if (curr_err.node.tagName === "IMG") {
+                curr_err.node.classList.add("__checker_error")
+            }
+            curr_err.node.scrollIntoView({ behavior: "smooth", block: "center" })
+        }
+    }, [curr_err])
 
     return (
         <Drawer
@@ -102,7 +107,7 @@ const AccessiblityCheckerDrawer = ({
             onClose={() => {
                 if (clearOnClose) {
                     errors.forEach((err) => {
-                        err.node.removeAttribute("__checker_error")
+                        err.node.classList.remove("__checker_error")
                     })
                     setCurrentErrIndex(0)
                     setErrors([])
