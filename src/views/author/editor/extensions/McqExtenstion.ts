@@ -12,6 +12,7 @@ export interface NewMcqAttrs {
     question?: string
     options?: string[]
     answer?: string
+    explaination?: string
 }
 
 declare module "@tiptap/core" {
@@ -28,6 +29,7 @@ declare module "@tiptap/core" {
 export const McqExtension = Node.create<McqOptions>({
     name: "mcq-interactive",
     group: "block",
+    content: "block*",
     draggable: true,
     allowGapCursor: true,
     isolating: true,
@@ -61,6 +63,10 @@ export const McqExtension = Node.create<McqOptions>({
                 rendered: false,
             },
             answer: {
+                default: "",
+                rendered: false,
+            },
+            explaination: {
                 default: "",
                 rendered: false,
             },
