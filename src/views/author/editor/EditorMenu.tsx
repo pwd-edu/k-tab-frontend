@@ -3,6 +3,7 @@ import { RESOURCE_URL } from "@fetch/index"
 import { ImageDescription } from "@fetch/types"
 import { ActionIcon, Button, Group, clsx } from "@mantine/core"
 import {
+    IconAccessible,
     IconAlignCenter,
     IconAlignJustified,
     IconAlignLeft,
@@ -26,6 +27,7 @@ import { Editor } from "@tiptap/core"
 import { nanoid } from "nanoid"
 import { shallow } from "zustand/shallow"
 
+import AccessiblityCheckerDrawer from "./AccessiblityCheckerDrawer"
 import { FontColorMenu } from "./FontColorMenu"
 import { HeadingMenu } from "./HeadingMenu"
 import { ImageInserter } from "./ImageInserter"
@@ -39,6 +41,8 @@ interface EditorMenuProps {
 export const EditorMenu = ({ editor, onSaveClick }: EditorMenuProps) => {
     const [setModalOpened] = useEditorStore((state) => [state.setModalOpened], shallow)
     const [setModalContent] = useEditorStore((state) => [state.setModalContent], shallow)
+    const [setCheckerOpened] = useEditorStore((state) => [state.setCheckerOpened], shallow)
+    const [opened] = useEditorStore((state) => [state.checker_opened], shallow)
 
     const [current_family, setCurrentFamily] = useEditorStore(
         (state) => [state.current_family, state.setCurrentFamily],
@@ -53,6 +57,10 @@ export const EditorMenu = ({ editor, onSaveClick }: EditorMenuProps) => {
             />
         )
         setModalOpened(true)
+    }
+
+    const openAccessibilityChecker = () => {
+        setCheckerOpened(true)
     }
 
     const insertImgIntoEditor = (images: string[], description: ImageDescription) => {
@@ -136,6 +144,10 @@ export const EditorMenu = ({ editor, onSaveClick }: EditorMenuProps) => {
             action: () => addMathEdit(),
             EditorActionIcon: IconMath,
         },
+        {
+            action: () => openAccessibilityChecker(),
+            EditorActionIcon: IconAccessible,
+        },
     ]
 
     return (
@@ -150,6 +162,12 @@ export const EditorMenu = ({ editor, onSaveClick }: EditorMenuProps) => {
                 "border-t-0",
             ])}
         >
+            <AccessiblityCheckerDrawer
+                editor={editor}
+                opened={opened}
+                clearOnClose={true}
+                onClose={() => setCheckerOpened(false)}
+            />
             <Group className="gap-0">
                 <HeadingMenu editor={editor} />
                 {MENU_ACTIONS(editor).map(({ action, EditorActionIcon }, i) => {
