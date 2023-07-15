@@ -11,13 +11,13 @@ export function useAuth() {
     const login = useCallback(async (email: string, password: string) => {
         const { token, userType } = await user_client.login(email, password)
         await setJwtToken(token)
-        await setUserType(userType)
+        setUserType(userType)
         queryClient.refetchQueries({ queryKey: ["user"], exact: true })
     }, [])
 
     const logout = useCallback(async () => {
         await removeJwtToken()
-        await removeUserType()
+        removeUserType()
         await queryClient.resetQueries({ queryKey: ["user"], exact: true })
     }, [])
 

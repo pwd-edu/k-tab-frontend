@@ -1,4 +1,4 @@
-import { getUserType } from "@auth/helpers"
+import { useAuthSession } from "@auth/useAuthSession"
 
 interface RouterMapperElement {
     roles: string[]
@@ -10,11 +10,13 @@ interface RouterMapperProps {
 }
 
 export const CommonRouteMapper = ({ map }: RouterMapperProps) => {
-    const user_type = getUserType()
+    const { user } = useAuthSession()
 
     const renderElement = () => {
         for (const val of map) {
-            if (val.roles.includes(user_type as string)) {
+            console.log(val)
+            console.log(user)
+            if (val.roles.includes(user?.userType as string)) {
                 return val.element
             }
         }

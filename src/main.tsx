@@ -37,15 +37,13 @@ const registerServiceWorker = () => {
 
 registerServiceWorker()
 
-initJwtToken().then(() => {
-    setTimeout(() => {
-        ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-            <React.StrictMode>
-                <MantineProvider theme={APP_THEME}>
-                    <MyGlobalStyles />
-                    <App />
-                </MantineProvider>
-            </React.StrictMode>
-        )
-    }, 1000)
-})
+setTimeout(() => {
+    ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
+        <React.StrictMode>
+            <MantineProvider theme={APP_THEME}>
+                <MyGlobalStyles />
+                <App />
+            </MantineProvider>
+        </React.StrictMode>
+    )
+}, 1000)

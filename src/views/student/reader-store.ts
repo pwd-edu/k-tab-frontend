@@ -27,7 +27,7 @@ type ReaderAction = {
 export const useReaderStore = create<ReaderState & ReaderAction>((set) => ({
     grayScalePercent: 0,
     enableContrast: false,
-    contrastPercent: 0,
+    contrastPercent: 120,
     enableGrayScale: false,
     enableLineFocus: false,
     lineFocusHeight: 5,
