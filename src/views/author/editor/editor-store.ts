@@ -6,6 +6,7 @@ type State = {
     current_family: string
     current_color: string
     modal_opened: boolean
+    checker_opened: boolean
     images: string[]
     modal_content: React.ReactNode | null
     chapter_id: string
@@ -18,6 +19,7 @@ type Action = {
     setChapterId: (chapter_id: State["chapter_id"]) => void
     setCurrentFamily: (family: State["current_family"]) => void
     setCurrentColor: (color: State["current_color"]) => void
+    setCheckerOpened: (opened: State["checker_opened"]) => void
 }
 
 export const useEditorStore = create<State & Action>((set) => ({
@@ -27,6 +29,7 @@ export const useEditorStore = create<State & Action>((set) => ({
     chapter_id: "",
     current_family: DEFAULT_FONT,
     current_color: "#111827",
+    checker_opened: false,
     setModalOpened: (opened) => set({ modal_opened: opened }),
     setModalContent: (content) => set({ modal_content: content }),
     setImages: (images) => set({ images: images }),
@@ -34,4 +37,5 @@ export const useEditorStore = create<State & Action>((set) => ({
     setCurrentFamily: (family) =>
         set({ current_family: _.isEmpty(family) ? DEFAULT_FONT : family }),
     setCurrentColor: (color) => set({ current_color: color }),
+    setCheckerOpened: (opened) => set({ checker_opened: opened }),
 }))

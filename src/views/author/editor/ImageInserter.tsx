@@ -13,10 +13,21 @@ import { useEditorStore } from "./editor-store"
 const s3_client = S3Client()
 const ai_client = AiClient()
 
-function ImageDescriptionBody({ type, content }: ImageDescription) {
+interface ImageDescriptionBodyProps extends ImageDescription {
+    onDescriptionChange: (description: ImageDescription) => void
+}
+
+function ImageDescriptionBody({ type, content, onDescriptionChange }: ImageDescriptionBodyProps) {
     return (
         <>
-            {type !== "MATH" && <Textarea defaultValue={content}></Textarea>}
+            {type !== "MATH" && (
+                <Textarea
+                    defaultValue={content}
+                    onChange={(e) => {
+                        onDescriptionChange({ type, content: e.currentTarget.value })
+                    }}
+                ></Textarea>
+            )}
             {type === "MATH" && <Text>{content}</Text>}
         </>
     )
@@ -97,7 +108,11 @@ export function ImageInserter({
         <Stack>
             {inserted && <ImagePreview image={images.at(-1) || ""} />}
             {description && (
-                <ImageDescriptionBody type={description.type} content={description.content} />
+                <ImageDescriptionBody
+                    type={description.type}
+                    content={description.content}
+                    onDescriptionChange={setDescription}
+                />
             )}
             {!inserted && <InsertImagePlaceHolder onUpload={handleImageInserted} />}
             {inserted && <Button onClick={handleAddImage}>Add</Button>}

@@ -99,7 +99,7 @@ export const ChapterEditor = ({ content, chapterId }: ChapterEditorProp) => {
     }
 
     return (
-        <Stack>
+        <Stack className="mx-auto w-3/4">
             <ModalContainer
                 opened={opened}
                 onClose={() => setModalOpened(false)}
