@@ -1,4 +1,6 @@
 import { useAuth } from "@auth/useAuth"
+import { useAuthSession } from "@auth/useAuthSession"
+import { UserClient } from "@fetch/index"
 import {
     Avatar,
     Button,
@@ -174,12 +176,31 @@ const NavbarLinks = () => {
     const { styles, cx, theme } = buildStyles()
     const [active, setActive] = useState("Billing")
 
-    const data = [
+    const authorData = [
         { link: "/", label: "Home", icon: IconHome, color: theme.primaryColor },
         { link: "/", label: "Notifications", icon: IconBellRinging, color: theme.primaryColor },
         { link: "/editor", label: "Book Editor", icon: IconBook2, color: theme.primaryColor },
         { link: "/", label: "Settings", icon: IconSettings, color: theme.primaryColor },
     ]
+
+    const studentData = [
+        { link: "/bookstore", label: "Home", icon: IconHome, color: theme.primaryColor },
+        { link: "/", label: "Notifications", icon: IconBellRinging, color: theme.primaryColor },
+        { link: "/library", label: "Library", icon: IconBook2, color: theme.primaryColor },
+        { link: "/", label: "Settings", icon: IconSettings, color: theme.primaryColor },
+    ]
+
+    const { user } = useAuthSession()
+
+    function getClientNavData() {
+        if (user?.userType == "STUDENT") {
+            return studentData
+        } else {
+            return authorData
+        }
+    }
+
+    const data = getClientNavData()
 
     const isActive = (item: { label: string }) => {
         return item.label === active
@@ -187,7 +208,7 @@ const NavbarLinks = () => {
 
     return (
         <>
-            {data.map((item) => (
+            {data?.map((item) => (
                 <Link
                     className={cx(styles.link, { [styles.linkActive]: isActive(item) })}
                     to={item.link}

@@ -17,6 +17,7 @@ import {
     ImagePresignedSchema,
     S3ClientType,
     StudentCLientType,
+    Tags,
     UserClientType,
 } from "./types"
 
@@ -42,6 +43,10 @@ export const BookClient = (): BookClientType => ({
     },
     get: async (book_id: string): Promise<Book> => {
         const response = await axios_instance.get(`/book/`, { params: { bookId: book_id } })
+        return response.data
+    },
+    getAllBooksTags: async (): Promise<Tags> => {
+        const response = await axios_instance.get("/book/tags/")
         return response.data
     },
 })
@@ -177,10 +182,14 @@ export const StudentClient = (): StudentCLientType => ({
                 ...(nxt ? { next: nxt } : {}),
                 ...(pre && { prev: pre }),
                 ...(ti && { title: ti }),
-                ...(tgs && { tags: tgs }),
+                ...(tgs && { tag: tgs }),
                 ...(filtr && { filter: filtr }),
             },
         })
+        return response.data
+    },
+    postBookPayment: async (book_id: string) => {
+        const response = await axios_instance.post(`/payment/buy/?bookId=${book_id}`)
         return response.data
     },
 })

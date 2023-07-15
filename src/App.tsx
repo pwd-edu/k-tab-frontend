@@ -10,6 +10,7 @@ import { MJAX_CONFIG } from "./constants"
 import { BookEditor } from "./views/author/BookEditor"
 import Dashboard from "./views/author/Dashboard"
 import { AuthorHome } from "./views/author/Home"
+import { BookInfo } from "./views/student/BookInfo"
 import { BookReader } from "./views/student/BookReader"
 import { BookStore } from "./views/student/BookStore"
 import Library from "./views/student/StudentLibrary"
@@ -33,6 +34,7 @@ function App() {
                         </Route>
                         <Route element={<PrivateRoute allowedRoles={["STUDENT"]} />}>
                             <Route path="/library" element={<Library />} />
+                            <Route path="/bookstore" element={<BookStore />} />
                         </Route>
                         <Route element={<PrivateRoute allowedRoles={["ADMIN", "AUTHOR"]} />}>
                             <Route path="/dashboard" element={<Dashboard />} />
@@ -47,12 +49,8 @@ function App() {
                                 />
                             }
                         />
-                        <Route
-                            path="/user"
-                            element={
-                                <UserProfile user_id={"4234e865-234f-42b3-bb60-7004d1e755a3"} />
-                            }
-                        />
+                        <Route path="/user/:userId" element={<UserProfile />} />
+                        <Route path="/bookinfo/:bookId" element={<BookInfo />} />
                     </Routes>
                 </BrowserRouter>
                 <ReactQueryDevtools initialIsOpen={false} />
