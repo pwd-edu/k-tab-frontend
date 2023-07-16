@@ -1,3 +1,4 @@
+import { MantineSize } from "@mantine/core"
 import { create } from "zustand"
 
 type ReaderState = {
@@ -10,6 +11,8 @@ type ReaderState = {
     enableContrast: boolean
     contrastPercent: number
     wideView: boolean
+    textSize: MantineSize
+    textSpacing: MantineSize
 }
 
 type ReaderAction = {
@@ -22,6 +25,8 @@ type ReaderAction = {
     setEnableContrast: (enable: ReaderState["enableContrast"]) => void
     setContrastPercent: (contrast: ReaderState["contrastPercent"]) => void
     setWideView: (wideView: ReaderState["wideView"]) => void
+    setTextSize: (textSize: ReaderState["textSize"]) => void
+    setTextSpacing: (textSpacing: ReaderState["textSpacing"]) => void
 }
 
 export const useReaderStore = create<ReaderState & ReaderAction>((set) => ({
@@ -34,6 +39,8 @@ export const useReaderStore = create<ReaderState & ReaderAction>((set) => ({
     enableInvertColor: false,
     fontFamlily: "Roboto",
     wideView: false,
+    textSize: "md",
+    textSpacing: "md",
     setEnableLineFocus: (enable) => set({ enableLineFocus: enable }),
     setLineFocusHeight: (height) => set({ lineFocusHeight: height }),
     setFontFamily: (font) => set({ fontFamlily: font }),
@@ -43,4 +50,6 @@ export const useReaderStore = create<ReaderState & ReaderAction>((set) => ({
     setEnableContrast: (enable) => set({ enableContrast: enable }),
     setContrastPercent: (contrast) => set({ contrastPercent: contrast }),
     setWideView: (wideView) => set({ wideView: wideView }),
+    setTextSize: (textSize) => set({ textSize: textSize }),
+    setTextSpacing: (textSpacing) => set({ textSpacing: textSpacing }),
 }))

@@ -21,6 +21,7 @@ import { MathJax3Config } from "better-react-mathjax"
 import { LineFocusExtension } from "./views/author/editor/LineFocusExtension"
 import { MathExtension } from "./views/author/editor/MathExtension"
 import { McqExtension } from "./views/author/editor/extensions/McqExtenstion"
+import { FontSize } from "./views/author/editor/extensions/font-size"
 import { ImageResizeExtension } from "./views/author/editor/extensions/image-resize"
 
 export const PORT = 8080
@@ -121,6 +122,7 @@ export const BASE_EDITOR_EXTENSIONS = [
     ImageResizeExtension,
     TextAlign.configure({ types: ["heading", "paragraph"] }),
     FontFamily,
+    FontSize,
 ]
 
 export const MJAX_CONFIG: MathJax3Config = {
