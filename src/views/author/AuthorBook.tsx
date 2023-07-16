@@ -2,7 +2,7 @@ import { FlexSpace } from "@components/shared"
 import { ActionIcon, Card, Group, Image, Stack, Text, createStyles } from "@mantine/core"
 import { IconChartPie, IconClock, IconEdit, IconEye, IconPlus } from "@tabler/icons"
 import { useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 const useStyles = createStyles(() => ({
     book_card: {
@@ -88,8 +88,13 @@ export const AuthorBookCard = ({ title, thumbnail_img, last_update, id }: BookCa
     )
 }
 
-export const AddBook = () => {
+export function AddBook() {
     const { classes, theme, cx } = useStyles()
+    const navigatePath = useNavigate()
+
+    const handleCreateBook = () => {
+        navigatePath("/bookinfo")
+    }
     return (
         <Card
             className={cx(classes.book_card, "flex flex-col items-center justify-center")}
@@ -107,6 +112,7 @@ export const AddBook = () => {
                         strokeLinecap="square"
                         strokeLinejoin="inherit"
                         viewBox="4 4 16 16"
+                        onClick={() => handleCreateBook()}
                     />
                 </ActionIcon>
             </Stack>
