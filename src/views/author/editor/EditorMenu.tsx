@@ -13,6 +13,7 @@ import {
     IconBlockquote,
     IconBold,
     IconBoxMultiple,
+    IconCodeCircle2,
     IconDeviceFloppy,
     IconIndentDecrease,
     IconIndentIncrease,
@@ -156,6 +157,18 @@ export const EditorMenu = ({ editor, onSaveClick }: EditorMenuProps) => {
         {
             action: () => openAccessibilityChecker(),
             EditorActionIcon: IconAccessible,
+        },
+        {
+            action: () =>
+                editor
+                    .chain()
+                    .setCodeRun({
+                        id: nanoid(16),
+                        language: "python",
+                        code: "",
+                    })
+                    .run(),
+            EditorActionIcon: IconCodeCircle2,
         },
     ]
 

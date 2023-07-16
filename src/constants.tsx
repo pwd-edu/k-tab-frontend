@@ -18,9 +18,11 @@ import TextStyle from "@tiptap/extension-text-style"
 import Underline from "@tiptap/extension-underline"
 import { MathJax3Config } from "better-react-mathjax"
 
+import { CodeRun } from "./views/author/editor/CodeRun"
 import { LineFocusExtension } from "./views/author/editor/LineFocusExtension"
 import { MathExtension } from "./views/author/editor/MathExtension"
 import { McqExtension } from "./views/author/editor/extensions/McqExtenstion"
+import { CodeRunExtension } from "./views/author/editor/extensions/code-run"
 import { FontSize } from "./views/author/editor/extensions/font-size"
 import { ImageResizeExtension } from "./views/author/editor/extensions/image-resize"
 
@@ -122,6 +124,7 @@ export const BASE_EDITOR_EXTENSIONS = [
     ImageResizeExtension,
     TextAlign.configure({ types: ["heading", "paragraph"] }),
     FontFamily,
+    CodeRunExtension,
     FontSize,
 ]
 
