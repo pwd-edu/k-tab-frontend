@@ -60,6 +60,7 @@ const Library = () => {
                                     title={book.title}
                                     description={book.bookAbstract}
                                     image={RESOURCE_URL(book.bookCoverPath)}
+                                    link={`/book/${book.bookId}/1`}
                                 />
                             ))}
                         </Group>
@@ -77,6 +78,7 @@ const Library = () => {
                                     title={fav_book.title}
                                     description={fav_book.bookAbstract}
                                     image={RESOURCE_URL(fav_book.bookCoverPath)}
+                                    link={`/book/${fav_book.bookId}/1`}
                                 />
                             ))}
                         </Group>

@@ -139,6 +139,14 @@ export const AuthorClient = (): AuthorCLientType => ({
         const response = await axios_instance.get("/author/profile/", { params: { authorId } })
         return response.data
     },
+    getTopThreeBookViews: async () => {
+        const response = await axios_instance.get("/Author-Dashboard/top3-books/")
+        return response.data
+    },
+    getStudentsDisabilitesDistribution: async () => {
+        const response = await axios_instance.get("/Author-Dashboard/disabilities-count/")
+        return response.data
+    },
 })
 
 export const StudentClient = (): StudentCLientType => ({

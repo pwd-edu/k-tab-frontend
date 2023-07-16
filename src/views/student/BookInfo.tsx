@@ -50,6 +50,7 @@ const useStyles = createStyles((theme) => ({
 
 export function BookInfo() {
     const { classes, theme } = useStyles()
+    const navigatePath = useNavigate()
 
     const book_id = useParams().bookId as string
     console.log("bookId: " + book_id)
@@ -77,9 +78,8 @@ export function BookInfo() {
     })
 
     const student_client = StudentClient()
-    const navigatePath = useNavigate()
     const handlePayment = async () => {
-        const response_data = student_client.postBookPayment(book_id)
+        student_client.postBookPayment(book_id)
         // navigatePath(`/book/${book_id}/1`) //go to book reader
         navigatePath("/library")
     }
