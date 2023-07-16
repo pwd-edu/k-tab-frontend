@@ -164,6 +164,7 @@ export const BookHeaderSchema = BookSchema.pick({
     tags: true,
     bookAbstract: true,
     authorId: true,
+    chapterHeaders: true,
 })
 
 export const StudentBookHeaderSchema = StudentBookSchema.pick({
@@ -176,6 +177,7 @@ export const StudentBookHeaderSchema = StudentBookSchema.pick({
     bookAbstract: true,
     authorId: true,
     price: true,
+    avgRate: true,
 })
 
 const AuthorProfileSchema = AuthorSchema.extend({
@@ -245,6 +247,7 @@ export interface UserClientType {
 export interface AuthorCLientType {
     get: (authorId?: string) => Promise<Author>
     getBooks: () => Promise<BookHeader[]>
+    getBookInfo: (bookId: string) => Promise<BookHeader>
     getProfile: (authorId: string) => Promise<AuthorProfile>
     getTopThreeBookViews: () => Promise<BookPurchases[]>
     getStudentsDisabilitesDistribution: () => Promise<BookDisabilitiesDistribution[]>

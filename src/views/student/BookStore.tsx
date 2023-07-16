@@ -135,6 +135,7 @@ export function BookStore() {
                             title={book.title}
                             description={book.bookAbstract}
                             authorName={book.authorName}
+                            rating={book.avgRate}
                             onClick={() => navigatePath(`/bookinfo/${book.bookId}`)}
                         />
                     ))}
