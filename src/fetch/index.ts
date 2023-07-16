@@ -66,6 +66,14 @@ export const ChapterClient = (): ChapterClientType => ({
         })
         return response.data
     },
+    postChapterComment: async (chapterId: string, comment: string) => {
+        const response = await axios_instance.post(`/chapter/comment/`, {
+            chapterId,
+            content: comment,
+            hasMentions: false,
+        })
+        return response.data
+    },
 })
 
 export const S3Client = (): S3ClientType => ({

@@ -278,6 +278,7 @@ export interface ChapterClientType {
     post: (chapter: CreateChapterRequest) => Promise<Chapter>
     get: (chapterId: string) => Promise<Chapter>
     getChapterComments: (chapterId: string) => Promise<Comment[]>
+    postChapterComment: (chapterId: string, comment: string) => Promise<Comment>
 }
 
 export interface AiClientType {

@@ -14,8 +14,6 @@ export const CommonRouteMapper = ({ map }: RouterMapperProps) => {
 
     const renderElement = () => {
         for (const val of map) {
-            console.log(val)
-            console.log(user)
             if (val.roles.includes(user?.userType as string)) {
                 return val.element
             }
