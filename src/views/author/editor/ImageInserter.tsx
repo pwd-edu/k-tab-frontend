@@ -2,10 +2,9 @@ import { StreamLanguage } from "@codemirror/language"
 import { stex } from "@codemirror/legacy-modes/mode/stex"
 import { AiClient, RESOURCE_URL, S3Client } from "@fetch/index"
 import { ImageDescription, ImageInserterProps, ImagePreviewProps } from "@fetch/types"
-import { Button, Image, Stack, Text, Textarea } from "@mantine/core"
+import { Button, Image, Select, Stack, Textarea, Transition } from "@mantine/core"
 import { Box, clsx } from "@mantine/core"
 import { FileWithPath } from "@mantine/dropzone"
-import { NodeViewProps, NodeViewWrapper } from "@tiptap/react"
 import CodeMirror from "@uiw/react-codemirror"
 import axios from "axios"
 import { MathJax } from "better-react-mathjax"
@@ -15,7 +14,6 @@ import { shallow } from "zustand/shallow"
 
 import { InsertImagePlaceHolder } from "./ImagePlaceHolder"
 import { useEditorStore } from "./editor-store"
-import { LATEX_SAMPLES } from "./math-test"
 
 interface MathInsertProps {
     defaultValue: string
@@ -77,7 +75,17 @@ function ImageDescriptionBody({ type, content, onDescriptionChange }: ImageDescr
 }
 
 function ImagePreview({ image: url }: ImagePreviewProps) {
-    return <Image src={RESOURCE_URL(url)} alt={"an uploaded image"} />
+    return (
+        <Box className="flex justify-center">
+            <Image
+                classNames={{ imageWrapper: "flex justify-center" }}
+                imageProps={{ className: "" }}
+                width={"50%"}
+                src={RESOURCE_URL(url)}
+                alt={"an uploaded image"}
+            />
+        </Box>
+    )
 }
 
 export function ImageInserter({
@@ -147,9 +155,17 @@ export function ImageInserter({
         onAddClick && onAddClick()
     }
 
+    const handleTypeOverriden = (type: ImageType) => {
+        if (!description) return
+        setDescription({ ...description, type })
+    }
+
     return (
         <Stack>
             {inserted && <ImagePreview image={images.at(-1) || ""} />}
+            {description && (
+                <TypePreview type={description.type} onTypeOverriden={handleTypeOverriden} />
+            )}
             {description && (
                 <ImageDescriptionBody
                     type={description.type}
@@ -160,5 +176,31 @@ export function ImageInserter({
             {!inserted && <InsertImagePlaceHolder onUpload={handleImageInserted} />}
             {inserted && <Button onClick={handleAddImage}>Add</Button>}
         </Stack>
+    )
+}
+
+type ImageType = "MATH" | "SCENE" | "CHART"
+
+interface TypePreviewProps {
+    type: ImageType
+    onTypeOverriden: (type: ImageType) => void
+}
+
+const TypePreview = ({ type, onTypeOverriden }: TypePreviewProps) => {
+    return (
+        <Box>
+            <Select
+                defaultValue={type}
+                radius="xl"
+                style={{ width: "100px" }}
+                size="xs"
+                withAsterisk
+                data={["MATH", "SCENE", "CHART"]}
+                onChange={(value) => {
+                    onTypeOverriden(value as ImageType)
+                }}
+                variant="filled"
+            />
+        </Box>
     )
 }
