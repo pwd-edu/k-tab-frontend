@@ -1,4 +1,15 @@
-import { Badge, Card, Center, Group, Image, Rating, Text, createStyles, rem } from "@mantine/core"
+import {
+    Badge,
+    Card,
+    Center,
+    Group,
+    Image,
+    Rating,
+    Stack,
+    Text,
+    createStyles,
+    rem,
+} from "@mantine/core"
 import { IconUser } from "@tabler/icons-react"
 
 const useStyles = createStyles((theme) => ({
@@ -7,15 +18,13 @@ const useStyles = createStyles((theme) => ({
         backgroundColor: theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
         width: rem(320),
         maxWidth: 340,
-        height: rem(374),
+        height: rem(350),
         maxHeight: 355,
     },
 
     title: {
         display: "inline",
-        maxWidth: 200,
-        width: "60%",
-        // marginBottom: rem(5),
+        maxWidth: 175,
     },
 
     action: {
@@ -28,10 +37,11 @@ const useStyles = createStyles((theme) => ({
 
     footer: {
         marginTop: theme.spacing.md,
-        // width: 160
     },
     tags: {
         marginRight: theme.spacing.xs,
+        marginTop: theme.spacing.xs,
+        marginBottom: theme.spacing.xs,
     },
     author: {
         color: theme.colors.dark[2],
@@ -40,31 +50,41 @@ const useStyles = createStyles((theme) => ({
         marginRight: rem(5),
         color: theme.colorScheme === "dark" ? theme.colors.dark[2] : theme.colors.gray[5],
     },
+    rating: {
+        position: "absolute",
+        right: rem(35),
+        pointerEvents: "none",
+    },
+    price: {
+        position: "absolute",
+        top: theme.spacing.xs,
+        right: rem(12),
+        pointerEvents: "none",
+    },
 }))
 
 interface StudentBookProps {
     image: string
-    link?: string
     title: string
     description: string
-    price: number
+    price?: number
     authorName?: string
     tags: string[]
+    rating: number
 }
 
 export function StudentBook({
     className,
     image,
-    link,
     title,
     price,
     authorName,
     tags,
+    rating,
     description,
     ...others
 }: StudentBookProps & Omit<React.ComponentPropsWithoutRef<"div">, keyof StudentBookProps>) {
     const { classes, cx, theme } = useStyles()
-    const linkProps = { href: link, target: "_blank", rel: "noopener noreferrer" }
 
     const bookTags = tags.map((tag) => (
         <Badge className={classes.tags} color="blue" variant="light" key={tag}>
@@ -81,41 +101,53 @@ export function StudentBook({
             {...others}
         >
             <Card.Section>
-                <a {...linkProps}>
-                    <Image src={image} height={180} alt="book cover" />
-                </a>
+                <Image src={image} height={180} alt="book cover" />
             </Card.Section>
+            <Group>
+                {bookTags}
+                <Text fz="lg" fw={700} sx={{ lineHeight: 1 }} mr="-md" className={classes.rating}>
+                    ${price}
+                </Text>
+            </Group>
 
-            {bookTags}
-
-            <Group position="apart" className={classes.footer}>
-                <Center>
+            <Stack ml="xs" spacing="md">
+                <Group spacing="xs" mb="-md" position="apart">
                     <Text
                         truncate
                         sx={{ textOverflow: "ellipsis", overflow: "hidden" }}
                         className={classes.title}
                         fw={500}
-                        component="a"
-                        {...linkProps}
                     >
                         {title}
                     </Text>
-                </Center>
-                {authorName && (
-                    <Center>
-                        <IconUser size="1.05rem" className={classes.icon} stroke={1.5} />
-                        <Text color={theme.colorScheme === "dark" ? "dark" : "gray"} size="xs">
-                            {authorName}
-                        </Text>
-                    </Center>
-                )}{" "}
-                <Group spacing={8} mr={0}>
-                    <Badge color={theme.colorScheme === "dark" ? "dark" : "gray"}>{price}$</Badge>
+                    <Rating
+                        className={classes.rating}
+                        defaultValue={rating}
+                        fractions={2}
+                        readOnly
+                        mr="-xl"
+                    />
                 </Group>
-            </Group>
-            <Rating defaultValue={2} fractions={2} readOnly />
+                <Group position="apart">
+                    {authorName && (
+                        <Center>
+                            <IconUser size="1.05rem" className={classes.icon} stroke={1.5} />
+                            <Text color={theme.colorScheme === "dark" ? "dark" : "gray"} size="xs">
+                                {authorName}
+                            </Text>
+                        </Center>
+                    )}{" "}
+                    {price && (
+                        <Group>
+                            {/* <Badge className={classes.price} color={theme.colorScheme === "dark" ? "dark" : "gray"} variant="filled">
+                                {price}$
+                            </Badge> */}
+                        </Group>
+                    )}
+                </Group>
+            </Stack>
 
-            <Center>
+            <Center mt="xs" ml="sm">
                 <Text fz="sm" color="dimmed" lineClamp={2}>
                     {description}
                 </Text>

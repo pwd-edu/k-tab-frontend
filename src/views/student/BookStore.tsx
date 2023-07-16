@@ -135,11 +135,12 @@ export function BookStore() {
                             title={book.title}
                             description={book.bookAbstract}
                             authorName={book.authorName}
+                            rating={book.avgRate}
                             onClick={() => navigatePath(`/bookinfo/${book.bookId}`)}
                         />
                     ))}
                 </Group>
-                <Group>
+                <Group spacing="md">
                     {prevPtr && (
                         <ActionIcon variant="light" onClick={() => getFirstPage()}>
                             <IconChevronsLeft size="1rem" />

@@ -1,5 +1,8 @@
+import { CenteredLoading, ErrorPage } from "@components/shared"
+import { AuthorClient } from "@fetch/index"
 import { Box, Group, Text, createStyles, rem } from "@mantine/core"
 import { IconListSearch } from "@tabler/icons-react"
+import { useQuery } from "@tanstack/react-query"
 
 const useStyles = createStyles((theme) => ({
     link: {
@@ -44,22 +47,33 @@ interface TableOfContentsProps {
     }[]
 
     active: string
+    book_id: string
 }
 
-export function TableOfContents({ chapters, active }: TableOfContentsProps) {
+export function TableOfContents({ book_id, chapters, active }: TableOfContentsProps) {
     const { classes, cx } = useStyles()
-    const items = chapters.map((item) => (
-        <Box<"a">
-            component="a"
-            href={item.S3_link}
-            onClick={(event) => event.preventDefault()}
-            key={item.title}
-            className={cx(classes.link, { [classes.linkActive]: active === item.S3_link })}
-            sx={(theme) => ({ paddingLeft: `calc(${item.order} * ${theme.spacing.md})` })}
-        >
-            {item.title}
-        </Box>
-    ))
+
+    const author_client = AuthorClient()
+    const bookContentQuery = useQuery({
+        queryKey: ["bookcontents"],
+        queryFn: () => author_client.getBookInfo(book_id),
+    })
+
+    if (bookContentQuery.isLoading) return <CenteredLoading />
+    if (bookContentQuery.isError) return <ErrorPage />
+
+    // const items = bookContentQuery.chapterHeaders.map((item) => (
+    //     <Box<"a">
+    //         component="a"
+    //         href={item.S3_link}
+    //         onClick={(event) => event.preventDefault()}
+    //         key={item.chapterTitle}
+    //         className={cx(classes.link, { [classes.linkActive]: active === item.S3_link })}
+    //         sx={(theme) => ({ paddingLeft: `calc(${item.order} * ${theme.spacing.md})` })}
+    //     >
+    //         {item.chapterTitle}
+    //     </Box>
+    // ))
 
     return (
         <div>
@@ -67,7 +81,7 @@ export function TableOfContents({ chapters, active }: TableOfContentsProps) {
                 <IconListSearch size="1.1rem" stroke={1.5} />
                 <Text>Table of contents</Text>
             </Group>
-            {items}
+            {/* {items} */}
         </div>
     )
 }

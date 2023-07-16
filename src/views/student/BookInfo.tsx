@@ -1,5 +1,5 @@
 import { CenteredLoading, ErrorPage } from "@components/shared"
-import { BookClient, RESOURCE_URL, StudentClient } from "@fetch/index"
+import { BookClient, RESOURCE_URL, StudentClient, UserClient } from "@fetch/index"
 import {
     ActionIcon,
     Badge,
@@ -60,22 +60,39 @@ export function BookInfo() {
         queryFn: () => book_client.get(book_id),
     })
 
-    if (bookInfoQuery.isError) return <ErrorPage />
-    if (bookInfoQuery.isLoading) return <CenteredLoading />
-
     const book = bookInfoQuery.data
 
-    const bookTags = book.tags.map((tag) => (
+    const bookTags = book?.tags.map((tag) => (
         <Badge color={theme.colorScheme === "dark" ? "dark" : "gray"} key={tag}>
             {tag}
         </Badge>
     ))
 
-    const bookContributors = book.contributions.map((author) => {
-        ;<Badge color={theme.colorScheme === "dark" ? "dark" : "gray"} key={author.contributorId}>
-            {author.contributorId}
-        </Badge>
+    const user_client = UserClient()
+    const contributors: {
+        userId: string
+        userName: string
+        userEmail: string
+        contact: string
+        profilePhotoPath: string
+        userType: "ADMIN" | "AUTHOR" | "STUDENT"
+    }[] = []
+
+    const bookContributorsList = book?.contributions.map(async (author) => {
+        const contributor = await user_client.get(author.contributorId)
+
+        contributors.push(contributor)
     })
+    console.log(contributors)
+
+    const bookContributors = contributors.map((contributor) => (
+        <Badge color={theme.colorScheme === "dark" ? "dark" : "gray"} key={contributor.userId}>
+            {contributor.userName}
+        </Badge>
+    ))
+
+    if (bookInfoQuery.isError) return <ErrorPage />
+    if (bookInfoQuery.isLoading) return <CenteredLoading />
 
     const student_client = StudentClient()
     const handlePayment = async () => {
@@ -88,8 +105,8 @@ export function BookInfo() {
         <Card withBorder radius="xl" p="xl" mx="xl" my="xl" className={classes.card}>
             <Card.Section mb="lg">
                 <Image
-                    src={RESOURCE_URL(book.bookCoverPath)}
-                    alt={book.title}
+                    src={RESOURCE_URL(book?.bookCoverPath as any)}
+                    alt={book?.title}
                     height={280}
                     radius="lg"
                 />
@@ -97,11 +114,11 @@ export function BookInfo() {
 
             <Card.Section className={classes.section} my="lg">
                 <Text fz="xl" fw={700} my="lg">
-                    {book.title}
+                    {book?.title}
                 </Text>
 
                 <Text fz="md" mt="xs" c="dimmed">
-                    {book.bookAbstract}
+                    {book?.bookAbstract}
                 </Text>
             </Card.Section>
 
@@ -109,25 +126,16 @@ export function BookInfo() {
                 <Text mt="md" className={classes.label} c="dimmed">
                     Perfect for you, if you enjoy
                 </Text>
-                <Group spacing={7} mt={7}>
+                <Group spacing="xs" mt="7">
                     {bookTags}
                 </Group>
             </Card.Section>
-            {bookContributors && (
-                <Group mt="xs">
-                    <ActionIcon variant="subtle" radius="md" size={36}>
-                        <IconUsers size="1.1rem" className={classes.cart} stroke={1.5} />
-                    </ActionIcon>
-                    <Group spacing={7} mt={5}>
-                        {/* {bookContributors ? bookContributors : []} */}
-                    </Group>
-                </Group>
-            )}
+            {bookContributors && <Card.Section>{bookContributors}</Card.Section>}
             <Card.Section className={classes.paymentsection}>
                 <Group spacing={30}>
                     <div>
                         <Text fz="xl" fw={700} sx={{ lineHeight: 1 }} mr="xl">
-                            ${book.price}
+                            ${book?.price}
                         </Text>
                     </div>
 
