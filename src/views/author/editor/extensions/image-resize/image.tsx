@@ -63,6 +63,7 @@ export const ImageResizeExtension = Image.extend<ImageOptions>({
     addNodeView() {
         return ReactNodeViewRenderer(ImageResizeComponent)
     },
+
     addInputRules() {
         return [
             nodeInputRule({
