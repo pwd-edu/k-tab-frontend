@@ -1,43 +1,41 @@
-import { CenteredLoading, ErrorPage } from "@components/shared"
 import { RESOURCE_URL, UserClient } from "@fetch/index"
-import { Avatar, Group, Text, createStyles } from "@mantine/core"
+import { Avatar, Box, Group, Skeleton, Text, createStyles } from "@mantine/core"
 import { useQuery } from "@tanstack/react-query"
 
-const useStyles = createStyles((theme) => ({
+const useStyles = createStyles((theme, user_type: string | undefined) => ({
     name: {
         fontFamily: `Greycliff CF, ${theme.fontFamily}`,
-        color: theme.colors.blue[6],
+        color: user_type === "AUTHOR" ? theme.colors.blue[6] : theme.colors.red[6],
     },
 }))
 
-type AvatarProps = {
+type CommentAvatarProps = {
     userId: string
+    postedAt: string
 }
 
-export function UserAvatar({ userId }: AvatarProps) {
-    const { classes } = useStyles()
-
-    console.log("user id " + userId)
+export function CommentAvatar({ userId, postedAt }: CommentAvatarProps) {
     const user_client = UserClient()
-    const userInfo = useQuery(["user-info"], () => user_client.get(userId))
+    const userInfo = useQuery(["user-info", userId], () => user_client.get(userId))
+    const { classes } = useStyles(userInfo.data?.userType)
 
-    if (userInfo.isLoading) return <CenteredLoading />
-    if (userInfo.isError) return <ErrorPage />
+    if (userInfo.isLoading) return <Skeleton variant="rect" height={40} width={40} radius="xl" />
 
     return (
-        <div>
-            <Group noWrap spacing={"sm"}>
-                <Avatar
-                    src={RESOURCE_URL(userInfo.data.profilePhotoPath)}
-                    alt={userInfo.data?.userName}
-                    radius="md"
-                    size={46}
-                    // mt="md"
-                />
-                <Text fz="lg" fw={700} className={classes.name} mt="-xs">
-                    {userInfo.data.userName}
+        <Group>
+            <Avatar
+                src={RESOURCE_URL(userInfo.data?.profilePhotoPath || "")}
+                alt={userInfo.data?.userName}
+                radius="xl"
+            />
+            <Box>
+                <Text className={classes.name} size="sm">
+                    {userInfo.data?.userName}
                 </Text>
-            </Group>
-        </div>
+                <Text size="xs" color="dimmed">
+                    {postedAt}
+                </Text>
+            </Box>
+        </Group>
     )
 }

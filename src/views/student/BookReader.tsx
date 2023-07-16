@@ -3,10 +3,12 @@ import { BookClient } from "@fetch/index"
 import { useChapterQuery } from "@fetch/useChapterQuery"
 import {
     Affix,
+    Box,
     Container,
     Drawer,
     Group,
     Stack,
+    Tabs,
     ThemeIcon,
     Title,
     UnstyledButton,
@@ -15,14 +17,16 @@ import {
     rem,
 } from "@mantine/core"
 import { useDisclosure } from "@mantine/hooks"
-import { IconSettings2 } from "@tabler/icons"
+import { IconLayoutSidebarRightExpand, IconMessages, IconSettings2 } from "@tabler/icons"
 import { useQuery } from "@tanstack/react-query"
 import { EditorContent, useEditor } from "@tiptap/react"
 import { getChapterId } from "@utils/chapter-id-idx"
+import { useState } from "react"
 import { useParams } from "react-router-dom"
 import { shallow } from "zustand/shallow"
 
 import { BookEditorParams } from "../../types"
+import { ChapterComments } from "../user/ChapterComments"
 import { ReaderSettings } from "./ReaderSettings"
 import { useReaderStore } from "./reader-store"
 
@@ -43,7 +47,6 @@ export const BookReader = () => {
 
     const [enable_line_focus] = useReaderStore((state) => [state.enableLineFocus], shallow)
     const [wide_view] = useReaderStore((state) => [state.wideView], shallow)
-    const [text_size] = useReaderStore((state) => [state.textSize], shallow)
 
     const { data: book } = useQuery(["book", book_id], () => book_client.get(book_id || ""))
     const chapter_id = getChapterId(chapter_num, book)
@@ -52,6 +55,7 @@ export const BookReader = () => {
 
     const { styles } = buildStyles({ enableLineFocus: enable_line_focus })
     const [opened, { open, close }] = useDisclosure(false)
+    const [activeTab, setActiveTab] = useState<string | null>("settings")
 
     const editor = useEditor(
         {
@@ -87,17 +91,49 @@ export const BookReader = () => {
                 title={
                     <Group position="apart">
                         <ThemeIcon variant="light" size="l">
-                            <IconSettings2 size={24} />
+                            {activeTab === "settings" ? (
+                                <IconSettings2 size={24} />
+                            ) : (
+                                <IconMessages size={24} />
+                            )}
                         </ThemeIcon>
-                        <Title order={3}>Settings</Title>
+                        {activeTab === "settings" ? (
+                            <Title order={3}>Settings</Title>
+                        ) : (
+                            <Title order={3}>Community</Title>
+                        )}
                     </Group>
                 }
+                classNames={{
+                    header: "pb-0",
+                    content: "flex flex-col",
+                    body: "flex-1",
+                }}
                 withOverlay={false}
                 withCloseButton
             >
-                <Stack spacing="md">
-                    <ReaderSettings editor={editor} />
-                </Stack>
+                <Tabs value={activeTab} onTabChange={setActiveTab} className="flex h-full flex-col">
+                    <Box className="flex-1">
+                        <Tabs.Panel value="settings" className="pt-0">
+                            <Stack spacing="md">
+                                <ReaderSettings editor={editor} />
+                            </Stack>
+                        </Tabs.Panel>
+
+                        <Tabs.Panel value="community" pt="xs">
+                            <ChapterComments chapter_id={chapter_id || ""} />
+                        </Tabs.Panel>
+                    </Box>
+
+                    <Tabs.List className="sticky bottom-0 bg-white">
+                        <Tabs.Tab value="settings" icon={<IconSettings2 size={18} />}>
+                            Settings
+                        </Tabs.Tab>
+                        <Tabs.Tab value="community" icon={<IconMessages size={18} />}>
+                            Community
+                        </Tabs.Tab>
+                    </Tabs.List>
+                </Tabs>
             </Drawer>
             <Affix position={{ bottom: rem(20), right: rem(20) }}>
                 <UnstyledButton
@@ -106,7 +142,7 @@ export const BookReader = () => {
                     className="rounded-full bg-blue-600 p-1 text-white"
                     onClick={open}
                 >
-                    <IconSettings2 size={24} />
+                    <IconLayoutSidebarRightExpand size={24} />
                 </UnstyledButton>
             </Affix>
             <EditorContent editor={editor} className={styles.editor_content} />

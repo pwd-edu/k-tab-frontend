@@ -199,6 +199,7 @@ const ExplainationEditor = (props: {
     enableEdit: boolean
 }) => {
     const [text, setText] = useState<string>(props.explaination)
+
     return (
         <Textarea
             className="w-full"

@@ -2,12 +2,26 @@ import { CenteredLoading } from "@components/shared"
 import * as constants from "@constants"
 import { ChapterClient, S3Client } from "@fetch/index"
 import { Chapter } from "@fetch/types"
-import { Stack, clsx, createStyles } from "@mantine/core"
+import {
+    Affix,
+    Drawer,
+    Group,
+    Stack,
+    ThemeIcon,
+    Title,
+    UnstyledButton,
+    clsx,
+    createStyles,
+    rem,
+} from "@mantine/core"
+import { useDisclosure } from "@mantine/hooks"
+import { IconLayoutSidebarRightExpand, IconSettings2 } from "@tabler/icons"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { EditorContent, JSONContent, useEditor } from "@tiptap/react"
 import { toast } from "react-toastify"
 import { shallow } from "zustand/shallow"
 
+import { ChapterComments } from "../../user/ChapterComments"
 import { EditorMenu } from "./EditorMenu"
 import { ModalContainer } from "./ModalContainer"
 import { useEditorStore } from "./editor-store"
@@ -61,6 +75,8 @@ export const ChapterEditor = ({ content, chapterId }: ChapterEditorProp) => {
         [content]
     )
 
+    const [side_opened, { open, close }] = useDisclosure(false)
+
     const chapter_client = ChapterClient()
     const s3_client = S3Client()
     const chapter_id = chapterId || ""
@@ -105,6 +121,40 @@ export const ChapterEditor = ({ content, chapterId }: ChapterEditorProp) => {
                 onClose={() => setModalOpened(false)}
                 content={modal_content}
             />
+
+            <Drawer
+                opened={side_opened}
+                position="right"
+                onClose={close}
+                shadow="xl"
+                title={
+                    <Group position="apart">
+                        <ThemeIcon variant="light" size="l">
+                            <IconSettings2 size={24} />
+                        </ThemeIcon>
+                        <Title order={3}>Settings</Title>
+                    </Group>
+                }
+                classNames={{
+                    header: "pb-0",
+                    content: "flex flex-col",
+                    body: "flex-1",
+                }}
+                withOverlay={false}
+                withCloseButton
+            >
+                <ChapterComments chapter_id={chapter_id || ""} />
+            </Drawer>
+            <Affix position={{ bottom: rem(20), right: rem(20) }}>
+                <UnstyledButton
+                    variant="filled"
+                    color="blue"
+                    className="rounded-full bg-blue-600 p-1 text-white"
+                    onClick={open}
+                >
+                    <IconLayoutSidebarRightExpand size={24} />
+                </UnstyledButton>
+            </Affix>
             <Stack className="max-h-screen gap-0 px-6">
                 <EditorMenu editor={editor} onSaveClick={handleSaveChapter} />
                 <EditorContent editor={editor} className={styles.editor_content} />
