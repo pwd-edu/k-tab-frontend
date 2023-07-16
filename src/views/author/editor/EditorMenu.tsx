@@ -64,13 +64,22 @@ export const EditorMenu = ({ editor, onSaveClick }: EditorMenuProps) => {
     }
 
     const insertImgIntoEditor = (images: string[], description: ImageDescription) => {
-        const url = images.at(-1)
-        if (url) {
+        if (description.type === "MATH") {
             editor
                 .chain()
                 .focus()
-                .setImage({ src: RESOURCE_URL(url), alt: description.content })
+                .setMathEdit({ id: nanoid(16), latex: description.content })
                 .run()
+            return
+        } else {
+            const url = images.at(-1)
+            if (url) {
+                editor
+                    .chain()
+                    .focus()
+                    .setImage({ src: RESOURCE_URL(url), alt: description.content })
+                    .run()
+            }
         }
     }
 

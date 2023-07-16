@@ -1,6 +1,8 @@
 /* eslint-disable jsx-a11y/alt-text */
+import { Input, Stack, Text, Textarea } from "@mantine/core"
 import { NodeViewProps, NodeViewWrapper } from "@tiptap/react"
 import { Enable, Resizable } from "re-resizable"
+import { ChangeEvent } from "react"
 
 function ImageResizer(props: NodeViewProps) {
     const align = props.node.attrs.align || "justify-center"
@@ -29,15 +31,31 @@ function ImageResizer(props: NodeViewProps) {
 
     return (
         <NodeViewWrapper className={`flex ${align}`}>
-            <Resizable
-                lockAspectRatio
-                className=""
-                onResizeStop={updateImgAttrs}
-                defaultSize={{ width: props.node.attrs.width, height: props.node.attrs.height }}
-                enable={enable}
-            >
-                <img {...props.node.attrs} className="m-0 w-full" />
-            </Resizable>
+            <Stack className="mb-1 gap-0">
+                <Resizable
+                    lockAspectRatio
+                    className=""
+                    onResizeStop={updateImgAttrs}
+                    defaultSize={{ width: props.node.attrs.width, height: props.node.attrs.height }}
+                    enable={enable}
+                >
+                    <img {...props.node.attrs} className="m-0 w-full" />
+                </Resizable>
+                {props.editor.isEditable && (
+                    <>
+                        <Text c="dimmed" size="sm" className="m-0 p-0">
+                            Alternative Text
+                        </Text>
+                        <Textarea
+                            rows={5}
+                            value={props.node.attrs.alt}
+                            onChange={(e: ChangeEvent<HTMLTextAreaElement>) => {
+                                props.updateAttributes({ alt: e.target.value })
+                            }}
+                        />
+                    </>
+                )}
+            </Stack>
         </NodeViewWrapper>
     )
 }

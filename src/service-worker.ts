@@ -9,9 +9,11 @@ sw.addEventListener("activate", () => sw.clients.claim())
 sw.addEventListener("fetch", (event: FetchEvent) => {
     const request = event.request
 
+    const EXCLUDED_PATHS = ["/s3/description/", "assets", "favicon.ico", "manifest.json"]
+
     // Intercept GET requests for image files
     if (
-        !request.url.includes("assets") &&
+        EXCLUDED_PATHS.every((path) => !request.url.includes(path)) &&
         request.method === "GET" &&
         (request.url.endsWith(".jpg") ||
             request.url.endsWith(".jpeg") ||

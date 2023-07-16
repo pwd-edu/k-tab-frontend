@@ -155,7 +155,7 @@ export const BookReader = () => {
                                 value={line_focus_height}
                                 step={0.1}
                                 min={0}
-                                max={100}
+                                max={50}
                                 label={(value) => Math.ceil(value)}
                                 onChange={(value) => setLineFocusHeight(value)}
                                 color="blue"
