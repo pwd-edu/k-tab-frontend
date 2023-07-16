@@ -3,6 +3,7 @@ import { BookClient, RESOURCE_URL, StudentClient } from "@fetch/index"
 import { AppNavbar } from "@layout/Navbar"
 import { ActionIcon, AppShell, Group, Select, TextInput, createStyles } from "@mantine/core"
 import { useToggle } from "@mantine/hooks"
+import { useDebouncedValue } from "@mantine/hooks"
 import {
     IconChevronLeft,
     IconChevronRight,
@@ -42,12 +43,15 @@ export function BookStore() {
     const [title, setTitle] = useState<string>()
     const [tag, setTag] = useState<string>()
 
+    const [debounced_title] = useDebouncedValue(title, 500)
+
     const navigatePath = useNavigate()
 
     const student_client = StudentClient()
     const bookStoreQuery = useQuery({
-        queryKey: ["bookstore", prev, next, tag, title],
+        queryKey: ["bookstore", prev, next, tag, debounced_title],
         queryFn: () => student_client.getBookstore(operation, next, prev, title, tag, filter),
+        keepPreviousData: true,
     })
 
     const book_client = BookClient()
@@ -56,11 +60,10 @@ export function BookStore() {
         queryFn: () => book_client.getAllBooksTags(),
     })
 
-    if (bookStoreQuery.isLoading || tagsQuery.isLoading) return <CenteredLoading />
     if (bookStoreQuery.isError || tagsQuery.isError) return <ErrorPage />
 
-    const nxtPtr = bookStoreQuery.data.next
-    const prevPtr = bookStoreQuery.data.prev
+    const nxtPtr = bookStoreQuery.data?.next
+    const prevPtr = bookStoreQuery.data?.prev
 
     const getFirstPage = () => {
         setPrev(undefined)
@@ -76,8 +79,8 @@ export function BookStore() {
 
     const getPrevPage = () => {
         setOperation("prev")
-        setNext(bookStoreQuery.data.next)
-        setPrev(bookStoreQuery.data.prev)
+        setNext(bookStoreQuery.data?.next)
+        setPrev(bookStoreQuery.data?.prev)
     }
 
     const getSearchResultsWithTitle = (event: {
@@ -99,6 +102,7 @@ export function BookStore() {
     return (
         <>
             <AppShell navbar={<AppNavbar />}>
+                {(bookStoreQuery.isLoading || tagsQuery.isLoading) && <CenteredLoading />}
                 <Group spacing={"md"}>
                     <TextInput
                         icon={<IconSearch />}
@@ -122,7 +126,7 @@ export function BookStore() {
                 </Group>
 
                 <Group className={styles.home_grid}>
-                    {bookStoreQuery.data.bookHeaders.map((book) => (
+                    {bookStoreQuery.data?.bookHeaders.map((book) => (
                         <StudentBook
                             key={book.bookId}
                             image={RESOURCE_URL(book.bookCoverPath)}
