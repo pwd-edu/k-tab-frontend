@@ -192,4 +192,61 @@ const HEADINGS_SEQUENCE: Rule = {
     linkText: () => "Learn more about organizing page headings",
 }
 
-export const CHECKER_RULES: Rule[] = [IMG_ALT, LIST_STRUCTURE, HEADINGS_SEQUENCE]
+const MIN_ALT_LENGTH = 10
+
+const ALT_LENGTH: Rule = {
+    id: "img-alt-length",
+    name: "Alt Length",
+    check: (elem: Element) => {
+        if (elem.tagName !== "IMG") {
+            return true
+        }
+        const alt = elem.getAttribute("alt")
+        return alt == null || alt.length >= MIN_ALT_LENGTH
+    },
+
+    message: () => "Alt attribute text should not contain more than 120 characters.",
+
+    why: () =>
+        "Screen readers cannot determine what is displayed in an image without alternative text, which describes the content and meaning of the image. Alternative text should be meaningful.",
+
+    link: "",
+    linkText: () => "",
+}
+
+const MAX_HEADING_LENGTH = 120
+const IS_HEADING: { [key: string]: boolean } = {
+    H1: true,
+    H2: true,
+    H3: true,
+    H4: true,
+    H5: true,
+    H6: true,
+}
+
+const PARAGRAPHS_FOR_HEADINGS: Rule = {
+    id: "paragraphs-for-headings",
+    name: "Paragraphs for Headings",
+    check: (elem: Element) => {
+        if (!IS_HEADING[elem.tagName]) {
+            return true
+        }
+        return (elem.textContent?.length || 0) <= MAX_HEADING_LENGTH
+    },
+
+    message: () => "Headings should not contain more than 120 characters.",
+
+    why: () =>
+        "Sighted users browse web pages quickly, looking for large or bolded headings. Screen reader users rely on headers for contextual understanding. Headers should be concise within the proper structure.",
+
+    link: "",
+    linkText: () => "",
+}
+
+export const CHECKER_RULES: Rule[] = [
+    IMG_ALT,
+    LIST_STRUCTURE,
+    HEADINGS_SEQUENCE,
+    ALT_LENGTH,
+    PARAGRAPHS_FOR_HEADINGS,
+]
