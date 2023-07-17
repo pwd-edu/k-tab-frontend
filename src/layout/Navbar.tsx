@@ -34,7 +34,6 @@ import {
     typography,
 } from "tailwindcss-classnames"
 
-import messi from "../assets/messi.jpg"
 import { KtabLogo } from "../components/shared"
 
 const useStyles = createStyles((theme) => ({
@@ -131,7 +130,6 @@ type NotificationItemProps = {
 export const NotificationItem = ({ notifi_msg }: NotificationItemProps) => {
     return (
         <Group spacing="lg">
-            <Avatar src={messi} radius="xl" size="md" />
             <Stack className="gap-0">
                 <Text style={{ fontSize: "14px" }} weight={700} color={"#4F4F4F"}>
                     {"3D Place Solution"}
