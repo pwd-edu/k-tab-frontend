@@ -19,6 +19,7 @@ import { upperFirst, useToggle } from "@mantine/hooks"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import axios from "axios"
 import { useRef, useState } from "react"
+import { number } from "zod"
 
 import { PORT } from "../../constants"
 
@@ -32,14 +33,13 @@ export function BookInfoForm() {
     const form = useForm({
         initialValues: {
             title: "",
-            price: "",
+            price: 0,
             abstract: "",
             coverImage: "",
-            rating: "",
         },
 
         validate: {
-            price: (val) => (parseInt(val) <= 500 ? null : "Invalid price"),
+            // price: (val) => (val <= 500 ? null : "Invalid price"),
             abstract: (val) =>
                 val.length >= 100 ? "Abstract should be at least 100 characters" : null,
         },
@@ -79,18 +79,29 @@ export function BookInfoForm() {
         //prevents refresh
         const auth_header = await getAuthHeader()
 
-        fetch(baseURL, {
-            method: "POST",
+        // fetch(baseURL, {
+        //     method: "POST",
+        //     headers: {
+        //         "Content-Type": "application/json",
+        //         Authorization: auth_header,
+        //     },
+
+        //     body: JSON.stringify(form.values),
+        // }).then(() => {
+        //     console.log(JSON.stringify(form.values))
+        //     console.log("added new book")
+        // })
+        const config = {
             headers: {
-                "Content-Type": "application/json",
                 Authorization: auth_header,
             },
-
-            body: JSON.stringify(form.values),
-        }).then(() => {
-            console.log(JSON.stringify(form.values))
-            console.log("added new book")
-        })
+        }
+        const response = async () => {
+            axios
+                .post(baseURL, JSON.stringify(form.values), config)
+                .then((res) => console.log(res))
+                .catch((err) => console.log(err))
+        }
     }
 
     //     // config.headers["Authorization"] = auth_header,
@@ -118,9 +129,7 @@ export function BookInfoForm() {
             </Text>
 
             {type == "edit" && (
-                <form
-                //  onSubmit={handleSubmit}
-                >
+                <form onSubmit={handleSubmit}>
                     <Stack>
                         <br></br>
                         <div style={{ margin: "auto" }}>
@@ -183,9 +192,9 @@ export function BookInfoForm() {
                             required
                             label="Price"
                             placeholder="Price in $"
-                            value={form.values.price}
+                            // value={form.values.price}
                             onChange={(event) =>
-                                form.setFieldValue("price", event.currentTarget.value)
+                                form.setFieldValue("price", parseInt(event.currentTarget.value))
                             }
                             error={form.errors.price && "Invalid price"}
                             radius="md"
@@ -209,7 +218,7 @@ export function BookInfoForm() {
                     {type === "edit" ? "view the book info" : "edit the book info"}
                 </Anchor>
                 {type === "edit" && (
-                    <Button type="submit" radius="xl">
+                    <Button type="submit" radius="xl" onClick={() => handleSubmit()}>
                         {upperFirst(type)}
                     </Button>
                 )}
