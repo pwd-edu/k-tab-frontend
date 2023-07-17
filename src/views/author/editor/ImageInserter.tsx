@@ -2,7 +2,16 @@ import { StreamLanguage } from "@codemirror/language"
 import { stex } from "@codemirror/legacy-modes/mode/stex"
 import { AiClient, RESOURCE_URL, S3Client } from "@fetch/index"
 import { ImageDescription, ImageInserterProps, ImagePreviewProps } from "@fetch/types"
-import { Button, Image, Select, Stack, Textarea, Transition } from "@mantine/core"
+import {
+    Button,
+    Image,
+    Loader,
+    LoadingOverlay,
+    Select,
+    Stack,
+    Textarea,
+    Transition,
+} from "@mantine/core"
 import { Box, clsx } from "@mantine/core"
 import { FileWithPath } from "@mantine/dropzone"
 import CodeMirror from "@uiw/react-codemirror"
@@ -97,6 +106,8 @@ export function ImageInserter({
     const [images, setImages] = useEditorStore((state) => [state.images, state.setImages], shallow)
     const [inserted, setInserted] = useState(false)
     const [description, setDescription] = useState<ImageDescription | null>(null)
+    const [uploading, setUploading] = useState(false)
+    const [processing, setProcessing] = useState(false)
 
     // TODO: use query mutations & cache
     const handleImageInserted = async (files: FileWithPath[]) => {
@@ -105,16 +116,21 @@ export function ImageInserter({
                 chapter_id
             )
             const image = files[0]
+
+            setUploading(true)
             await uploadS3(image, image_url)
+            setUploading(false)
+
+            setInserted(true)
+            setProcessing(true)
+            setImages([imagePath])
 
             const img_description = await ai_client.getImageDescription(imagePath)
+            setProcessing(false)
             setDescription(img_description)
             if (onDescriptionChange) {
                 onDescriptionChange(img_description)
             }
-
-            setInserted(true)
-            setImages([imagePath])
         } catch (e) {
             console.log(e)
         }
@@ -163,18 +179,25 @@ export function ImageInserter({
     return (
         <Stack>
             {inserted && <ImagePreview image={images.at(-1) || ""} />}
+            {processing && <Loader variant="bars" className="mx-auto" />}
             {description && (
-                <TypePreview type={description.type} onTypeOverriden={handleTypeOverriden} />
+                <>
+                    <TypePreview type={description.type} onTypeOverriden={handleTypeOverriden} />
+                    <ImageDescriptionBody
+                        type={description.type}
+                        content={description.content}
+                        onDescriptionChange={setDescription}
+                    />
+                </>
             )}
-            {description && (
-                <ImageDescriptionBody
-                    type={description.type}
-                    content={description.content}
-                    onDescriptionChange={setDescription}
-                />
+
+            {!inserted && (
+                <Box pos="relative">
+                    <LoadingOverlay visible={uploading} overlayBlur={2} />
+                    <InsertImagePlaceHolder onUpload={handleImageInserted} />
+                </Box>
             )}
-            {!inserted && <InsertImagePlaceHolder onUpload={handleImageInserted} />}
-            {inserted && <Button onClick={handleAddImage}>Add</Button>}
+            {inserted && description && <Button onClick={handleAddImage}>Add</Button>}
         </Stack>
     )
 }

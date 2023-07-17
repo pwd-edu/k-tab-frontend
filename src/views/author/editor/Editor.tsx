@@ -155,7 +155,7 @@ export const ChapterEditor = ({ content, chapterId }: ChapterEditorProp) => {
                     <IconLayoutSidebarRightExpand size={24} />
                 </UnstyledButton>
             </Affix>
-            <Stack className="max-h-screen gap-0 px-6">
+            <Stack className="min-h-[95vh] gap-0 px-6">
                 <EditorMenu editor={editor} onSaveClick={handleSaveChapter} />
                 <EditorContent editor={editor} className={styles.editor_content} />
             </Stack>
