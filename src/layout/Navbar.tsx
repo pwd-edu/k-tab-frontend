@@ -188,14 +188,11 @@ const NavbarLinks = () => {
             color: theme.primaryColor,
         },
         { link: "/editor", label: "Book Editor", icon: IconBook2, color: theme.primaryColor },
-        { link: "/", label: "Settings", icon: IconSettings, color: theme.primaryColor },
     ]
 
     const studentData = [
         { link: "/bookstore", label: "Home", icon: IconHome, color: theme.primaryColor },
-        { link: "/", label: "Notifications", icon: IconBellRinging, color: theme.primaryColor },
         { link: "/library", label: "Library", icon: IconBook2, color: theme.primaryColor },
-        { link: "/", label: "Settings", icon: IconSettings, color: theme.primaryColor },
     ]
 
     const { user } = useAuthSession()
@@ -229,7 +226,7 @@ const NavbarLinks = () => {
                         <ThemeIcon
                             variant={"light"}
                             size="lg"
-                            color={isActive(item) ? theme.primaryColor : "indigo"}
+                            color={isActive(item) ? theme.primaryColor : "gray"}
                         >
                             {<item.icon />}
                         </ThemeIcon>

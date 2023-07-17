@@ -202,11 +202,19 @@ const ExplainationEditor = (props: {
 
     return (
         <Textarea
-            className="w-full"
             placeholder="Write your explaination"
             minRows={5}
             value={text}
-            disabled={!props.enableEdit}
+            className={clsx(
+                "w-full",
+                !props.enableEdit && [
+                    "cursor-default",
+                    "text-black",
+                    "opacity-100",
+                    "pointer-events-none",
+                    "bg-gray-50",
+                ]
+            )}
             onChange={(e) => {
                 setText(e.target.value)
                 props.onTextUpdated(e.target.value)
