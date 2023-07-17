@@ -89,7 +89,7 @@ function ImagePreview({ image: url }: ImagePreviewProps) {
             <Image
                 classNames={{ imageWrapper: "flex justify-center" }}
                 imageProps={{ className: "" }}
-                width={"50%"}
+                width={"70%"}
                 src={RESOURCE_URL(url)}
                 alt={"an uploaded image"}
             />

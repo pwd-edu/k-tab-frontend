@@ -1,10 +1,7 @@
 const LATEX_SAMPLE_1 = String.raw`
-Part A
-
 \[
 \int\limits_a^b x\,dx = \left.\frac{x^2}{2} \right|_a^b
 \]
-Part B
 
 \begin{equation}
 \iiint\limits_V f(x,y,z)\,dV = F
