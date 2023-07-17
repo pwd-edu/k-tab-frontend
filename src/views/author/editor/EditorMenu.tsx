@@ -182,6 +182,9 @@ export const EditorMenu = ({ editor, onSaveClick }: EditorMenuProps) => {
                 "bg-gray-200",
                 "border-neutral-300",
                 "border-t-0",
+                "sticky",
+                "top-0",
+                "z-10",
             ])}
         >
             <AccessiblityCheckerDrawer
