@@ -17,7 +17,7 @@ import {
 import { useForm } from "@mantine/form"
 import { upperFirst, useToggle } from "@mantine/hooks"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import axios from "axios"
+import axios, { formToJSON } from "axios"
 import { useRef, useState } from "react"
 import { number } from "zod"
 
@@ -70,22 +70,28 @@ export function BookInfoForm() {
     const handleSubmit = async () => {
         const auth_header = await getAuthHeader()
 
-        fetch(baseURL, {
-            method: "POST",
+        // fetch(baseURL, {
+        //     method: "POST",
+        //     headers: {
+        //         "Content-Type": "application/json",
+        //         Authorization: auth_header,
+        //         "Access-Control-Allow-Credentials": "true",
+        //         "Access-Control-Allow-Origin": "http://localhost:8080",
+        //     },
+
+        //     body: JSON.stringify(form.values),
+        // }).then(() => {
+        //     console.log(JSON.stringify(form.values))
+        //     console.log("added new book")
+        // })
+
+        const config = {
             headers: {
-                "Content-Type": "application/json",
                 Authorization: auth_header,
-                "Access-Control-Allow-Credentials": "true",
-                "Access-Control-Allow-Origin": "http://localhost:8080",
             },
+        }
 
-            body: JSON.stringify(form.values),
-        }).then(() => {
-            console.log(JSON.stringify(form.values))
-            console.log("added new book")
-        })
-
-        axios.
+        const resp = await axios.post(baseURL, JSON.stringify(form.values), config)
     }
 
     return (
