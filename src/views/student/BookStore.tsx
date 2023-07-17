@@ -140,7 +140,7 @@ export function BookStore() {
                         />
                     ))}
                 </Group>
-                <Group>
+                <Group spacing="md">
                     {prevPtr && (
                         <ActionIcon variant="light" onClick={() => getFirstPage()}>
                             <IconChevronsLeft size="1rem" />
