@@ -53,7 +53,6 @@ function App() {
                         <Route path="/bookinfo/:bookId" element={<BookInfo />} />
                     </Routes>
                 </BrowserRouter>
-                <ReactQueryDevtools initialIsOpen={false} />
             </MathJaxContext>
         </QueryClientProvider>
     )
