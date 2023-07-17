@@ -34,13 +34,13 @@ export function BookInfoForm() {
         initialValues: {
             title: "",
             price: 0,
-            abstract: "",
-            coverImage: "",
+            bookAbstract: "",
+            bookCoverPhotoAsBinaryString: "",
         },
 
         validate: {
             // price: (val) => (val <= 500 ? null : "Invalid price"),
-            abstract: (val) =>
+            bookAbstract: (val) =>
                 val.length >= 100 ? "Abstract should be at least 100 characters" : null,
         },
     })
@@ -53,7 +53,7 @@ export function BookInfoForm() {
         reader.onload = function () {
             document = reader.result as string
             const base64String = document.replace("data:", "").replace(/^.+,/, "") as string
-            form.setFieldValue("coverImage", base64String)
+            form.setFieldValue("bookCoverPhotoAsBinaryString", base64String)
             console.log("onload base64String " + base64String)
         }
         reader.onerror = function (error) {
@@ -79,48 +79,32 @@ export function BookInfoForm() {
         //prevents refresh
         const auth_header = await getAuthHeader()
 
-        // fetch(baseURL, {
-        //     method: "POST",
-        //     headers: {
-        //         "Content-Type": "application/json",
-        //         Authorization: auth_header,
-        //     },
-
-        //     body: JSON.stringify(form.values),
-        // }).then(() => {
-        //     console.log(JSON.stringify(form.values))
-        //     console.log("added new book")
-        // })
-        const config = {
+        fetch(baseURL, {
+            method: "POST",
             headers: {
+                "Content-Type": "application/json",
                 Authorization: auth_header,
             },
-        }
-        const response = async () => {
-            axios
-                .post(baseURL, JSON.stringify(form.values), config)
-                .then((res) => console.log(res))
-                .catch((err) => console.log(err))
-        }
+
+            body: JSON.stringify(form.values),
+        }).then(() => {
+            console.log(JSON.stringify(form.values))
+            console.log("added new book")
+        })
+        // const config = {
+        //     headers: {
+        //         Authorization: auth_header,
+        //     },
+        // }
+        // const response = async () => {
+        //     axios
+        //         .post(baseURL, JSON.stringify(form.values), config)
+        //         .then((res) => console.log(res))
+        //         .catch((err) => console.log(err))
+        // }
     }
 
-    //     // config.headers["Authorization"] = auth_header,
-    //
-
-    //     const config = {
-    //         headers:{
-    //             "Authorization" :auth_header
-    //         }
-    //       };
-
-    //       const response = async () => {
-    //         axios.post(baseURL, JSON.stringify(form.values), config)
-    //         .then(res => console.log(res))
-    //         .catch(err => console.log(err))
-    //       }
-
-    //     console.log(form.values)
-    // }
+   
 
     return (
         <Paper radius="md" p="xl" withBorder>
@@ -175,14 +159,15 @@ export function BookInfoForm() {
 
                         <Textarea
                             required
-                            label="Abstract"
+                            label="bookAbstract"
                             placeholder="Write your book abstract here.."
-                            value={form.values.abstract}
+                            value={form.values.bookAbstract}
                             onChange={(event) =>
-                                form.setFieldValue("abstract", event.currentTarget.value)
+                                form.setFieldValue("bookAbstract", event.currentTarget.value)
                             }
                             error={
-                                form.errors.abstract && "Abstract should be at least 100 characters"
+                                form.errors.bookAbstract &&
+                                "Abstract should be at least 100 characters"
                             }
                             radius="md"
                             minRows={6}

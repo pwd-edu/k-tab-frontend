@@ -33,7 +33,6 @@ function App() {
                         >
                             <Route path="/" element={SharedHome} />
                             <Route path="/book/:book_id/:chapter_num" element={SharedBookView} />
-                            <Route path="/bookinfo/" element={BookInfoForm()} />
                         </Route>
                         <Route element={<PrivateRoute allowedRoles={["STUDENT"]} />}>
                             <Route path="/library" element={<Library />} />
@@ -41,6 +40,7 @@ function App() {
                         </Route>
                         <Route element={<PrivateRoute allowedRoles={["ADMIN", "AUTHOR"]} />}>
                             <Route path="/dashboard" element={<Dashboard />} />
+                            <Route path="/bookinfo/" element={<BookInfoForm />} />
                         </Route>
                         <Route path="*" element={<NotFound />} />
                         {/* for test  this will in be the reader */}
