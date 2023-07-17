@@ -1,3 +1,6 @@
+import { getAuthHeader } from "@auth/helpers"
+import { BookClient, axios_instance } from "@fetch/index"
+import { Book } from "@fetch/types"
 import {
     Anchor,
     Button,
@@ -13,11 +16,13 @@ import {
 } from "@mantine/core"
 import { useForm } from "@mantine/form"
 import { upperFirst, useToggle } from "@mantine/hooks"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
+import axios from "axios"
 import { useRef, useState } from "react"
 
 import { PORT } from "../../constants"
 
-export function BookInfoForm(props: PaperProps) {
+export function BookInfoForm() {
     const [type, toggle] = useToggle(["edit", "view"])
     const [coverPhotoFile, setCoverPhotoFile] = useState<File | null>()
     const resetRef = useRef<() => void>(null)
@@ -62,31 +67,60 @@ export function BookInfoForm(props: PaperProps) {
         resetRef.current?.()
     }
 
-    const handleSubmit = (e: { preventDefault: () => void }) => {
-        e.preventDefault() //prevents refresh
+    // Book data = form.values
+
+    const book_client = BookClient()
+    const createBook = async (data: Book) => {
+        const { data: response } = await axios.post(baseURL, data)
+        return response.data
+    }
+
+    const handleSubmit = async () => {
+        //prevents refresh
+        const auth_header = await getAuthHeader()
 
         fetch(baseURL, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                Authorization: auth_header,
             },
+
             body: JSON.stringify(form.values),
         }).then(() => {
             console.log(JSON.stringify(form.values))
             console.log("added new book")
         })
-
-        console.log(form.values)
     }
 
+    //     // config.headers["Authorization"] = auth_header,
+    //
+
+    //     const config = {
+    //         headers:{
+    //             "Authorization" :auth_header
+    //         }
+    //       };
+
+    //       const response = async () => {
+    //         axios.post(baseURL, JSON.stringify(form.values), config)
+    //         .then(res => console.log(res))
+    //         .catch(err => console.log(err))
+    //       }
+
+    //     console.log(form.values)
+    // }
+
     return (
-        <Paper radius="md" p="xl" withBorder {...props}>
+        <Paper radius="md" p="xl" withBorder>
             <Text size="lg" weight={500}>
                 Welcome to Your Library, {type} your {form.values.title} book
             </Text>
 
             {type == "edit" && (
-                <form onSubmit={handleSubmit}>
+                <form
+                //  onSubmit={handleSubmit}
+                >
                     <Stack>
                         <br></br>
                         <div style={{ margin: "auto" }}>

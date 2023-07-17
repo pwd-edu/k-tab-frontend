@@ -120,7 +120,7 @@ export function BookInfo() {
                 <Text mt="md" className={classes.label} c="dimmed">
                     Perfect for you, if you enjoy
                 </Text>
-                <Group spacing={7} mt={7}>
+                <Group spacing="xs" mt="7">
                     {bookTags}
                 </Group>
             </Card.Section>

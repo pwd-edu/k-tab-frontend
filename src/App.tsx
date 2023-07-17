@@ -7,7 +7,9 @@ import { BrowserRouter, Route, Routes } from "react-router-dom"
 
 import PrivateRoute from "./auth/PrivateRoute"
 import { MJAX_CONFIG } from "./constants"
+import { AddBook } from "./views/author/AuthorBook"
 import { BookEditor } from "./views/author/BookEditor"
+import { BookInfoForm } from "./views/author/BookInfo"
 import Dashboard from "./views/author/Dashboard"
 import { AuthorHome } from "./views/author/Home"
 import { BookInfo } from "./views/student/BookInfo"
@@ -31,6 +33,7 @@ function App() {
                         >
                             <Route path="/" element={SharedHome} />
                             <Route path="/book/:book_id/:chapter_num" element={SharedBookView} />
+                            <Route path="/bookinfo/" element={BookInfoForm()} />
                         </Route>
                         <Route element={<PrivateRoute allowedRoles={["STUDENT"]} />}>
                             <Route path="/library" element={<Library />} />
