@@ -35,7 +35,7 @@ export function BookInfoForm() {
             title: "",
             price: 0,
             bookAbstract: "",
-            bookCoverPhotoAsBinaryString: "",
+            // bookCoverPhotoAsBinaryString:"",
         },
 
         validate: {
@@ -67,16 +67,7 @@ export function BookInfoForm() {
         resetRef.current?.()
     }
 
-    // Book data = form.values
-
-    const book_client = BookClient()
-    const createBook = async (data: Book) => {
-        const { data: response } = await axios.post(baseURL, data)
-        return response.data
-    }
-
     const handleSubmit = async () => {
-        //prevents refresh
         const auth_header = await getAuthHeader()
 
         fetch(baseURL, {
@@ -84,6 +75,8 @@ export function BookInfoForm() {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: auth_header,
+                "Access-Control-Allow-Credentials": "true",
+                "Access-Control-Allow-Origin": "http://localhost:8080",
             },
 
             body: JSON.stringify(form.values),
@@ -91,20 +84,9 @@ export function BookInfoForm() {
             console.log(JSON.stringify(form.values))
             console.log("added new book")
         })
-        // const config = {
-        //     headers: {
-        //         Authorization: auth_header,
-        //     },
-        // }
-        // const response = async () => {
-        //     axios
-        //         .post(baseURL, JSON.stringify(form.values), config)
-        //         .then((res) => console.log(res))
-        //         .catch((err) => console.log(err))
-        // }
-    }
 
-   
+        axios.
+    }
 
     return (
         <Paper radius="md" p="xl" withBorder>
