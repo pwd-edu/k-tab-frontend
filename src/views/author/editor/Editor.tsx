@@ -15,9 +15,15 @@ import {
     rem,
 } from "@mantine/core"
 import { useDisclosure } from "@mantine/hooks"
-import { IconLayoutSidebarRightExpand, IconSettings2 } from "@tabler/icons"
+import {
+    IconArrowLeft,
+    IconLayoutSidebarRightExpand,
+    IconMessages,
+    IconSettings2,
+} from "@tabler/icons"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { EditorContent, JSONContent, useEditor } from "@tiptap/react"
+import { Link } from "react-router-dom"
 import { toast } from "react-toastify"
 import { shallow } from "zustand/shallow"
 
@@ -130,9 +136,9 @@ export const ChapterEditor = ({ content, chapterId }: ChapterEditorProp) => {
                 title={
                     <Group position="apart">
                         <ThemeIcon variant="light" size="l">
-                            <IconSettings2 size={24} />
+                            <IconMessages size={24} />
                         </ThemeIcon>
-                        <Title order={3}>Settings</Title>
+                        <Title order={3}>Community</Title>
                     </Group>
                 }
                 classNames={{
@@ -146,14 +152,15 @@ export const ChapterEditor = ({ content, chapterId }: ChapterEditorProp) => {
                 <ChapterComments chapter_id={chapter_id || ""} />
             </Drawer>
             <Affix position={{ bottom: rem(20), right: rem(20) }}>
-                <UnstyledButton
-                    variant="filled"
-                    color="blue"
-                    className="rounded-full bg-blue-600 p-1 text-white"
-                    onClick={open}
-                >
-                    <IconLayoutSidebarRightExpand size={24} />
+                <UnstyledButton variant="filled" color="gray" onClick={open}>
+                    <IconLayoutSidebarRightExpand size={28} />
                 </UnstyledButton>
+            </Affix>
+
+            <Affix position={{ top: rem(10), left: rem(20) }}>
+                <Link to="/">
+                    <IconArrowLeft size={28} />
+                </Link>
             </Affix>
             <Stack className="min-h-[95vh] gap-0 px-6">
                 <EditorMenu editor={editor} onSaveClick={handleSaveChapter} />
