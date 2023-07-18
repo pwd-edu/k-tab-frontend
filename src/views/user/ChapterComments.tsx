@@ -76,18 +76,30 @@ export function ChapterComment({ postedAt, body, author, lastComment }: CommentS
 const CommentInput = ({ onSend }: { onSend: (text: string) => void }) => {
     const [text, setText] = useState<string>("")
     return (
-        <Textarea
-            placeholder="Leave a comment"
-            value={text}
-            onChange={(e) => {
-                setText(e.target.value)
-            }}
-            onKeyUp={(e) => {
-                if (e.key === "Enter" && e.shiftKey) {
+        <div className="flex items-center justify-between gap-2 py-4">
+            <Textarea
+                placeholder="Leave a comment"
+                className="grow"
+                value={text}
+                onChange={(e) => {
+                    setText(e.target.value)
+                }}
+                onKeyUp={(e) => {
+                    if (e.key === "Enter" && e.shiftKey) {
+                        onSend(text)
+                        setText("")
+                    }
+                }}
+            />
+            <button
+                className="ml-4 rounded-md bg-blue-500 px-4 py-2 text-white"
+                onClick={() => {
                     onSend(text)
                     setText("")
-                }
-            }}
-        />
+                }}
+            >
+                Send
+            </button>
+        </div>
     )
 }
