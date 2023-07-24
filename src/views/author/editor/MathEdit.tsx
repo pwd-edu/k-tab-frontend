@@ -5,7 +5,8 @@ import { useDebouncedValue } from "@mantine/hooks"
 import { NodeViewProps, NodeViewWrapper } from "@tiptap/react"
 import CodeMirror from "@uiw/react-codemirror"
 import { MathJax } from "better-react-mathjax"
-import { useState } from "react"
+import { useMemo, useState } from "react"
+import { memo } from "react"
 
 import { LATEX_SAMPLES } from "./math-test"
 
@@ -17,7 +18,7 @@ export const MathEdit = (props: NodeViewProps) => {
         <NodeViewWrapper contentEditable={false} className="flex justify-center">
             <Box
                 className={clsx(
-                    editable && "min-w-full max-w-full rounded-md border-2 border-gray-200 p-2"
+                    editable && "w-3/4 max-w-full rounded-md border-2 border-gray-200 p-2"
                 )}
             >
                 {editable && (
@@ -41,8 +42,12 @@ export const MathEdit = (props: NodeViewProps) => {
                         }}
                     />
                 )}
-                <MathJax hideUntilTypeset={"first"}>{debounced_latex}</MathJax>
+                <MathRender latex={debounced_latex} />
             </Box>
         </NodeViewWrapper>
     )
 }
+
+const MathRender = memo(function MathRender({ latex }: { latex: any }) {
+    return <MathJax hideUntilTypeset={"first"}>{latex}</MathJax>
+})

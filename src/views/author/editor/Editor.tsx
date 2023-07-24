@@ -42,7 +42,6 @@ const buildStyles = (params?: any) => {
     const { classes, cx, theme } = useStyles(params)
     const styles = {
         editor_content: cx([
-            "flex flex-1 flex-row",
             !params?.readOnly && "rounded-sm border-x border-b border-neutral-300",
         ]),
     }
