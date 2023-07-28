@@ -143,6 +143,10 @@ export const AuthorClient = (): AuthorCLientType => ({
         const response = await axios_instance.get(`/author/home/`)
         return response.data
     },
+    getBookInfo: async (bookId: string) => {
+        const response = await axios_instance.get("/book/", { params: { bookId } })
+        return response.data
+    },
     getProfile: async (authorId: string) => {
         const response = await axios_instance.get("/author/profile/", { params: { authorId } })
         return response.data

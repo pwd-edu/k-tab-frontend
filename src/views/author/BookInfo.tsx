@@ -1,3 +1,6 @@
+import { getAuthHeader } from "@auth/helpers"
+import { BookClient, axios_instance } from "@fetch/index"
+import { Book, CreateBookRequest } from "@fetch/types"
 import {
     Anchor,
     Button,
@@ -13,11 +16,14 @@ import {
 } from "@mantine/core"
 import { useForm } from "@mantine/form"
 import { upperFirst, useToggle } from "@mantine/hooks"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
+import axios, { formToJSON } from "axios"
 import { useRef, useState } from "react"
+import { number } from "zod"
 
 import { PORT } from "../../constants"
 
-export function BookInfoForm(props: PaperProps) {
+export function BookInfoForm() {
     const [type, toggle] = useToggle(["edit", "view"])
     const [coverPhotoFile, setCoverPhotoFile] = useState<File | null>()
     const resetRef = useRef<() => void>(null)
@@ -27,15 +33,14 @@ export function BookInfoForm(props: PaperProps) {
     const form = useForm({
         initialValues: {
             title: "",
-            price: "",
-            abstract: "",
-            coverImage: "",
-            rating: "",
+            price: 0,
+            bookAbstract: "",
+            // bookCoverPhotoAsBinaryString:"",
         },
 
         validate: {
-            price: (val) => (parseInt(val) <= 500 ? null : "Invalid price"),
-            abstract: (val) =>
+            // price: (val) => (val <= 500 ? null : "Invalid price"),
+            bookAbstract: (val) =>
                 val.length >= 100 ? "Abstract should be at least 100 characters" : null,
         },
     })
@@ -48,7 +53,7 @@ export function BookInfoForm(props: PaperProps) {
         reader.onload = function () {
             document = reader.result as string
             const base64String = document.replace("data:", "").replace(/^.+,/, "") as string
-            form.setFieldValue("coverImage", base64String)
+            form.setFieldValue("bookCoverPhotoAsBinaryString", base64String)
             console.log("onload base64String " + base64String)
         }
         reader.onerror = function (error) {
@@ -62,25 +67,17 @@ export function BookInfoForm(props: PaperProps) {
         resetRef.current?.()
     }
 
-    const handleSubmit = (e: { preventDefault: () => void }) => {
-        e.preventDefault() //prevents refresh
+    const book_client = BookClient()
+    const handleSubmit = async () => {
+        //     book_client.post(form.values as CreateBookRequest)
 
-        fetch(baseURL, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(form.values),
-        }).then(() => {
-            console.log(JSON.stringify(form.values))
-            console.log("added new book")
-        })
-
-        console.log(form.values)
+        console.log("submit")
+        console.log(form.values as CreateBookRequest)
+        book_client.post(form.values as CreateBookRequest)
     }
 
     return (
-        <Paper radius="md" p="xl" withBorder {...props}>
+        <Paper radius="md" p="xl" withBorder>
             <Text size="lg" weight={500}>
                 Welcome to Your Library, {type} your {form.values.title} book
             </Text>
@@ -132,14 +129,15 @@ export function BookInfoForm(props: PaperProps) {
 
                         <Textarea
                             required
-                            label="Abstract"
+                            label="bookAbstract"
                             placeholder="Write your book abstract here.."
-                            value={form.values.abstract}
+                            value={form.values.bookAbstract}
                             onChange={(event) =>
-                                form.setFieldValue("abstract", event.currentTarget.value)
+                                form.setFieldValue("bookAbstract", event.currentTarget.value)
                             }
                             error={
-                                form.errors.abstract && "Abstract should be at least 100 characters"
+                                form.errors.bookAbstract &&
+                                "Abstract should be at least 100 characters"
                             }
                             radius="md"
                             minRows={6}
@@ -149,9 +147,9 @@ export function BookInfoForm(props: PaperProps) {
                             required
                             label="Price"
                             placeholder="Price in $"
-                            value={form.values.price}
+                            // value={form.values.price}
                             onChange={(event) =>
-                                form.setFieldValue("price", event.currentTarget.value)
+                                form.setFieldValue("price", parseInt(event.currentTarget.value))
                             }
                             error={form.errors.price && "Invalid price"}
                             radius="md"
@@ -175,7 +173,7 @@ export function BookInfoForm(props: PaperProps) {
                     {type === "edit" ? "view the book info" : "edit the book info"}
                 </Anchor>
                 {type === "edit" && (
-                    <Button type="submit" radius="xl">
+                    <Button type="submit" radius="xl" onClick={() => handleSubmit()}>
                         {upperFirst(type)}
                     </Button>
                 )}

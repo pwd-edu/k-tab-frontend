@@ -33,6 +33,10 @@ export function AuthorProfile({ author_id }: AuthorProfileProps) {
     if (isLoading) return <CenteredLoading />
     if (isError) return <ErrorPage />
 
+    function navigatePath(arg0: string): void {
+        throw new Error("Function not implemented.")
+    }
+
     return (
         <Paper
             radius="md"
@@ -58,11 +62,12 @@ export function AuthorProfile({ author_id }: AuthorProfileProps) {
                     <StudentBook
                         key={item.bookId}
                         image={RESOURCE_URL(item.bookCoverPath)}
-                        link={"#"}
                         title={item.title}
                         description={item.bookAbstract}
                         price={item.price ? item.price : 0}
                         tags={item.tags ? item.tags : []}
+                        rating={item.avgRate}
+                        onClick={() => navigatePath(`/bookinfo/${item.bookId}`)}
                     />
                 ))}
             </Group>
