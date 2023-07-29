@@ -38,7 +38,7 @@ axios_instance.interceptors.request.use(async (config) => {
 
 export const BookClient = (): BookClientType => ({
     post: async (book: CreateBookRequest): Promise<Book> => {
-        const response = await axios_instance.post(`/book`, book)
+        const response = await axios_instance.post(`/book/`, book)
         return response.data
     },
     get: async (book_id: string): Promise<Book> => {

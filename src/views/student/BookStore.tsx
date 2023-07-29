@@ -103,7 +103,7 @@ export function BookStore() {
         <>
             <AppShell navbar={<AppNavbar />}>
                 {(bookStoreQuery.isLoading || tagsQuery.isLoading) && <CenteredLoading />}
-                <Group spacing={"md"}>
+                <Group spacing={"md"} mx="auto">
                     <TextInput
                         icon={<IconSearch />}
                         placeholder="Search with book title"
@@ -135,12 +135,12 @@ export function BookStore() {
                             title={book.title}
                             description={book.bookAbstract}
                             authorName={book.authorName}
-                            rating={book.avgRate}
+                            rating={book.avgRating}
                             onClick={() => navigatePath(`/bookinfo/${book.bookId}`)}
                         />
                     ))}
                 </Group>
-                <Group spacing="md">
+                <Group spacing="md" mx="auto">
                     {prevPtr && (
                         <ActionIcon variant="light" onClick={() => getFirstPage()}>
                             <IconChevronsLeft size="1rem" />
