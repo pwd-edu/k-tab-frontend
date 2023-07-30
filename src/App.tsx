@@ -7,7 +7,6 @@ import { BrowserRouter, Route, Routes } from "react-router-dom"
 
 import PrivateRoute from "./auth/PrivateRoute"
 import { MJAX_CONFIG } from "./constants"
-import { AddBook } from "./views/author/AuthorBook"
 import { BookEditor } from "./views/author/BookEditor"
 import { BookInfoForm } from "./views/author/BookInfo"
 import Dashboard from "./views/author/Dashboard"
@@ -40,7 +39,8 @@ function App() {
                         </Route>
                         <Route element={<PrivateRoute allowedRoles={["ADMIN", "AUTHOR"]} />}>
                             <Route path="/dashboard" element={<Dashboard />} />
-                            <Route path="/bookinfo/" element={<BookInfoForm />} />
+                            <Route path="/bookinfo" element={<BookInfoForm />} />
+                            <Route path="/editor" element={<BookEditor />} />
                         </Route>
                         <Route path="*" element={<NotFound />} />
                         {/* for test  this will in be the reader */}

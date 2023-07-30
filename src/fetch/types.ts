@@ -57,7 +57,7 @@ export const BookSchema = z.object({
     authorId: z.string(),
     bookCoverPath: z.string(),
     lastEditDate: z.string(),
-    avgRate: z.number(),
+    avgRating: z.number(),
     contributions: z.array(
         z.object({
             chapterIds: z.string(),
@@ -65,6 +65,7 @@ export const BookSchema = z.object({
         })
     ),
     chapterHeaders: chaptersHeadersSchema,
+    bookCoverPhotoAsBinaryString: z.string(),
 })
 
 export const StudentBookSchema = BookSchema.extend({
@@ -75,7 +76,7 @@ export const StudentBookSchema = BookSchema.extend({
     authorId: z.string(),
     bookCoverPath: z.string(),
     lastEditDate: z.string(),
-    avgRate: z.number(),
+    avgRating: z.number(),
     contributions: z.array(
         z.object({
             chapterIds: z.string(),
@@ -117,7 +118,13 @@ export const BookDisabilitiesDistributionSchema = z.object({
 export type StudentBookHeader = z.infer<typeof StudentBookHeaderSchema>
 export type CreateBookRequest = Omit<
     Book,
-    "bookId" | "lastEditDate" | "avgRate" | "chaptersTitles" | "contributions" | "chapterHeaders"
+    | "bookId"
+    | "lastEditDate"
+    | "avgRating"
+    | "chaptersTitles"
+    | "contributions"
+    | "chapterHeaders"
+    | "bookCoverPath"
 >
 export type BookPurchases = z.infer<typeof BookPurchasesSchema>
 export type BookDisabilitiesDistribution = z.infer<typeof BookDisabilitiesDistributionSchema>
@@ -180,7 +187,7 @@ export const StudentBookHeaderSchema = StudentBookSchema.pick({
     bookAbstract: true,
     authorId: true,
     price: true,
-    avgRate: true,
+    avgRating: true,
 })
 
 const AuthorProfileSchema = AuthorSchema.extend({

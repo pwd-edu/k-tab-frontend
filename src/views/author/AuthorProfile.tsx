@@ -66,7 +66,7 @@ export function AuthorProfile({ author_id }: AuthorProfileProps) {
                         description={item.bookAbstract}
                         price={item.price ? item.price : 0}
                         tags={item.tags ? item.tags : []}
-                        rating={item.avgRate}
+                        rating={item.avgRating}
                         onClick={() => navigatePath(`/bookinfo/${item.bookId}`)}
                     />
                 ))}
