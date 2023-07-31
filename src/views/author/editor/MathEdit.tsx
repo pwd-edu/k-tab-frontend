@@ -41,7 +41,9 @@ export const MathEdit = (props: NodeViewProps) => {
                         }}
                     />
                 )}
-                <MathJax hideUntilTypeset={"first"}>{debounced_latex}</MathJax>
+                <MathJax hideUntilTypeset={"first"} dynamic>
+                    {debounced_latex}
+                </MathJax>
             </Box>
         </NodeViewWrapper>
     )
