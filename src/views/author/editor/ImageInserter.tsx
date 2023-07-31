@@ -48,7 +48,9 @@ const MathInsert = ({ defaultValue, onMathChange }: MathInsertProps) => {
                     onMathChange(value)
                 }}
             />
-            <MathJax hideUntilTypeset={"first"}>{latex}</MathJax>
+            <MathJax dynamic hideUntilTypeset={"first"}>
+                {latex}
+            </MathJax>
         </Box>
     )
 }
