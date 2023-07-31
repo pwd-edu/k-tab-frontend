@@ -1,11 +1,10 @@
 import { ErrorPage } from "@components/shared"
-import { BookClient } from "@fetch/index"
-import { CreateBookRequest } from "@fetch/types"
+import { BookClient, ChapterClient } from "@fetch/index"
+import { CreateBookRequest, CreateChapterRequest } from "@fetch/types"
 import {
     ActionIcon,
     Anchor,
     Button,
-    Dialog,
     FileInput,
     Group,
     Menu,
@@ -18,7 +17,7 @@ import {
     createStyles,
 } from "@mantine/core"
 import { useForm } from "@mantine/form"
-import { useDisclosure, useToggle } from "@mantine/hooks"
+import { useToggle } from "@mantine/hooks"
 import { IconBookmark } from "@tabler/icons"
 import { IconChevronDown, IconFilePencil, IconTrash } from "@tabler/icons-react"
 import { useQuery } from "@tanstack/react-query"
@@ -69,27 +68,27 @@ export function BookInfoForm() {
     })
 
     const book_client = BookClient()
+    const chapter_client = ChapterClient()
 
     const tagsQuery = useQuery({
         queryKey: ["tags"],
         queryFn: () => book_client.getAllBooksTags(),
+        select: (data) => (data.length === 0 ? ["MATH", "SCIENCE", "TECH"] : data),
     })
 
     if (tagsQuery.isError) return <ErrorPage />
 
-    const handleUploadImage = async () => {
+    const handleUploadImage = async (coverPhoto: File) => {
         let document = ""
         const reader = new FileReader()
-        const blobFile = coverPhotoFile as Blob
+        const blobFile = coverPhoto as Blob
         reader.readAsDataURL(blobFile)
         reader.onload = function () {
             document = reader.result as string
             const base64String = document.replace("data:", "").replace(/^.+,/, "") as string
             form.setFieldValue("bookCoverPhotoAsBinaryString", base64String)
-            console.log("onload base64String " + base64String)
         }
         reader.onerror = function (error) {
-            console.log("Error: ", error)
             return "error"
         }
     }
@@ -100,12 +99,22 @@ export function BookInfoForm() {
     }
 
     const handleSubmit = async () => {
-        console.log("submit")
-        console.log(form.values as CreateBookRequest)
-        const handle_request = await book_client.post(form.values as CreateBookRequest)
-        if (handle_request) {
-            navigatePath(`/book/${handle_request.bookId}/:1`)
+        const book = await book_client.post(form.values as CreateBookRequest)
+        const new_chapter: CreateChapterRequest = {
+            title: "Chapter 1",
+            bookId: book.bookId,
+            chapterOrder: 1,
+            readingDuration: 5,
         }
+        const chapter = await chapter_client.post(new_chapter)
+        if (chapter) {
+            navigatePath(`/book/${book.bookId}/1`)
+        }
+    }
+
+    const handleCoverInserted = async (image: File) => {
+        setCoverPhotoFile(image)
+        await handleUploadImage(image)
     }
 
     return (
@@ -120,8 +129,7 @@ export function BookInfoForm() {
                         <Stack>
                             <br></br>
                             <FileInput
-                                // resetRef={resetRef}
-                                onChange={setCoverPhotoFile}
+                                onChange={handleCoverInserted}
                                 accept="image/png,image/jpeg"
                                 placeholder="Upload an image"
                                 label="Book Cover Photo"
@@ -135,14 +143,6 @@ export function BookInfoForm() {
                                     size="xs"
                                 >
                                     Reset
-                                </Button>
-                                <Button
-                                    disabled={!coverPhotoFile}
-                                    color="green"
-                                    onClick={handleUploadImage}
-                                    size="xs"
-                                >
-                                    Verify
                                 </Button>
                             </Group>
 

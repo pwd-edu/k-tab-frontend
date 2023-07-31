@@ -53,7 +53,7 @@ export const BookClient = (): BookClientType => ({
 
 export const ChapterClient = (): ChapterClientType => ({
     post: async (chapter: CreateChapterRequest): Promise<Chapter> => {
-        const response = await axios_instance.post(`/chapter`, chapter)
+        const response = await axios_instance.post(`/chapter/`, chapter)
         return response.data
     },
     get: async (chapterId: string): Promise<Chapter> => {

@@ -240,7 +240,7 @@ export type Tags = z.infer<typeof TagsSchema>
 export type AuthorSignUp = z.infer<typeof AuthorSignUpSchema>
 export type CreateChapterRequest = Omit<
     Chapter,
-    "contentPath" | "audioPath" | "creationDate" | "lastModified"
+    "contentPath" | "audioPath" | "creationDate" | "lastModified" | "chapterId" | "tags" | "ownerId"
 >
 
 export type Book = z.infer<typeof BookSchema>
