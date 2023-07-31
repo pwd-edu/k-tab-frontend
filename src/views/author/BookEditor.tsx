@@ -1,5 +1,6 @@
 import { BookClient } from "@fetch/index"
 import { useChapterQuery } from "@fetch/useChapterQuery"
+import { NotFound } from "@layout/Error404"
 import { useQuery } from "@tanstack/react-query"
 import { getChapterId } from "@utils/chapter-id-idx"
 import { useParams } from "react-router-dom"
@@ -18,7 +19,11 @@ export function BookEditor() {
     const chapter_id = getChapterId(chapter_num, book)
     const { chapter_content } = useChapterQuery(book_id, chapter_id)
 
-    setChapterId(chapter_id || "")
+    if (!chapter_id) {
+        return <NotFound />
+    }
+
+    setChapterId(chapter_id)
 
     return <ChapterEditor content={chapter_content} chapterId={chapter_id} />
 }
