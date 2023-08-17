@@ -5,6 +5,7 @@ import {
     ActionIcon,
     Anchor,
     Button,
+    Dialog,
     FileInput,
     Group,
     Menu,
@@ -17,7 +18,7 @@ import {
     createStyles,
 } from "@mantine/core"
 import { useForm } from "@mantine/form"
-import { useToggle } from "@mantine/hooks"
+import { useDisclosure, useToggle } from "@mantine/hooks"
 import { IconBookmark } from "@tabler/icons"
 import { IconChevronDown, IconFilePencil, IconTrash } from "@tabler/icons-react"
 import { useQuery } from "@tanstack/react-query"
@@ -129,7 +130,8 @@ export function BookInfoForm() {
                         <Stack>
                             <br></br>
                             <FileInput
-                                onChange={handleCoverInserted}
+                                // resetRef={resetRef}
+                                onChange={setCoverPhotoFile}
                                 accept="image/png,image/jpeg"
                                 placeholder="Upload an image"
                                 label="Book Cover Photo"
