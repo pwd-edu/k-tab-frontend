@@ -133,12 +133,9 @@ export function BookInfo() {
             {bookContributors && <Card.Section>{bookContributors}</Card.Section>}
             <Card.Section className={classes.paymentsection}>
                 <Group spacing={30}>
-                    <div>
-                        <Text fz="xl" fw={700} sx={{ lineHeight: 1 }} mr="xl">
-                            ${book?.price}
-                        </Text>
-                    </div>
-
+                    <Text fz="xl" fw={700} sx={{ lineHeight: 1 }} mr="xl">
+                        ${book?.price}
+                    </Text>
                     <Button
                         radius="xl"
                         style={{ flex: 1 }}

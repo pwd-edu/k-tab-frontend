@@ -19,7 +19,7 @@ interface CommentSimpleProps {
 export function CommentSimple({ postedAt, body, author }: CommentSimpleProps) {
     const { classes } = useStyles()
     return (
-        <div>
+        <>
             <Group>
                 <Avatar src={author.image} alt={author.name} radius="xl" />
                 <div>
@@ -32,6 +32,6 @@ export function CommentSimple({ postedAt, body, author }: CommentSimpleProps) {
             <Text className={classes.body} size="sm">
                 {body}
             </Text>
-        </div>
+        </>
     )
 }

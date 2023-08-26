@@ -50,12 +50,10 @@ export function DndList({ data }: DndListProps) {
                     ref={provided.innerRef}
                 >
                     <Text className={classes.symbol}>{item.symbol}</Text>
-                    <div>
-                        <Text>{item.name}</Text>
-                        <Text color="dimmed" size="sm">
-                            Position: {item.position} • Mass: {item.mass}
-                        </Text>
-                    </div>
+                    <Text>{item.name}</Text>
+                    <Text color="dimmed" size="sm">
+                        Position: {item.position} • Mass: {item.mass}
+                    </Text>
                 </div>
             )}
         </Draggable>

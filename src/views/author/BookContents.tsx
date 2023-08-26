@@ -76,13 +76,13 @@ export function TableOfContents({ book_id, chapters, active }: TableOfContentsPr
     // ))
 
     return (
-        <div>
+        <>
             <Group mb="md">
                 <IconListSearch size="1.1rem" stroke={1.5} />
                 <Text>Table of contents</Text>
             </Group>
             {/* {items} */}
-        </div>
+        </>
     )
 }
 
